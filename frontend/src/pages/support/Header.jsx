@@ -23,23 +23,26 @@ export default function Header() {
         <div className="space-y-3 flex-1 min-w-[280px]">
           <h2 className="font-serif text-3xl font-bold">Join our Community</h2>
           <p className="break-normal max-w-prose">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-            doloremque. Expedita dignissimos animi iste veniam voluptates?
-            Dolorum blanditiis quo soluta, fugit alias explicabo nemo
-            repudiandae cum laboriosam tempora veniam nulla?
+            Join our community by becoming a member of PCSI. To register, click{" "}
+            <a href="#" className="font-bold hover:underline">
+              here
+            </a>
+            .
           </p>
-          <Button>Join Now</Button>
+          {/* <Button>Join Now</Button> */}
         </div>
 
         {/* Volunteer */}
         <div className="space-y-3 flex-1 min-w-[280px]">
           <h2 className="font-serif text-3xl font-bold">Be a Volunteer</h2>
           <p className="break-normal max-w-prose">
-            Volunteer at the Tropical Genomics and Invertebrate
-            Research (TROGENIR) Laboratory or with our partner organizations and
-            ongoing projects.
+            Volunteer at the Tropical Genomics and Invertebrate Research
+            (TROGENIR) Laboratory or with our partner organizations and ongoing
+            projects.
           </p>
-          <Button className="bg-accent-orange hover:bg-accent-orange/80">Sign in as Volunteer</Button>
+          <Button className="bg-accent-orange hover:bg-accent-orange/80">
+            Sign in as Volunteer
+          </Button>
         </div>
 
         {/* Donate */}
@@ -48,10 +51,9 @@ export default function Header() {
             Support through Donations
           </h2>
           <p className="break-normal max-w-prose">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-            doloremque. Expedita dignissimos animi iste veniam voluptates?
-            Dolorum blanditiis quo soluta, fugit alias explicabo nemo
-            repudiandae cum laboriosam tempora veniam nulla?
+            If you wish to be part of conserving our beetle species, you can
+            help through donations. For more details on how to donate, please
+            contact us at pcsi@gmail.com
           </p>
           <p>Every contribution counts.</p>
           <p>

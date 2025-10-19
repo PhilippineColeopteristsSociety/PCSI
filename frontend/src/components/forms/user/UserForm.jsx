@@ -21,9 +21,9 @@ export default function UserForm({ userData, form, submitting, loading, onSubmit
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-8">
-        <Spinner />
-        <span className="ml-2">Loading profile...</span>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center py-8">
+        <Spinner size={10}/>
+        {/* <span className="ml-2">Loading profile...</span> */}
       </div>
     );
   }

@@ -8,7 +8,7 @@ const ServiceList = () => {
     <div className="bg-accent">
     <Container className="py-20 flex flex-col md:flex-row flex-nowrap  items-center gap-20">
       <div  className="flex-1 grid grid-cols-5 gap-3 md:gap-5 h-full w-full">
-        <img src={images.service_3} alt="service_1" className="col-span-3 rounded-lg w-full h-full object-cover"/>
+        <img src={images.field_work2} alt="field_work2" className="col-span-3 rounded-lg w-full h-full object-cover"/>
         <img src={images.service_4} alt="service_2" className="col-span-2 rounded-lg w-full h-full object-cover"/>
         <img src={images.service_5} alt="service_3" className=" col-span-5 rounded-lg w-full h-full object-cover"/>
       </div>

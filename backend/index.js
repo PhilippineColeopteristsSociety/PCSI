@@ -31,7 +31,6 @@ const allowedOrigins = process.env.CLIENT_URLS
       'http://localhost:5173',
     ];
 
-  console.log("allowedOrigins", allowedOrigins);
 app.use(
   cors({
     origin: (origin, callback) => {

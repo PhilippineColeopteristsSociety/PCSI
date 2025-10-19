@@ -12,7 +12,7 @@ const ServiceList = () => {
         <div className="service-card service-card-1 service-card-small service-card-top-left">
           <div className="card-content">
             <img 
-              src={images.service_3} 
+              src={images.field_work4} 
               alt="Beetle species identification "
             />
           </div>
@@ -22,7 +22,7 @@ const ServiceList = () => {
         <div className="service-card service-card-2 service-card-medium service-card-bottom-left">
           <div className="card-content">
             <img 
-              src={images.service_4} 
+              src={images.service_5} 
               alt="Training Workshop on Coleopterology"
             />
           </div>
@@ -32,7 +32,7 @@ const ServiceList = () => {
         <div className="service-card service-card-3 service-card-large service-card-center service-card-front">
           <div className="card-content">
             <img 
-              src={images.service_5} 
+              src={images.service_4} 
               alt="Basic Photoshop and QGIS"
             />
           </div>
