@@ -6,15 +6,14 @@ import { Spinner } from '@/components/ui/spinner';
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
 
-  // Show loading spinner while checking authentication
+  // Don't redirect while loading
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Spinner className={"size-10"}/>
+        <Spinner className="size-10" />
       </div>
     );
   }
-
   // Redirect to admin dashboard if already authenticated
   if (isAuthenticated) {
     return <Navigate to="/admin" replace />;

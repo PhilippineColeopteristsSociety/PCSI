@@ -24,6 +24,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { images } from "@/constants/images";
 import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function LoginForm({ className, ...props }) {
   const { login } = useAuth();
@@ -136,7 +137,11 @@ export default function LoginForm({ className, ...props }) {
                 disabled={form.formState.isSubmitting}
                 className="w-full"
               >
-                {form.formState.isSubmitting ? "Logging in..." : "Login"}
+                {form.formState.isSubmitting ?  (
+                      <>
+                        <Spinner /> Logging in...
+                      </>
+                    ) : "Login"}
               </Button>
             </Field>
 
