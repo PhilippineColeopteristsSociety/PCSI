@@ -33,7 +33,25 @@ const announcementService = {
   // Create new announcement
   createAnnouncement: async (announcementData) => {
     try {
-      const response = await api.post('/announcements', announcementData);
+      const formData = new FormData();
+      
+      // Append text fields
+      formData.append('title', announcementData.title);
+      formData.append('description', announcementData.description);
+      if (announcementData.status) {
+        formData.append('status', announcementData.status);
+      }
+      
+      // Append image file if exists
+      if (announcementData.image) {
+        formData.append('image', announcementData.image);
+      }
+      
+      const response = await api.post('/announcements', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       return { success: true, data: response.data };
     } catch (error) {
       return { 

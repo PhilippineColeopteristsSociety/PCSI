@@ -1,8 +1,8 @@
 import Announcement from '../models/Announcement.js';
 
 const announcementService = {
-  createAnnouncement: async (title, description, image) => {
-    const announcement = await Announcement.create({ title, description, image });
+  createAnnouncement: async (title, description, banner) => {
+    const announcement = await Announcement.create({ title, description, banner });
     return announcement;
   },
   getAnnouncements: async (limit = null, filters = {}) => {

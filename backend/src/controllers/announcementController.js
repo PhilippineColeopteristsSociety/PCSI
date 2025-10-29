@@ -4,8 +4,10 @@ import { STATUS_CODES } from '../utils/constants.js';
 
 const announcementController = {
   createAnnouncement: asyncHandler(async (req, res) => {
-    const { title, description, image } = req.body;
-    const announcement = await announcementService.createAnnouncement(title, description, image);
+    const { title, description } = req.body;
+    const banner = req.file ? req.file.path : null; // Get file path from Cloudinary upload
+   console.log('Uploaded file path:', banner);
+    const announcement = await announcementService.createAnnouncement(title, description, banner);
     res.status(STATUS_CODES.CREATED).json({
       success: true,
       message: 'Announcement created successfully',
@@ -63,4 +65,4 @@ const announcementController = {
   }),
 };
 
-export default announcementController;   
+export default announcementController;
