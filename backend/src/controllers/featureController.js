@@ -50,7 +50,14 @@ const featureController = {
     });
   }),
   updateFeature: asyncHandler(async (req, res) => {
-    const feature = await featureService.updateFeature(req.params.id, req.body);
+    const { name, description } = req.body;
+    const banner = req.file ? req.file.path : null; // Get file path from Cloudinary upload
+
+    const feature = await featureService.updateFeature(req.params.id, {
+      name,
+      description,
+      banner,
+    });
     res.status(STATUS_CODES.OK).json({
       success: true,
       message: "Feature updated successfully",

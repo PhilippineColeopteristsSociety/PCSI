@@ -64,7 +64,24 @@ const publicationService = {
   // Update publication
   updatePublication: async (id, publicationData) => {
     try {
-      const response = await api.put(`/publications/${id}`, publicationData);
+      const formData = new FormData();
+      
+      formData.append('title', publicationData.title);
+      formData.append('description', publicationData.description);
+      if (publicationData.status) {
+        formData.append('status', publicationData.status);
+      }
+      
+      // Only append image if a new one was selected
+      if (publicationData.image) {
+        formData.append('image', publicationData.image);
+      }
+      
+      const response = await api.put(`/publications/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       return { success: true, data: response.data };
     } catch (error) {
       return { 

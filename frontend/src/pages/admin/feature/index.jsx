@@ -87,16 +87,15 @@ const Feature = () => {
     });
   };
 
-  const handleEdit = (vehicleId) => {
-    // Find the publication data by ID
-    const feature = features.find(
-      (feature) => feature._id === vehicleId
-    );
+  const handleEdit = (featureId) => {
+    // Find the feature data by ID
+    const feature = features.find((feature) => feature._id === featureId);
     if (!feature) return;
 
     setShowForm(true);
     setFormTitle("Edit Feature");
     setCurrentData(feature);
+  
     // Populate form with existing data
     form.reset({
       name: feature.name || "",
@@ -125,11 +124,17 @@ const Feature = () => {
 
       if (currentData) {
         // Update existing feature
-        result = await featureService.updateFeature(currentData._id, {
+         const updateData = {
           name: data.name,
           description: data.description,
           status: data.status,
-        });
+        };
+        
+        // Only include image if a new one was selected
+        if (data.image) {
+          updateData.image = data.image;
+        }
+        result = await featureService.updateFeature(currentData._id, updateData);
       } else {
         // Create new feature
           result = await featureService.createFeature({

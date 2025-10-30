@@ -88,12 +88,13 @@ const Publications = () => {
 
   const handleEdit = (publicationId) => {
     // Find the publication data by ID
-    const publication = publications.find((pub) => pub._id === publicationId);
+    const publication = publications.find((publication) => publication._id === publicationId);
     if (!publication) return;
 
     setShowForm(true);
     setFormTitle("Edit Publication");
     setCurrentData(publication);
+  
     // Populate form with existing data
     form.reset({
       title: publication.title || "",
@@ -122,12 +123,19 @@ const Publications = () => {
 
       if (currentData) {
         // Update existing publication
-
-        result = await publicationService.updatePublication(currentData._id, {
+        const updateData = {
           title: data.title,
           description: data.description,
           status: data.status,
-        });
+        };
+        
+        // Only include image if a new one was selected
+        if (data.image) {
+          updateData.image = data.image;
+        }
+
+        result = await publicationService.updatePublication(currentData._id, updateData);
+  
       } else {
         // Create new publication
         result = await publicationService.createPublication({

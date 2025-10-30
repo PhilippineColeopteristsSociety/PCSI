@@ -63,7 +63,24 @@ const featureService = {
   // Update announcement
   updateFeature: async (id, featureData) => {
     try {
-      const response = await api.put(`/features/${id}`, featureData);
+      const formData = new FormData();
+
+      formData.append("name", featureData.name);
+      formData.append("description", featureData.description);
+      if (featureData.status) {
+        formData.append("status", featureData.status);
+      }
+
+      // Only append image if a new one was selected
+      if (featureData.image) {
+        formData.append("image", featureData.image);
+      }
+
+      const response = await api.put(`/features/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return { success: true, data: response.data };
     } catch (error) {
       return {

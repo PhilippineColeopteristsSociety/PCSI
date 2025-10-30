@@ -9,7 +9,7 @@ const router = Router();
 router.post('/', verifyToken, upload.single('image'),validateFeature, featureController.createFeature);
 router.get('/', featureController.getFeatures);
 router.get('/:id', featureController.getFeature);
-router.put('/:id', verifyToken, validateFeature, featureController.updateFeature);
+router.put('/:id', verifyToken, upload.single("image"), validateFeature, featureController.updateFeature);
 router.patch('/:id/status', verifyToken, featureController.toggleFeatureStatus);
 
 export default router;

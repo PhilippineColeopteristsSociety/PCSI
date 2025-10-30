@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -35,20 +36,38 @@ export default function PublicationForm({
   open,
   onOpenChange,
   onSubmit,
-  data,
+  data, // Add this prop to receive current data
   submitting,
   title,
   form,
 }) {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const fileInputRef = useRef(null);
+
+  // Effect to handle existing image when editing
+  useEffect(() => {
+    if (data && data.banner) {
+      // If editing and has existing banner, show it as preview
+      setImagePreview(data.banner);
+      setImage(null); // No new file selected yet
+    } else if (!open) {
+      // Reset when form closes
+      setImage(null);
+      setImagePreview(null);
+    }
+  }, [data, open]);
+
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
+
     if (file) {
       // Check file size
       if (file.size > MAX_FILE_SIZE) {
         toast.error("File size exceeds 10 MB limit");
-        e.target.value = null; // Reset file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = null;
+        }
         return;
       }
 
@@ -56,13 +75,15 @@ export default function PublicationForm({
       const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
       if (!allowedTypes.includes(file.type)) {
         toast.error("Only .jpg, .jpeg, and .png files are allowed");
-        e.target.value = null;
+        if (fileInputRef.current) {
+          fileInputRef.current.value = null;
+        }
         return;
       }
 
       setImage(file);
 
-      // Create preview
+      // Create preview for new file
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -74,18 +95,21 @@ export default function PublicationForm({
   const removeImage = () => {
     setImage(null);
     setImagePreview(null);
-    // Reset file input if it exists
-    const fileInput = document.querySelector('input[type="file"]');
-    if (fileInput) fileInput.value = null;
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null;
+    }
   };
 
   const handleFormSubmit = (formData) => {
     const submissionData = {
       ...formData,
-      image: image, // Add the image file to submission data
+      image: image, // Only include new image file if one was selected
+      existingImage: data?.banner, // Pass existing banner URL for backend to handle
     };
+
     onSubmit(submissionData);
   };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={""} showCloseButton={false}>
@@ -95,7 +119,7 @@ export default function PublicationForm({
             Please fill in all required fields and click submit to save.
           </DialogDescription>
         </DialogHeader>
-        <div className="overflow-y-auto max-h-[calc(95vh-120px)] ">
+        <div className="overflow-y-auto max-h-[calc(95vh-120px)]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleFormSubmit)}>
               <FieldGroup>
@@ -106,7 +130,7 @@ export default function PublicationForm({
                         <>
                           <img
                             src={imagePreview}
-                            alt="Uploaded banner"
+                            alt="Publication banner"
                             className="w-full h-full object-cover"
                           />
                           <button
@@ -116,6 +140,11 @@ export default function PublicationForm({
                           >
                             <X size={16} />
                           </button>
+                          {/* {data?.banner && !image && (
+                            <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                              Existing Banner
+                            </div>
+                          )} */}
                         </>
                       ) : (
                         <label
@@ -125,6 +154,7 @@ export default function PublicationForm({
                           <File size={30} />
                           <span>Upload Banner</span>
                           <input
+                            ref={fileInputRef}
                             id="banner-upload"
                             type="file"
                             accept="image/*"
