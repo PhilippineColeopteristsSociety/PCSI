@@ -20,7 +20,7 @@ export default function Card({ image, title, description }) {
       <div
         className="h-[250px] overflow-clip bg-muted"
         style={{
-          backgroundImage: `url(${image || images.beatle_1})`,
+          backgroundImage: `url(${image})`,
           backgroundSize: "cover",
         }}
       ></div>

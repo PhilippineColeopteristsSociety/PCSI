@@ -46,9 +46,9 @@ const Feature = () => {
         ) : (
           <div className="flex flex-col md:flex-row lg:p-4 gap-15">
             <div className="aspect-square flex-shrink-0 overflow-hidden w-full bg-muted md:w-1/3">
-              {feature.banner || images.beatle_8 ? (
+              {feature.banner ? (
                 <img
-                  src={feature.banner || images.beatle_8}
+                  src={feature.banner}
                   alt={feature.name}
                   className="w-full h-full object-cover"
                 />
