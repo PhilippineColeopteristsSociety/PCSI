@@ -1,8 +1,8 @@
 import Publication from '../models/Publication.js';
 
 const publicationService = {
-  createPublication: async (title, description, image) => {
-    const publication = await Publication.create({ title, description, image });
+  createPublication: async (title, description, banner) => {
+    const publication = await Publication.create({ title, description, banner });
     return publication;
   },
   getPublications: async (limit = null, filters = {}) => {

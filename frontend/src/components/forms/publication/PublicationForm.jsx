@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/form";
 import TextEditor from "@/components/common/TextEditor";
 import { Spinner } from "@/components/ui/spinner";
+import { MAX_FILE_SIZE } from "@/constants/maxFileSize";
 
 export default function PublicationForm({
   open,
@@ -40,23 +41,50 @@ export default function PublicationForm({
   form,
 }) {
   const [image, setImage] = useState(null);
-
+  const [imagePreview, setImagePreview] = useState(null);
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImage({
-        file,
-        preview: URL.createObjectURL(file),
-      });
+      // Check file size
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error("File size exceeds 10 MB limit");
+        e.target.value = null; // Reset file input
+        return;
+      }
+
+      // Check file type
+      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Only .jpg, .jpeg, and .png files are allowed");
+        e.target.value = null;
+        return;
+      }
+
+      setImage(file);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const removeImage = () => {
     setImage(null);
+    setImagePreview(null);
+    // Reset file input if it exists
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) fileInput.value = null;
   };
 
   const handleFormSubmit = (formData) => {
-    onSubmit(formData);
+    const submissionData = {
+      ...formData,
+      image: image, // Add the image file to submission data
+    };
+    onSubmit(submissionData);
   };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -74,10 +102,10 @@ export default function PublicationForm({
                 <FieldSet>
                   <Field>
                     <div className="relative min-h-40 bg-muted rounded-lg flex items-center justify-center overflow-hidden">
-                      {image ? (
+                      {imagePreview ? (
                         <>
                           <img
-                            src={image.preview}
+                            src={imagePreview}
                             alt="Uploaded banner"
                             className="w-full h-full object-cover"
                           />

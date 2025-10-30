@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ro } from "date-fns/locale";
 
 export const publicationColumns = (onEdit, onUpdateStatus, submitting) => [
   {
@@ -25,7 +26,7 @@ export const publicationColumns = (onEdit, onUpdateStatus, submitting) => [
     header: "",
     cell: ({ row }) => (
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarImage src={row.getValue("banner")} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
     ),

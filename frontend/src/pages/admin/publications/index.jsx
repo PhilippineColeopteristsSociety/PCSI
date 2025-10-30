@@ -134,6 +134,7 @@ const Publications = () => {
           title: data.title,
           description: data.description,
           status: data.status,
+          image: data.image,
         });
       }
 

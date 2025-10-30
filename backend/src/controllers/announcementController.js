@@ -6,7 +6,7 @@ const announcementController = {
   createAnnouncement: asyncHandler(async (req, res) => {
     const { title, description } = req.body;
     const banner = req.file ? req.file.path : null; // Get file path from Cloudinary upload
-   console.log('Uploaded file path:', banner);
+
     const announcement = await announcementService.createAnnouncement(title, description, banner);
     res.status(STATUS_CODES.CREATED).json({
       success: true,

@@ -4,8 +4,10 @@ import { STATUS_CODES } from '../utils/constants.js';
 
 const publicationController = {
   createPublication: asyncHandler(async (req, res) => {
-    const { title, description, image } = req.body;
-    const publication = await publicationService.createPublication(title, description, image);
+    const { title, description } = req.body;
+    const banner = req.file ? req.file.path : null;
+ 
+    const publication = await publicationService.createPublication(title, description, banner);
     res.status(STATUS_CODES.CREATED).json({
       success: true,
       message: 'Publication created successfully',

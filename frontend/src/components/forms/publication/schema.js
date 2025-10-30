@@ -2,8 +2,8 @@ import * as z from "zod";
 
 export const PublicationSchema = z.object({
     title:z.string().min(1, {
-        error:"Title is required"
+        message:"Title is required"
     }),
-    description:z.string().min(1, {error:"Description is required"}),
+    description:z.string().min(1, {message:"Description is required"}),
     status:z.enum(["0","1"]).optional()
 })
