@@ -86,7 +86,7 @@ const Announcements = () => {
   };
 
   const handleEdit = (announcementId) => {
-    // Find the publication data by ID
+    // Find the announcement data by ID
     const announcement = announcements.find((announcement) => announcement._id === announcementId);
     if (!announcement) return;
 
@@ -122,11 +122,18 @@ const Announcements = () => {
 
       if (currentData) {
         // Update existing announcement
-        result = await announcementService.updateAnnouncement(currentData._id, {
+        const updateData = {
           title: data.title,
           description: data.description,
           status: data.status,
-        });
+        };
+        
+        // Only include image if a new one was selected
+        if (data.image) {
+          updateData.image = data.image;
+        }
+        
+        result = await announcementService.updateAnnouncement(currentData._id, updateData);
       } else {
         // Create new announcement
         result = await announcementService.createAnnouncement({

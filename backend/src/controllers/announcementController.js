@@ -47,7 +47,14 @@ const announcementController = {
     });
   }),
   updateAnnouncement: asyncHandler(async (req, res) => {
-    const announcement = await announcementService.updateAnnouncement(req.params.id, req.body);
+    const { title, description } = req.body;
+    const banner = req.file ? req.file.path : null; // Get file path from Cloudinary upload
+   
+    const announcement = await announcementService.updateAnnouncement(req.params.id, {
+      title,
+      description,
+      banner
+    });
     res.status(STATUS_CODES.OK).json({
       success: true,
       message: 'Announcement updated successfully',

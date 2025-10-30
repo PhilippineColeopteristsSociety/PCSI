@@ -1,4 +1,6 @@
+import cloudinary from '../config/cloudinaryConfig.js';
 import Announcement from '../models/Announcement.js';
+import { getCloudinaryPublicId } from '../utils/getPublicId.js';
 
 const announcementService = {
   createAnnouncement: async (title, description, banner) => {
@@ -20,8 +22,17 @@ const announcementService = {
     return announcement;
   },
   updateAnnouncement: async (id, data) => {
-    const announcement = await Announcement.findByIdAndUpdate(id, data, { new: true });
-    return announcement;
+    const announcement = await Announcement.findById(id);
+    
+    if (announcement.banner) {
+      // If no new banner provided, retain existing banner
+     const publicId = `pcsi/${getCloudinaryPublicId(announcement.banner)}`;
+     await cloudinary.uploader.destroy(publicId);
+     console.log(`Deleted old banner with public ID: ${publicId}`);
+    }
+
+    const result = await Announcement.findByIdAndUpdate(id, data, { new: true });
+    return result;
   },
   toggleAnnouncementStatus: async (id, status) => {
     const announcement = await Announcement.findByIdAndUpdate(

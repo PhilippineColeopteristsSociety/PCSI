@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/', verifyToken, upload.single('image'),validateAnnouncement, announcementController.createAnnouncement);
 router.get('/',  announcementController.getAnnouncements);
 router.get('/:id',  announcementController.getAnnouncement);
-router.put('/:id', verifyToken, validateAnnouncement, announcementController.updateAnnouncement);
+router.put('/:id', verifyToken,upload.single("image"), validateAnnouncement, announcementController.updateAnnouncement);
 router.patch('/:id/status', verifyToken, announcementController.toggleAnnouncementStatus);
 
 export default router;

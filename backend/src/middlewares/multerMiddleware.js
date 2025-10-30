@@ -9,9 +9,9 @@ const storage = new CloudinaryStorage({
   params: {
     folder: 'pcsi', // Folder name on Cloudinary
     public_id: (req, file) => {
-      // Create custom file name, without file extension (Cloudinary handles the extension)
+      // Create custom file name with timestamp and pcsi_image prefix
       const timestamp = Date.now();
-      const fileName = `${timestamp}_${path.parse(file.originalname).name}`;
+      const fileName = `${timestamp}_pcsi_image`;
       return fileName;
     },
     allowed_formats: ['jpg', 'jpeg', 'png'], // Only allow these formats
