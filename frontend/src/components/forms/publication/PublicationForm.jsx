@@ -64,7 +64,7 @@ export default function PublicationForm({
     if (file) {
       // Check file size
       if (file.size > MAX_FILE_SIZE) {
-        toast.error("File size exceeds 10 MB limit");
+        toast.error(`File size exceeds ${MAX_FILE_SIZE / 1024 / 1024} MB limit`);
         if (fileInputRef.current) {
           fileInputRef.current.value = null;
         }
@@ -152,7 +152,7 @@ export default function PublicationForm({
                           className="h-full w-full flex flex-col items-center justify-center font-semibold text-muted-foreground cursor-pointer"
                         >
                           <File size={30} />
-                          <span>Upload Banner</span>
+                          <span>Upload Image</span>
                           <input
                             ref={fileInputRef}
                             id="banner-upload"
@@ -164,6 +164,9 @@ export default function PublicationForm({
                         </label>
                       )}
                     </div>
+                    <FieldDescription className={"text-xs"}>
+                      Accepted formats: .jpg, .jpeg, .png | Max size: 5 MB
+                    </FieldDescription>
                   </Field>
 
                   <FormField

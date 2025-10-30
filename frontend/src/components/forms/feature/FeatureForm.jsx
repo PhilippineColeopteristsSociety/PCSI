@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import {
   Field,
+  FieldDescription,
   FieldGroup,
   FieldSet,
 } from "@/components/ui/field";
@@ -59,7 +60,7 @@ export default function FeatureForm({
     if (file) {
       // Check file size
       if (file.size > MAX_FILE_SIZE) {
-        toast.error("File size exceeds 10 MB limit");
+        toast.error(`File size exceeds ${MAX_FILE_SIZE / 1024 / 1024} MB limit`);
         if (fileInputRef.current) {
           fileInputRef.current.value = null;
         }
@@ -159,6 +160,9 @@ export default function FeatureForm({
                         </label>
                       )}
                     </div>
+                    <FieldDescription className={"text-xs"}>
+                      Accepted formats: .jpg, .jpeg, .png | Max size: 5 MB
+                    </FieldDescription>
                   </Field>
 
                   <FormField

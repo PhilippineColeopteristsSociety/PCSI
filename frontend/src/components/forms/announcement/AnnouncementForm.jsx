@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import {
   Field,
+  FieldDescription,
   FieldGroup,
   FieldSet,
 } from "@/components/ui/field";
@@ -59,7 +60,7 @@ export default function AnnouncementForm({
     if (file) {
       // Check file size
       if (file.size > MAX_FILE_SIZE) {
-        toast.error("File size exceeds 10 MB limit");
+        toast.error(`File size exceeds ${MAX_FILE_SIZE / 1024 / 1024} MB limit`);
         if (fileInputRef.current) {
           fileInputRef.current.value = null;
         }
@@ -147,7 +148,7 @@ export default function AnnouncementForm({
                           className="h-full w-full flex flex-col items-center justify-center font-semibold text-muted-foreground cursor-pointer"
                         >
                           <File size={30} />
-                          <span>Upload Banner</span>
+                          <span>Upload Image</span>
                           <input
                             ref={fileInputRef}
                             id="banner-upload"
@@ -159,6 +160,9 @@ export default function AnnouncementForm({
                         </label>
                       )}
                     </div>
+                    <FieldDescription className={"text-xs"}>
+                      Accepted formats: .jpg, .jpeg, .png | Max size: 5 MB
+                    </FieldDescription>
                   </Field>
 
                   <FormField
