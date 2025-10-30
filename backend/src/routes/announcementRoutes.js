@@ -6,7 +6,7 @@ import upload from '../middlewares/multerMiddleware.js';
 
 const router = express.Router();
 
-router.post('/', upload.single('image'), announcementController.createAnnouncement);
+router.post('/', verifyToken, upload.single('image'),validateAnnouncement, announcementController.createAnnouncement);
 router.get('/',  announcementController.getAnnouncements);
 router.get('/:id',  announcementController.getAnnouncement);
 router.put('/:id', verifyToken, validateAnnouncement, announcementController.updateAnnouncement);

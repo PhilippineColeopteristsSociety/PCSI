@@ -1,8 +1,8 @@
 import Feature from "../models/Feature.js";
 
 const featureService = {
-    createFeature: async (name, description, image) => {
-        const feature = await Feature.create({ name, description, image });
+    createFeature: async (name, description, banner) => {
+        const feature = await Feature.create({ name, description, banner });
         return feature;
     },
     getFeatures: async (limit = null, filters = {}) => {

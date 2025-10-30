@@ -124,18 +124,19 @@ const Feature = () => {
       let result;
 
       if (currentData) {
-        // Update existing announcement
+        // Update existing feature
         result = await featureService.updateFeature(currentData._id, {
           name: data.name,
           description: data.description,
           status: data.status,
         });
       } else {
-        // Create new announcement
+        // Create new feature
           result = await featureService.createFeature({
           name: data.name,
           description: data.description,
           status: data.status,
+          image: data.image,
         });
       }
 

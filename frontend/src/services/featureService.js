@@ -5,7 +5,7 @@ const featureService = {
     try {
       const params = { ...filters };
       if (limit) params.limit = limit;
-      
+
       const response = await api.get("/features", { params });
       return { success: true, data: response.data };
     } catch (error) {
@@ -29,10 +29,28 @@ const featureService = {
     }
   },
 
-  // Create new announcement
+  // Create new feature
   createFeature: async (featureData) => {
     try {
-      const response = await api.post("/features", featureData);
+      const formData = new FormData();
+
+      // Append text fields
+      formData.append("name", featureData.name);
+      formData.append("description", featureData.description);
+      if (featureData.status) {
+        formData.append("status", featureData.status);
+      }
+
+      // Append image file if exists
+      if (featureData.image) {
+        formData.append("image", featureData.image);
+      }
+
+      const response = await api.post("/features", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return { success: true, data: response.data };
     } catch (error) {
       return {
