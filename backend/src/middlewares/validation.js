@@ -106,7 +106,11 @@ const validatePublication = [
   body('description')
     .notEmpty()
     .withMessage('Description is required'),
-  handleValidationErrors
+  handleValidationErrors,
+  body("removeBanner")
+    .optional()
+    .isBoolean()
+    .withMessage('Remove banner must be a boolean'),
 ];
 const validateAnnouncement = [
   body('title')

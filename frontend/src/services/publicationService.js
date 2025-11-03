@@ -71,7 +71,10 @@ const publicationService = {
       if (publicationData.status) {
         formData.append('status', publicationData.status);
       }
-      
+      if (publicationData.removeBanner) {
+        formData.append('removeBanner', publicationData.removeBanner);
+      }
+
       // Only append image if a new one was selected
       if (publicationData.image) {
         formData.append('image', publicationData.image);

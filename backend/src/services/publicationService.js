@@ -27,15 +27,27 @@ const publicationService = {
   },
   updatePublication: async (id, data) => {
     const publication = await Publication.findById(id);
-
+    // console.log(data)
+    // Handle banner deletion scenarios
     if (publication.banner) {
-      // If no new banner provided, retain existing banner
-      const publicId = `pcsi/${getCloudinaryPublicId(publication.banner)}`;
-      await cloudinary.uploader.destroy(publicId);
-      console.log(`Deleted old banner with public ID: ${publicId}`);
+      if (data.banner) {
+        // Scenario 1: User uploaded a new banner - delete old banner
+        const publicId = `pcsi/${getCloudinaryPublicId(publication.banner)}`;
+        await cloudinary.uploader.destroy(publicId);
+        console.log(`Deleted old banner with public ID: ${publicId}`);
+      } else if (data.removeBanner) {
+        // Scenario 2: User clicked X to remove banner - delete old banner
+        const publicId = `pcsi/${getCloudinaryPublicId(publication.banner)}`;
+        await cloudinary.uploader.destroy(publicId);
+        console.log(`Removed banner with public ID: ${publicId}`);
+      }
+      // Scenario 3: Neither data.banner nor data.removeBanner - keep existing banner
     }
 
-    const result = await Publication.findByIdAndUpdate(id, data, { new: true });
+    // Remove removeBanner flag from update data as it's not a model field
+    const { removeBanner, ...updateData } = data;
+
+    const result = await Publication.findByIdAndUpdate(id, updateData, { new: true });
     return result;
   },
   togglePublicationStatus: async (id, status) => {
