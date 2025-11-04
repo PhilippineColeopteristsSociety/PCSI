@@ -74,6 +74,10 @@ const announcementService = {
         formData.append('status', announcementData.status);
       }
       
+      if (announcementData.removeBanner) {
+        formData.append('removeBanner', announcementData.removeBanner);
+      }
+      
       // Append image file if exists
       if (announcementData.image) {
         formData.append('image', announcementData.image);
