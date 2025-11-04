@@ -130,10 +130,16 @@ const Feature = () => {
           status: data.status,
         };
         
-        // Only include image if a new one was selected
+        // Handle banner based on user action
         if (data.image) {
+          // User uploaded a new banner - replace old one
           updateData.image = data.image;
+        } else if (data.removeBanner) {
+          // User clicked X to remove banner - set to null
+          updateData.removeBanner = true;
         }
+        // If neither, keep existing banner (don't send banner field)
+        
         result = await featureService.updateFeature(currentData._id, updateData);
       } else {
         // Create new feature

@@ -50,14 +50,26 @@ const featureController = {
     });
   }),
   updateFeature: asyncHandler(async (req, res) => {
-    const { name, description } = req.body;
+    const { name, description, removeBanner } = req.body;
     const banner = req.file ? req.file.path : null; // Get file path from Cloudinary upload
 
-    const feature = await featureService.updateFeature(req.params.id, {
+    const updateData = {
       name,
       description,
-      banner,
-    });
+    };
+
+    // Handle banner updates
+    if (banner) {
+      // User uploaded a new banner - replace old one
+      updateData.banner = banner;
+    } else if (removeBanner === 'true' || removeBanner === true) {
+      // User wants to remove the banner
+      updateData.banner = null;
+      updateData.removeBanner = true;
+    }
+    // If neither, keep existing banner (don't include banner field)
+
+    const feature = await featureService.updateFeature(req.params.id, updateData);
     res.status(STATUS_CODES.OK).json({
       success: true,
       message: "Feature updated successfully",

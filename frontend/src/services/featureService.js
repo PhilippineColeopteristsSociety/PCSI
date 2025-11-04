@@ -71,6 +71,10 @@ const featureService = {
         formData.append("status", featureData.status);
       }
 
+      if(featureData.removeBanner) {
+        formData.append("removeBanner", "true");
+      }
+
       // Only append image if a new one was selected
       if (featureData.image) {
         formData.append("image", featureData.image);

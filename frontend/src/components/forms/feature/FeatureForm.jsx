@@ -39,6 +39,7 @@ export default function FeatureForm({
 }) {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [removeBanner, setRemoveBanner] = useState(false);
   const fileInputRef = useRef(null);
 
   // Effect to handle existing image when editing
@@ -47,10 +48,12 @@ export default function FeatureForm({
       // If editing and has existing image, show it as preview
       setImagePreview(data.banner);
       setImage(null); // No new file selected yet
+      setRemoveBanner(false); // Reset remove flag
     } else if (!open) {
       // Reset when form closes
       setImage(null);
       setImagePreview(null);
+      setRemoveBanner(false);
     }
   }, [data, open]);
 
@@ -91,6 +94,7 @@ export default function FeatureForm({
   const removeImage = () => {
     setImage(null);
     setImagePreview(null);
+    setRemoveBanner(true); // Mark that user wants to remove the banner
     if (fileInputRef.current) {
       fileInputRef.current.value = null;
     }
@@ -99,8 +103,9 @@ export default function FeatureForm({
   const handleFormSubmit = (formData) => {
     const submissionData = {
       ...formData,
-      image: image, // Only include new image file if one was selected
-      existingImage: data?.image, // Pass existing image URL for backend to handle
+      image: image, // New image file if one was selected
+      removeBanner: removeBanner && !image, // True if user clicked X and didn't upload new image
+      existingBanner: data?.banner, // Pass existing banner URL for backend reference
     };
     
     onSubmit(submissionData);
