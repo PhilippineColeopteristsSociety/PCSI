@@ -120,7 +120,10 @@ const validateVolume = [
   body("month").notEmpty().withMessage("Month is required"),
   body("year")
     .isInt({ min: 1900, max: new Date().getFullYear() + 10 })
-    .withMessage("Year must be a valid number between 1900 and " + (new Date().getFullYear() + 10)),
+    .withMessage(
+      "Year must be a valid number between 1900 and " +
+        (new Date().getFullYear() + 10)
+    ),
   body("doiLink")
     .optional()
     .isURL()

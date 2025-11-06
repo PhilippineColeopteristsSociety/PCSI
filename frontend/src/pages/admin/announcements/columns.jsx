@@ -25,7 +25,7 @@ export const announcementColumns = (onEdit, onUpdateStatus, submitting) => [
     header: "",
     cell: ({ row }) => (
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarImage src={row.getValue("banner")} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
     ),

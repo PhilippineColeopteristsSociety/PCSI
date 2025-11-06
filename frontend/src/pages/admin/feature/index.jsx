@@ -87,16 +87,15 @@ const Feature = () => {
     });
   };
 
-  const handleEdit = (vehicleId) => {
-    // Find the publication data by ID
-    const feature = features.find(
-      (feature) => feature._id === vehicleId
-    );
+  const handleEdit = (featureId) => {
+    // Find the feature data by ID
+    const feature = features.find((feature) => feature._id === featureId);
     if (!feature) return;
 
     setShowForm(true);
     setFormTitle("Edit Feature");
     setCurrentData(feature);
+  
     // Populate form with existing data
     form.reset({
       name: feature.name || "",
@@ -124,18 +123,31 @@ const Feature = () => {
       let result;
 
       if (currentData) {
-        // Update existing announcement
-        result = await featureService.updateFeature(currentData._id, {
+        // Update existing feature
+         const updateData = {
           name: data.name,
           description: data.description,
           status: data.status,
-        });
+        };
+        
+        // Handle banner based on user action
+        if (data.image) {
+          // User uploaded a new banner - replace old one
+          updateData.image = data.image;
+        } else if (data.removeBanner) {
+          // User clicked X to remove banner - set to null
+          updateData.removeBanner = true;
+        }
+        // If neither, keep existing banner (don't send banner field)
+        
+        result = await featureService.updateFeature(currentData._id, updateData);
       } else {
-        // Create new announcement
+        // Create new feature
           result = await featureService.createFeature({
           name: data.name,
           description: data.description,
           status: data.status,
+          image: data.image,
         });
       }
 
