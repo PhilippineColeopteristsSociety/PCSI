@@ -24,32 +24,28 @@ const app = express();
 connectDB();
 
 // CORS configuration to support multiple origins
-const allowedOrigins = process.env.CLIENT_URLS 
-  ? process.env.CLIENT_URLS.split(',').map(url => url.trim())
-  : [
-      process.env.CLIENT_URL,
-      'http://localhost:3000',
-      'http://localhost:5173',
-    ];
+const allowedOrigins = process.env.CLIENT_URLS
+  ? process.env.CLIENT_URLS.split(",").map((url) => url.trim())
+  : [process.env.CLIENT_URL, "http://localhost:3000", "http://localhost:5173"];
 
 app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps, curl, or Render health checks)
       if (!origin) return callback(null, true);
-      
+
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         // Log the blocked origin for debugging
         console.log(`CORS blocked origin: ${origin}`);
-        console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
+        console.log(`Allowed origins: ${allowedOrigins.join(", ")}`);
         callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-api-key"],
   })
 );
 
@@ -57,10 +53,14 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Test email configuration on startup (only if email is configured)
-if (process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+if (
+  process.env.EMAIL_HOST &&
+  process.env.EMAIL_USER &&
+  process.env.EMAIL_PASS
+) {
   emailService.testEmailConfiguration();
 } else {
-  console.log('Email service: Not configured - skipping email test');
+  console.log("Email service: Not configured - skipping email test");
 }
 
 // Root endpoint
@@ -90,6 +90,15 @@ app.get("/api/health", (req, res) => {
     message: "PCSI Backend API is running",
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || "development",
+  });
+});
+
+// Welcome endpoint (no API key required)
+app.get("/api/welcome", (req, res) => {
+  console.log(`Request received: ${req.method} ${req.path}`);
+  res.status(200).json({
+    success: true,
+    message: "Welcome to the PCSI Backend API",
   });
 });
 

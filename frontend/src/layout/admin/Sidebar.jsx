@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/sidebar";
 import {
   Bell,
+  BookOpen,
   Calendar,
+  FileText,
   Home,
   Inbox,
   Megaphone,
@@ -25,7 +27,7 @@ import { images } from "@/constants/images";
 import { NavUser } from "./NavUser";
 import { useLocation } from "react-router";
 // Menu items.
-const items = [
+const mainItems = [
   {
     title: "Home",
     url: "/admin",
@@ -50,6 +52,19 @@ const items = [
     title: "Merchandise",
     url: "/admin/merchandise",
     icon: ShoppingBag,
+  },
+];
+
+const ajisItems = [
+  {
+    title: "Volumes",
+    url: "/admin/volumes",
+    icon: BookOpen,
+  },
+  {
+    title: "Articles",
+    url: "/admin/articles",
+    icon: FileText,
   },
 ];
 
@@ -78,7 +93,28 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {mainItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    variant="outline"
+                    asChild
+                    isActive={location.pathname === item.url}
+                  >
+                    <a href={item.url} className="font-medium font-poppins">
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>AJIS</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {ajisItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     variant="outline"
