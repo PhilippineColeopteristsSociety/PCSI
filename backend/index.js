@@ -16,6 +16,7 @@ import userRoutes from "./src/routes/userRoutes.js";
 import publicationRoutes from "./src/routes/publicationRoutes.js";
 import announcementRoutes from "./src/routes/announcementRoutes.js";
 import featureRoutes from "./src/routes/featureRoutes.js";
+import volumeRoutes from "./src/routes/volumeRoutes.js";
 
 const app = express();
 
@@ -76,8 +77,9 @@ app.get("/", (req, res) => {
       users: "/api/users",
       publications: "/api/publications",
       announcements: "/api/announcements",
-      features: "/api/features"
-    }
+      features: "/api/features",
+      volumes: "/api/volumes",
+    },
   });
 });
 
@@ -100,6 +102,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/publications", publicationRoutes);
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/features", featureRoutes);
+app.use("/api/volumes", volumeRoutes);
 // Handle 404 for undefined routes
 app.use(notFound);
 
