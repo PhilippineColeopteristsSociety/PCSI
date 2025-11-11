@@ -37,7 +37,7 @@ import ErrorPage from "./pages/errors/ErrorPage";
 // Auth components
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PublicRoute from "./components/auth/PublicRoute";
-import ForgotPassword from "./pages/admin/auth/forgotPassword";
+import ForgotPassword from "./pages/admin/auth/ForgotPassword";
 import ResetPassword from "./pages/admin/auth/ResetPassword";
 
 const routes = createBrowserRouter([

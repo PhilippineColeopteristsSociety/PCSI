@@ -22,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPasswordSchema } from "./schema";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { CircleCheck, Eye, EyeOff } from "lucide-react";
 import { images } from "@/constants/images";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
@@ -45,6 +45,11 @@ export default function ResetPasswordForm({ className, ...props }) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [countdown, setCountdown] = useState(10);
+  const [passwordStrength, setPasswordStrength] = useState({
+    score: 0,
+    level: 0,
+    label: "",
+  });
   const navigate = useNavigate();
 
   const form = useForm({
@@ -54,6 +59,57 @@ export default function ResetPasswordForm({ className, ...props }) {
       confirmPassword: "",
     },
   });
+
+  // Calculate password strength
+  const calculatePasswordStrength = (password) => {
+    if (!password) {
+      return { score: 0, level: 0, label: "" };
+    }
+
+    let score = 0;
+    
+    // Length check
+    if (password.length >= 8) score += 1;
+    if (password.length >= 12) score += 1;
+    
+    // Complexity checks
+    if (/[a-z]/.test(password)) score += 1; // lowercase
+    if (/[A-Z]/.test(password)) score += 1; // uppercase
+    if (/[0-9]/.test(password)) score += 1; // numbers
+    if (/[^a-zA-Z0-9]/.test(password)) score += 1; // special characters
+
+    // Determine level (1-4 bars) and label based on score
+    let level = 0;
+    let label = "";
+    
+    if (score <= 2) {
+      level = 1;
+      label = "Weak";
+    } else if (score <= 3) {
+      level = 2;
+      label = "Fair";
+    } else if (score <= 4) {
+      level = 3;
+      label = "Good";
+    } else {
+      level = 4;
+      label = "Strong";
+    }
+
+    return { score, level, label };
+  };
+
+  // Watch password field for changes
+  const passwordValue = form.watch("password");
+
+  useEffect(() => {
+    if (passwordValue) {
+      const strength = calculatePasswordStrength(passwordValue);
+      setPasswordStrength(strength);
+    } else {
+      setPasswordStrength({ score: 0, level: 0, label: "" });
+    }
+  }, [passwordValue]);
 
   // Countdown and redirect effect
   useEffect(() => {
@@ -95,7 +151,7 @@ export default function ResetPasswordForm({ className, ...props }) {
             <div className="flex flex-col items-start gap-2 text-start">
               <h1 className="text-xl font-bold">Reset Password</h1>
               <FieldDescription className="">
-                Enter your email to reset your password.
+                Set your new password.
               </FieldDescription>
             </div>
             {/* {true && (
@@ -146,6 +202,42 @@ export default function ResetPasswordForm({ className, ...props }) {
                       </button>
                     </div>
                   </FormControl>
+                  {passwordValue && (
+                    <div className="mt-2 space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-muted-foreground">Password strength:</span>
+                        <span className={`font-medium ${
+                          passwordStrength.level === 1 ? "text-red-600" :
+                          passwordStrength.level === 2 ? "text-orange-600" :
+                          passwordStrength.level === 3 ? "text-yellow-600" :
+                          "text-green-600"
+                        }`}>
+                          {passwordStrength.label}
+                        </span>
+                      </div>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4].map((bar) => (
+                          <div
+                            key={bar}
+                            className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+                              bar <= passwordStrength.level
+                                ? passwordStrength.level === 1
+                                  ? "bg-red-500"
+                                  : passwordStrength.level === 2
+                                  ? "bg-orange-500"
+                                  : passwordStrength.level === 3
+                                  ? "bg-yellow-500"
+                                  : "bg-green-500"
+                                : "bg-gray-200"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Use 8+ characters with a mix of letters, numbers & symbols
+                      </p>
+                    </div>
+                  )}
                   <FormMessage />
                 </Field>
               )}
@@ -208,21 +300,13 @@ export default function ResetPasswordForm({ className, ...props }) {
                 )}
               </Button>
             </Field>
-            <div className="ml-auto">
-              <a
-                href="/admin/auth/login"
-                className="ml-auto text-sm underline-offset-4 hover:underline"
-              >
-                Back to Login
-              </a>
-            </div>
           </FieldGroup>
         </form>
       </Form>
       <AlertDialog open={isSuccess} onOpenChange={() => {}}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Success!</AlertDialogTitle>
+            <AlertDialogTitle >Password Updated!</AlertDialogTitle>
             <AlertDialogDescription>
                Redirecting to login page in {countdown} second
                   {countdown !== 1 ? "s" : ""}...
