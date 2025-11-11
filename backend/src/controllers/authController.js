@@ -87,7 +87,7 @@ const authController = {
     const { email } = req.body;
 
     const result = await authService.requestPasswordReset(email);
-
+    console.log(result);
     res.status(STATUS_CODES.OK).json({
       success: true,
       message: result.message

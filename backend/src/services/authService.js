@@ -123,10 +123,12 @@ const authService = {
 
   // Request password reset
   requestPasswordReset: async (email) => {
+   
     const user = await User.findOne({ email });
+  
     if (!user) {
       // Don't reveal if email exists or not
-      return { message: MESSAGES.PASSWORD_RESET_SENT };
+      throw new Error(MESSAGES.USER_NOT_FOUND);
     }
 
     // Generate reset token

@@ -1,3 +1,4 @@
+import React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,80 +19,62 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "./schema";
+import { resetPasswordSchema } from "./schema";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { images } from "@/constants/images";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
+import authService from "@/services/authService";
 
-export default function LoginForm({ className, ...props }) {
-  const { login } = useAuth();
-  const [loginError, setLoginError] = useState("");
+export default function ResetPasswordForm({ className, ...props }) {
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
   const onSubmit = async (data) => {
     try {
-      setLoginError("");
-      const result = await login(data);
-      if (!result.success) {
-   
-        setLoginError(result.error);
-      }
+      setError("");
 
-      // If successful, AuthContext will handle the redirect
+      const result = await authService.resetPassword(props.token, data.password);
+
+      if (!result.success) {
+        setError(result.error);
+      }else{
+        toast.success("Password has been reset successfully.");
+        form.reset();
+      }
+      
     } catch (error) {
-  
-      setLoginError("An unexpected error occurred. Please try again.");
+      setError("An unexpected error occurred. Please try again.");
     }
   };
-
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <div className="flex flex-col items-start gap-2 text-start">
-              <h1 className="text-xl font-bold">Admin Panel</h1>
+              <h1 className="text-xl font-bold">Reset Password</h1>
               <FieldDescription className="">
-                Enter your email and password to login.
+                Enter your email to reset your password.
               </FieldDescription>
             </div>
 
-            {loginError && (
+            {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
-                {loginError}
+                {error}
               </div>
             )}
-
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <Field>
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
-                  <FormControl>
-                    <Input 
-                      id="email" 
-                      type="email" 
-                      placeholder="" 
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </Field>
-              )}
-            />
 
             <FormField
               control={form.control}
@@ -130,27 +113,72 @@ export default function LoginForm({ className, ...props }) {
                 </Field>
               )}
             />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <Field>
+                  <FieldLabel htmlFor="confirmPassword">
+                    Confirm Password
+                  </FieldLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        id="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder=""
+                        {...field}
+                        className="pr-10"
+                        autoComplete="off"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-sm p-1"
+                        aria-label={
+                          showConfirmPassword
+                            ? "Hide password"
+                            : "Show password"
+                        }
+                        tabIndex={0}
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </Field>
+              )}
+            />
 
             <Field>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={form.formState.isSubmitting}
                 className="w-full"
               >
-                {form.formState.isSubmitting ?  (
-                      <>
-                        <Spinner /> Logging in...
-                      </>
-                    ) : "Login"}
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Spinner /> Submitting...
+                  </>
+                ) : (
+                  "Submit"
+                )}
               </Button>
             </Field>
 
             <div className="ml-auto">
               <a
-                href="/admin/auth/forgot-password"
+                href="/admin/auth/login"
                 className="ml-auto text-sm underline-offset-4 hover:underline"
               >
-                Forgot your password?
+                Back to Login
               </a>
             </div>
           </FieldGroup>

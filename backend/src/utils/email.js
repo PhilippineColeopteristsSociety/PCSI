@@ -21,12 +21,17 @@ const getVerificationEmailTemplate = (firstName, verificationToken) => {
           .button { 
             display: inline-block; 
             background: #2563eb; 
-            color: white; 
+            color: #ffffff !important; 
             padding: 12px 24px; 
-            text-decoration: none; 
+            text-decoration: none !important; 
             border-radius: 5px; 
             margin: 20px 0;
+            font-weight: bold;
           }
+          .button:hover { background: #1d4ed8; }
+          .button:visited { color: #ffffff !important; }
+          .button:active { color: #ffffff !important; }
+          a.button { color: #ffffff !important; }
           .footer { background: #f8f9fa; padding: 20px; text-align: center; color: #666; }
         </style>
       </head>
@@ -40,7 +45,7 @@ const getVerificationEmailTemplate = (firstName, verificationToken) => {
             <p>Thank you for registering with PCSI. To complete your registration and activate your account, please verify your email address by clicking the button below:</p>
             
             <div style="text-align: center;">
-              <a href="${verificationUrl}" class="button">Verify Email Address</a>
+              <a href="${verificationUrl}" class="button" style="color: #ffffff !important; text-decoration: none !important;">Verify Email Address</a>
             </div>
             
             <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
@@ -51,7 +56,7 @@ const getVerificationEmailTemplate = (firstName, verificationToken) => {
             <p>If you didn't create an account with PCSI, please ignore this email.</p>
           </div>
           <div class="footer">
-            <p>&copy; 2024 PCSI. All rights reserved.</p>
+            <p>&copy; 2025 PCSI. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -76,8 +81,8 @@ const getVerificationEmailTemplate = (firstName, verificationToken) => {
 
 // Password reset template
 const getPasswordResetEmailTemplate = (firstName, resetToken) => {
-  const resetUrl = `${CLIENT_URL}/reset-password/${resetToken}`;
-  
+  const resetUrl = `${CLIENT_URL}/admin/auth/reset-password/${resetToken}`;
+ 
   return {
     subject: 'Reset Your Password - PCSI',
     html: `
@@ -90,19 +95,24 @@ const getPasswordResetEmailTemplate = (firstName, resetToken) => {
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background: #dc2626; color: white; padding: 20px; text-align: center; }
+          .header { background: #032e15; color: white; padding: 20px; text-align: center; }
           .content { padding: 30px 20px; }
           .button { 
             display: inline-block; 
-            background: #dc2626; 
-            color: white; 
+            background: #032e15; 
+            color: #ffffff !important; 
             padding: 12px 24px; 
-            text-decoration: none; 
+            text-decoration: none !important; 
             border-radius: 5px; 
             margin: 20px 0;
+            font-weight: bold;
           }
+          .button:hover { background: #021a0d; }
+          .button:visited { color: #ffffff !important; }
+          .button:active { color: #ffffff !important; }
+          a.button { color: #ffffff !important; }
           .footer { background: #f8f9fa; padding: 20px; text-align: center; color: #666; }
-          .warning { background: #fef2f2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0; }
+          .warning { background: #C4E8D3; border-left: 4px solid #032e15; padding: 15px; margin: 20px 0; }
         </style>
       </head>
       <body>
@@ -115,7 +125,7 @@ const getPasswordResetEmailTemplate = (firstName, resetToken) => {
             <p>We received a request to reset your password for your PCSI account. If you made this request, click the button below to reset your password:</p>
             
             <div style="text-align: center;">
-              <a href="${resetUrl}" class="button">Reset Password</a>
+              <a href="${resetUrl}" class="button" style="color: #ffffff !important; text-decoration: none !important;">Reset Password</a>
             </div>
             
             <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
@@ -127,7 +137,7 @@ const getPasswordResetEmailTemplate = (firstName, resetToken) => {
             </div>
           </div>
           <div class="footer">
-            <p>&copy; 2024 PCSI. All rights reserved.</p>
+            <p>&copy; 2025 PCSI. All rights reserved.</p>
           </div>
         </div>
       </body>

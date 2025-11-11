@@ -49,7 +49,7 @@ const emailService = {
       
       const { subject, html, text } = getPasswordResetEmailTemplate(
         firstName,
-        `${process.env.CLIENT_URL}/reset-password/${resetToken}`
+        resetToken
       );
 
       const mailOptions = {

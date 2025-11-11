@@ -37,6 +37,8 @@ import ErrorPage from "./pages/errors/ErrorPage";
 // Auth components
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PublicRoute from "./components/auth/PublicRoute";
+import ForgotPassword from "./pages/admin/auth/forgotPassword";
+import ResetPassword from "./pages/admin/auth/ResetPassword";
 
 const routes = createBrowserRouter([
   {
@@ -143,6 +145,8 @@ const routes = createBrowserRouter([
     ),
     children: [
       { path: "login", Component: Login },
+      { path: "forgot-password", Component: ForgotPassword },
+      { path: "reset-password/:token", Component: ResetPassword },
     ],
   },
   // Error routes
