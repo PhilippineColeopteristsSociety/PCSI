@@ -21,17 +21,31 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPasswordSchema } from "./schema";
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { images } from "@/constants/images";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import authService from "@/services/authService";
+import { useNavigate } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogCancel,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 export default function ResetPasswordForm({ className, ...props }) {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [countdown, setCountdown] = useState(10);
+  const navigate = useNavigate();
 
   const form = useForm({
     resolver: zodResolver(resetPasswordSchema),
@@ -41,19 +55,34 @@ export default function ResetPasswordForm({ className, ...props }) {
     },
   });
 
+  // Countdown and redirect effect
+  useEffect(() => {
+    if (isSuccess && countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (isSuccess && countdown === 0) {
+      navigate("/admin/auth/login");
+    }
+  }, [isSuccess, countdown, navigate]);
+
   const onSubmit = async (data) => {
     try {
       setError("");
 
-      const result = await authService.resetPassword(props.token, data.password);
+      const result = await authService.resetPassword(
+        props.token,
+        data.password
+      );
 
       if (!result.success) {
         setError(result.error);
-      }else{
+      } else {
         toast.success("Password has been reset successfully.");
+        setIsSuccess(true);
         form.reset();
       }
-      
     } catch (error) {
       setError("An unexpected error occurred. Please try again.");
     }
@@ -69,13 +98,21 @@ export default function ResetPasswordForm({ className, ...props }) {
                 Enter your email to reset your password.
               </FieldDescription>
             </div>
-
+            {/* {true && (
+              <div className="w-full bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm flex items-center gap-2">
+                <Spinner className="h-4 w-4" />
+                <span>
+                  Redirecting to login page in {countdown} second
+                  {countdown !== 1 ? "s" : ""}...
+                </span>
+                
+              </div>
+            )} */}
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
                 {error}
               </div>
-            )}
-
+            )}{" "}
             <FormField
               control={form.control}
               name="password"
@@ -156,11 +193,10 @@ export default function ResetPasswordForm({ className, ...props }) {
                 </Field>
               )}
             />
-
             <Field>
               <Button
                 type="submit"
-                disabled={form.formState.isSubmitting}
+                disabled={form.formState.isSubmitting || isSuccess}
                 className="w-full"
               >
                 {form.formState.isSubmitting ? (
@@ -172,7 +208,6 @@ export default function ResetPasswordForm({ className, ...props }) {
                 )}
               </Button>
             </Field>
-
             <div className="ml-auto">
               <a
                 href="/admin/auth/login"
@@ -184,6 +219,20 @@ export default function ResetPasswordForm({ className, ...props }) {
           </FieldGroup>
         </form>
       </Form>
+      <AlertDialog open={isSuccess} onOpenChange={() => {}}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Success!</AlertDialogTitle>
+            <AlertDialogDescription>
+               Redirecting to login page in {countdown} second
+                  {countdown !== 1 ? "s" : ""}...
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button onClick={()=> navigate("/admin/auth/login")} >Redirect Now</Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
