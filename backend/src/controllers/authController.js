@@ -81,16 +81,47 @@ const authController = {
       }
     });
   }),
+  // Send OTP for email change
+  sendChangeEmailOTP: asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const result = await authService.sendChangeEmailOTP(email);
+
+    res.status(STATUS_CODES.OK).json({
+      success: true,
+      message: result.message,
+      data:{
+        token: result.token
+      }
+    });
+  }),
+
+  // Validate OTP
+  validateOTP: asyncHandler(async (req, res) => {
+    const { token, otp } = req.body;
+
+    const result = await authService.validateOTP(token, otp);
+
+    res.status(STATUS_CODES.OK).json({
+      success: true,
+      message: result.message,
+      data: {
+        user: result.user
+      }
+    });
+  }),
 
   // Request password reset
   requestPasswordReset: asyncHandler(async (req, res) => {
     const { email } = req.body;
 
     const result = await authService.requestPasswordReset(email);
-    console.log(result);
+    
     res.status(STATUS_CODES.OK).json({
       success: true,
-      message: result.message
+      message: result.message,
+      data:{
+        token: result.token
+      }
     });
   }),
 

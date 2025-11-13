@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { getVerificationEmailTemplate, getPasswordResetEmailTemplate } from '../utils/email.js';
+import { getVerificationEmailTemplate, getPasswordResetEmailTemplate, getChangeEmailOTPTemplate } from '../utils/email.js';
 import dotenv from "dotenv";
 dotenv.config();
 const emailService = {
@@ -23,7 +23,7 @@ const emailService = {
       
       const { subject, html, text } = getVerificationEmailTemplate(
         firstName,
-        `${process.env.CLIENT_URL}/verify-email/${verificationToken}`
+        `${process.env.CLIENT_URL}/admin/verify/email/${verificationToken}`
       );
 
       const mailOptions = {
@@ -39,6 +39,27 @@ const emailService = {
     } catch (error) {
       console.error('Error sending verification email:', error);
       throw new Error('Failed to send verification email');
+    }
+  },
+  sendChangeEmailOTP: async (email, firstName, otp) => {
+    try {
+      const transporter = emailService.createTransporter();
+
+      const { subject, html, text } = getChangeEmailOTPTemplate(firstName, otp);
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject,
+        html,
+        text
+      };
+
+      await transporter.sendMail(mailOptions);
+
+    }catch (error) {
+       console.error('Error sending OTP  email:', error);
+
+      throw new Error('Failed to send OTP email');
     }
   },
 

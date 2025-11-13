@@ -1,7 +1,7 @@
-import User from '../models/User.js';
-import tokenService from './tokenService.js';
-import emailService from './emailService.js';
-import { MESSAGES } from '../utils/constants.js';
+import User from "../models/User.js";
+import tokenService from "./tokenService.js";
+import emailService from "./emailService.js";
+import { MESSAGES } from "../utils/constants.js";
 
 const authService = {
   // Register new user
@@ -19,7 +19,7 @@ const authService = {
       email,
       password,
       firstName,
-      lastName
+      lastName,
     });
 
     // Generate verification token
@@ -30,11 +30,15 @@ const authService = {
     await user.save();
 
     // Send verification email
-    await emailService.sendVerificationEmail(email, firstName, verificationToken);
+    await emailService.sendVerificationEmail(
+      email,
+      firstName,
+      verificationToken
+    );
 
     return {
-      message: MESSAGES.REGISTRATION_SUCCESS,
-      user: user.toJSON()
+      message: MESSAGES.REGISTER_SUCCESS,
+      user: user.toJSON(),
     };
   },
 
@@ -58,13 +62,15 @@ const authService = {
     }
 
     // Generate tokens
-    const { accessToken, refreshToken } = await tokenService.generateTokenPair(user);
+    const { accessToken, refreshToken } = await tokenService.generateTokenPair(
+      user
+    );
 
     return {
       message: MESSAGES.LOGIN_SUCCESS,
       user: user.toJSON(),
       accessToken,
-      refreshToken
+      refreshToken,
     };
   },
 
@@ -80,7 +86,7 @@ const authService = {
   refreshAccessToken: async (refreshToken) => {
     // Verify refresh token
     const decoded = tokenService.verifyRefreshToken(refreshToken);
-    
+
     // Check if refresh token exists in database
     const storedToken = await tokenService.findRefreshToken(refreshToken);
     if (!storedToken) {
@@ -93,7 +99,7 @@ const authService = {
 
     return {
       accessToken,
-      user: storedToken.user.toJSON()
+      user: storedToken.user.toJSON(),
     };
   },
 
@@ -117,37 +123,107 @@ const authService = {
 
     return {
       message: MESSAGES.EMAIL_VERIFIED,
-      user: user.toJSON()
+      user: user.toJSON(),
     };
   },
 
   // Request password reset
   requestPasswordReset: async (email) => {
-   
     const user = await User.findOne({ email });
-  
+
     if (!user) {
       // Don't reveal if email exists or not
       throw new Error(MESSAGES.USER_NOT_FOUND);
     }
 
-    // Generate reset token
+    // Generate reset token and OTP
     const resetToken = tokenService.generatePasswordResetToken();
-    user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
+    
+    user.verificationToken = resetToken;
+    user.verificationTokenExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    user.otp = otp;
     await user.save();
 
-    // Send reset email
-    await emailService.sendPasswordResetEmail(email, user.firstName, resetToken);
+    // Send reset email with OTP
+    await emailService.sendPasswordResetEmail(email, user.firstName, otp);
 
-    return { message: MESSAGES.PASSWORD_RESET_SENT };
+    return { token: resetToken, message: MESSAGES.PASSWORD_RESET_SENT };
+  },
+
+  sendChangeEmailOTP: async (email) => {
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error(MESSAGES.USER_NOT_FOUND);
+    }
+    // Generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
+    user.otp = otp;
+    await user.save();
+
+    // Send email with OTP
+    await emailService.sendChangeEmailOTP(email, user.firstName, otp);
+
+    return {
+      message: "Verification code sent to your email",
+      token: user.verificationToken
+    };
+  },
+
+  resendOTP: async (token) => {
+    const user = await User.findOne({
+      verificationToken: token,
+      verificationTokenExpires: { $gt: new Date() },
+    });
+    if (!user) {
+      throw new Error(MESSAGES.INVALID_TOKEN);
+    }
+    
+    // Generate new OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
+    user.otp = otp;
+    await user.save();
+    
+    // Send reset email with new OTP
+    await emailService.sendPasswordResetEmail(
+      user.email,
+      user.firstName,
+      otp
+    );
+
+    return {
+      token: token,
+      message: "OTP resent successfully",
+    }
+  },
+  validateOTP: async (token, otp) => {
+    const user = await User.findOne({
+      verificationToken: token,
+      verificationTokenExpires: { $gt: new Date() },
+    });
+    console.log(user)
+    if (!user) {
+      throw new Error(MESSAGES.INVALID_TOKEN);
+    }
+
+    if (user.otp !== otp) {
+      throw new Error(MESSAGES.INVALID_OTP);
+    }
+
+    user.otp = undefined;
+    await user.save();
+
+    return {
+      message: MESSAGES.OTP_VERIFIED,
+      user: user.toJSON(),
+    };
   },
 
   // Reset password
-  resetPassword: async (resetToken, newPassword) => {
+  resetPassword: async (token, newPassword) => {
     const user = await User.findOne({
-      resetPasswordToken: resetToken,
-      resetPasswordExpires: { $gt: new Date() }
+      verificationToken: token,
+      verificationTokenExpires: { $gt: new Date() },
     });
 
     if (!user) {
@@ -156,8 +232,8 @@ const authService = {
 
     // Update password
     user.password = newPassword;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
+    user.verificationToken = undefined;
+    user.verificationTokenExpires = undefined;
     await user.save();
 
     // Delete all refresh tokens for security
@@ -165,7 +241,7 @@ const authService = {
 
     return {
       message: MESSAGES.PASSWORD_RESET_SUCCESS,
-      user: user.toJSON()
+      user: user.toJSON(),
     };
   },
 
@@ -180,42 +256,21 @@ const authService = {
 
   // Update user profile
   updateUserProfile: async (userId, updateData) => {
-    const allowedUpdates = ['firstName', 'lastName', 'email'];
-    const updates = {};
 
-    // Filter allowed updates
-    Object.keys(updateData).forEach(key => {
-      if (allowedUpdates.includes(key)) {
-        updates[key] = updateData[key];
-      }
-    });
-
-    // Get current user data to compare email
+    // Get current user
     const currentUser = await User.findById(userId);
     if (!currentUser) {
       throw new Error(MESSAGES.USER_NOT_FOUND);
     }
 
-    // If email is being updated and it's different from current email, generate new verification token
-    if (updates.email && updates.email !== currentUser.email) {
-      updates.isVerified = false;
-      updates.verificationToken = tokenService.generateVerificationToken();
-      updates.verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    }
-
-    const user = await User.findByIdAndUpdate(
-      userId,
-      updates,
-      { new: true, runValidators: true }
-    );
+  
+    const user = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!user) {
       throw new Error(MESSAGES.USER_NOT_FOUND);
-    }
-
-    // Send verification email if email was actually changed
-    if (updates.email && updates.email !== currentUser.email && updates.verificationToken) {
-      await emailService.sendVerificationEmail(user.email, user.firstName, updates.verificationToken);
     }
 
     return user.toJSON();
@@ -231,7 +286,7 @@ const authService = {
     // Verify old password
     const isOldPasswordValid = await user.comparePassword(oldPassword);
     if (!isOldPasswordValid) {
-      throw new Error('Current password is incorrect');
+      throw new Error("Current password is incorrect");
     }
 
     // Update password (will be hashed by the pre-save middleware)
@@ -242,10 +297,10 @@ const authService = {
     await tokenService.deleteAllRefreshTokens(userId);
 
     return {
-      message: 'Password changed successfully',
-      user: user.toJSON()
+      message: "Password changed successfully",
+      user: user.toJSON(),
     };
-  }
+  },
 };
 
 export default authService;

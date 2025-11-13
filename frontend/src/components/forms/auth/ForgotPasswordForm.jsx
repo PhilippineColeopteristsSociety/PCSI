@@ -20,17 +20,15 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { forgotPasswordSchema, loginSchema } from "./schema";
-import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-import { images } from "@/constants/images";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import authService from "@/services/authService";
+import { useNavigate } from "react-router";
 
 export default function ForgotPasswordForm({ className, ...props }) {
   const [error, setError] = useState("");
-
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -43,11 +41,12 @@ export default function ForgotPasswordForm({ className, ...props }) {
       
       setError("");
       const result = await authService.requestPasswordReset(data.email);
-      
+
       if (!result.success) {
         setError(result.error);
       }else{
         toast.success("Password reset link has been sent to your email.");
+        navigate(`/admin/auth/forgot-password?token=${result?.data?.data.token}`);
         form.reset();
       }
     } catch (error) {

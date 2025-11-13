@@ -48,6 +48,12 @@ export const forgotPasswordSchema = z.object({
     .min(1, "Email is required")
     .email("Please enter a valid email address"),
 });
+export const otpSchema = z.object({
+  otp: z
+    .string()
+    .min(6, "OTP must be 6 characters long")
+    .max(6, "OTP must be 6 characters long"),
+});
 
 export const resetPasswordSchema = z
   .object({

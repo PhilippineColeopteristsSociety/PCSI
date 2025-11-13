@@ -98,7 +98,7 @@ const routes = createBrowserRouter([
       {
         path: "/publications",
         Component: PublicationsPage,
-      },  
+      },
       {
         path: "/announcements",
         Component: AnnouncementsPage,
@@ -146,7 +146,7 @@ const routes = createBrowserRouter([
     children: [
       { path: "login", Component: Login },
       { path: "forgot-password", Component: ForgotPassword },
-      { path: "reset-password/:token", Component: ResetPassword },
+      { path: "reset-password", Component: ResetPassword },
     ],
   },
   // Error routes
