@@ -299,6 +299,9 @@ export default function ResetPasswordForm({ className, ...props }) {
                   "Submit"
                 )}
               </Button>
+              <Button variant={"outline"} type="button" onClick={() => navigate("/admin/auth/login")}>
+                Cancel
+              </Button>
             </Field>
           </FieldGroup>
         </form>

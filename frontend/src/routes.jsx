@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import Home from "./pages/home";
 import MainLayout from "./layout/main";
 import About from "./pages/ajis/About";
@@ -144,6 +144,7 @@ const routes = createBrowserRouter([
       </PublicRoute>
     ),
     children: [
+      { index: true, element: <Navigate to="/admin/auth/login" replace /> },
       { path: "login", Component: Login },
       { path: "forgot-password", Component: ForgotPassword },
       { path: "reset-password", Component: ResetPassword },
