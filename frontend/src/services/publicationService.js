@@ -1,4 +1,4 @@
-import api from '@/lib/api';
+import api from "@/lib/api";
 
 const publicationService = {
   // Get all publications
@@ -6,13 +6,13 @@ const publicationService = {
     try {
       const params = { ...filters };
       if (limit) params.limit = limit;
-      
-      const response = await api.get('/publications', { params });
+
+      const response = await api.get("/publications", { params });
       return { success: true, data: response.data };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Failed to fetch publications' 
+      return {
+        success: false,
+        error: error.response?.data?.message || "Failed to fetch publications",
       };
     }
   },
@@ -23,9 +23,9 @@ const publicationService = {
       const response = await api.get(`/publications/${id}`);
       return { success: true, data: response.data };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Failed to fetch publication' 
+      return {
+        success: false,
+        error: error.response?.data?.message || "Failed to fetch publication",
       };
     }
   },
@@ -34,29 +34,29 @@ const publicationService = {
   createPublication: async (publicationData) => {
     try {
       const formData = new FormData();
-      
+
       // Append text fields
-      formData.append('title', publicationData.title);
-      formData.append('description', publicationData.description);
+      formData.append("title", publicationData.title);
+      formData.append("description", publicationData.description);
       if (publicationData.status) {
-        formData.append('status', publicationData.status);
+        formData.append("status", publicationData.status);
       }
-      
+
       // Append image file if exists
       if (publicationData.image) {
-        formData.append('image', publicationData.image);
+        formData.append("image", publicationData.image);
       }
-      
-      const response = await api.post('/publications', formData, {
+
+      const response = await api.post("/publications", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       return { success: true, data: response.data };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Failed to create publication' 
+      return {
+        success: false,
+        error: error.response?.data?.message || "Failed to create publication",
       };
     }
   },
@@ -65,31 +65,31 @@ const publicationService = {
   updatePublication: async (id, publicationData) => {
     try {
       const formData = new FormData();
-      
-      formData.append('title', publicationData.title);
-      formData.append('description', publicationData.description);
+
+      formData.append("title", publicationData.title);
+      formData.append("description", publicationData.description);
       if (publicationData.status) {
-        formData.append('status', publicationData.status);
+        formData.append("status", publicationData.status);
       }
       if (publicationData.removeBanner) {
-        formData.append('removeBanner', publicationData.removeBanner);
+        formData.append("removeBanner", publicationData.removeBanner);
       }
 
       // Only append image if a new one was selected
       if (publicationData.image) {
-        formData.append('image', publicationData.image);
+        formData.append("image", publicationData.image);
       }
-      
+
       const response = await api.put(`/publications/${id}`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       return { success: true, data: response.data };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Failed to update publication' 
+      return {
+        success: false,
+        error: error.response?.data?.message || "Failed to update publication",
       };
     }
   },
@@ -97,15 +97,19 @@ const publicationService = {
   // Toggle publication status (active/inactive)
   togglePublicationStatus: async (id, status) => {
     try {
-      const response = await api.patch(`/publications/${id}/status`, { status });
+      const response = await api.patch(`/publications/${id}/status`, {
+        status,
+      });
       return { success: true, data: response.data };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Failed to update publication status' 
+      return {
+        success: false,
+        error:
+          error.response?.data?.message ||
+          "Failed to update publication status",
       };
     }
-  }
+  },
 };
 
 export default publicationService;

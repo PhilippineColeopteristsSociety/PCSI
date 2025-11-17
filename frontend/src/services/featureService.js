@@ -71,7 +71,7 @@ const featureService = {
         formData.append("status", featureData.status);
       }
 
-      if(featureData.removeBanner) {
+      if (featureData.removeBanner) {
         formData.append("removeBanner", "true");
       }
 
@@ -97,7 +97,9 @@ const featureService = {
   // Toggle anouncement status (active/inactive)
   toggleFeatureStatus: async (id, status) => {
     try {
-      const response = await api.patch(`/features/${id}/status`, { status });
+      const response = await api.patch(`/features/${id}/status`, {
+        status,
+      });
       return { success: true, data: response.data };
     } catch (error) {
       return {

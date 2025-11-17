@@ -1,6 +1,6 @@
-import authService from '../services/authService.js';
-import { asyncHandler } from '../middlewares/errorHandler.js';
-import { STATUS_CODES } from '../utils/constants.js';
+import authService from "../services/authService.js";
+import { asyncHandler } from "../middlewares/errorHandler.js";
+import { STATUS_CODES } from "../utils/constants.js";
 
 const authController = {
   // Register new user
@@ -11,15 +11,15 @@ const authController = {
       email,
       password,
       firstName,
-      lastName
+      lastName,
     });
 
     res.status(STATUS_CODES.CREATED).json({
       success: true,
       message: result.message,
       data: {
-        user: result.user
-      }
+        user: result.user,
+      },
     });
   }),
 
@@ -35,8 +35,8 @@ const authController = {
       data: {
         user: result.user,
         accessToken: result.accessToken,
-        refreshToken: result.refreshToken
-      }
+        refreshToken: result.refreshToken,
+      },
     });
   }),
 
@@ -48,7 +48,7 @@ const authController = {
 
     res.status(STATUS_CODES.OK).json({
       success: true,
-      message: result.message
+      message: result.message,
     });
   }),
 
@@ -62,8 +62,8 @@ const authController = {
       success: true,
       data: {
         accessToken: result.accessToken,
-        user: result.user
-      }
+        user: result.user,
+      },
     });
   }),
 
@@ -77,8 +77,36 @@ const authController = {
       success: true,
       message: result.message,
       data: {
-        user: result.user
-      }
+        user: result.user,
+      },
+    });
+  }),
+  // Send OTP for email change
+  sendChangeEmailOTP: asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const result = await authService.sendChangeEmailOTP(email);
+
+    res.status(STATUS_CODES.OK).json({
+      success: true,
+      message: result.message,
+      data: {
+        token: result.token,
+      },
+    });
+  }),
+
+  // Validate OTP
+  validateOTP: asyncHandler(async (req, res) => {
+    const { token, otp } = req.body;
+
+    const result = await authService.validateOTP(token, otp);
+
+    res.status(STATUS_CODES.OK).json({
+      success: true,
+      message: result.message,
+      data: {
+        user: result.user,
+      },
     });
   }),
 
@@ -90,7 +118,10 @@ const authController = {
 
     res.status(STATUS_CODES.OK).json({
       success: true,
-      message: result.message
+      message: result.message,
+      data: {
+        token: result.token,
+      },
     });
   }),
 
@@ -105,8 +136,8 @@ const authController = {
       success: true,
       message: result.message,
       data: {
-        user: result.user
-      }
+        user: result.user,
+      },
     });
   }),
 
@@ -115,10 +146,10 @@ const authController = {
     res.status(STATUS_CODES.OK).json({
       success: true,
       data: {
-        user: req.user
-      }
+        user: req.user,
+      },
     });
-  })
+  }),
 };
 
 export default authController;

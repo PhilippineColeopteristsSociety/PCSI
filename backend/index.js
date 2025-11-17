@@ -51,14 +51,14 @@ app.use(
 
 // Only parse JSON/URL-encoded for non-multipart requests
 app.use((req, res, next) => {
-  if (req.is('multipart/form-data')) {
+  if (req.is("multipart/form-data")) {
     return next();
   }
   express.json({ limit: "10mb" })(req, res, next);
 });
 
 app.use((req, res, next) => {
-  if (req.is('multipart/form-data')) {
+  if (req.is("multipart/form-data")) {
     return next();
   }
   express.urlencoded({ extended: true, limit: "10mb" })(req, res, next);
@@ -114,11 +114,11 @@ app.get("/api/welcome", (req, res) => {
   });
 });
 
-// Apply API key middleware to all other API routes
+// Apply API key middleware to all other API routes except auth
+app.use("/api/auth", authRoutes);
 app.use("/api", validateApiKey);
 
 // Routes
-app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/publications", publicationRoutes);
 app.use("/api/announcements", announcementRoutes);

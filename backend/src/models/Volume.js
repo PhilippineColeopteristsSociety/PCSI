@@ -2,49 +2,47 @@ import mongoose from "mongoose";
 
 const volumeSchema = new mongoose.Schema(
   {
-    volumeCoverImage: {
-      type: String, // URL or file path to volume cover image
-      default: null,
-      trim: true,
-    },
-    volumeNo: {
+    title: {
       type: String,
+      required: [true, "Volume title is required"],
+      trim: true,
+      maxlength: [200, "Volume title cannot exceed 200 characters"],
+    },
+    description: {
+      type: String,
+      trim: true,
+      maxlength: [1000, "Description cannot exceed 1000 characters"],
+    },
+    volumeNumber: {
+      type: Number,
       required: [true, "Volume number is required"],
-      trim: true,
-    },
-    seriesNo: {
-      type: String,
-      required: [true, "Series number is required"],
-      trim: true,
-    },
-    month: {
-      type: String,
-      required: [true, "Month is required"],
-      trim: true,
+      min: [1, "Volume number must be at least 1"],
     },
     year: {
       type: Number,
-      required: [true, "Year is required"],
+      required: [true, "Publication year is required"],
       min: [1900, "Year must be at least 1900"],
       max: [
         new Date().getFullYear() + 10,
-        "Year cannot be too far in the future",
+        "Year cannot be more than 10 years in the future",
       ],
     },
-    doiLink: {
+    isPublished: {
+      type: Boolean,
+      default: false,
+    },
+    coverImage: {
       type: String,
-      trim: true,
       default: null,
     },
-    publishedDate: {
-      type: Date,
+    pdfUrl: {
+      type: String,
       default: null,
     },
-    // Volume status (active, inactive)
-    status: {
-      type: String,
-      enum: ["1", "0"],
-      default: "1",
+    issueCount: {
+      type: Number,
+      default: 0,
+      min: [0, "Issue count cannot be negative"],
     },
   },
   {
@@ -52,9 +50,16 @@ const volumeSchema = new mongoose.Schema(
   }
 );
 
-// Index for better performance
-volumeSchema.index({ volumeNo: 1, seriesNo: 1 });
-volumeSchema.index({ year: 1 });
-volumeSchema.index({ status: 1 });
+// Compound index to ensure unique volume numbers per year
+volumeSchema.index({ volumeNumber: 1, year: 1 }, { unique: true });
+
+// Virtual for full volume name
+volumeSchema.virtual("fullName").get(function () {
+  return `Volume ${this.volumeNumber} (${this.year})`;
+});
+
+// Ensure virtual fields are serialized
+volumeSchema.set("toJSON", { virtuals: true });
+volumeSchema.set("toObject", { virtuals: true });
 
 export default mongoose.model("Volume", volumeSchema);

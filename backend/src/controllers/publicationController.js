@@ -56,7 +56,7 @@ const publicationController = {
   updatePublication: asyncHandler(async (req, res) => {
     const { title, description, removeBanner } = req.body;
     const banner = req.file ? req.file.path : null; // Get file path from Cloudinary upload
- 
+
     const updateData = {
       title,
       description,
@@ -66,12 +66,12 @@ const publicationController = {
     if (banner) {
       // User uploaded a new banner - replace old one
       updateData.banner = banner;
-    } else if (removeBanner === 'true' || removeBanner === true) {
+    } else if (removeBanner === "true" || removeBanner === true) {
       // User wants to remove the banner
       updateData.banner = null;
       updateData.removeBanner = true;
     }
- 
+
     // If neither, keep existing banner (don't include banner field)
 
     const publication = await publicationService.updatePublication(
