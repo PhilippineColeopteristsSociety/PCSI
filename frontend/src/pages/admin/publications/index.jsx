@@ -64,6 +64,7 @@ const Publications = () => {
   const handleUpdateStatus = async ({ publicationId, newStatus }) => {
     const promise = async () => {
       setSubmitting(true);
+      // console.log(publicationId);
       try {
         const result = await publicationService.togglePublicationStatus(
           publicationId,
