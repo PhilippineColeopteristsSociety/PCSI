@@ -34,7 +34,7 @@ export const publicationColumns = (onEdit, onUpdateStatus, submitting) => [
   {
     accessorKey: "title",
     header: "Title",
-    cell: ({ row }) => <div className="">{row.getValue("title")}</div>,
+    cell: ({ row }) => <div className="w-52 truncate">{row.getValue("title")}</div>,
   },
   {
     accessorKey: "description",
@@ -82,14 +82,15 @@ export const publicationColumns = (onEdit, onUpdateStatus, submitting) => [
     enableHiding: false,
     cell: ({ row }) => {
       const status = row.original.status;
-      const vehicle = row.original;
+      const publication = row.original;
+   
       const handleEdit = (e) => {
         e.stopPropagation();
-        onEdit(vehicle._id);
+        onEdit(publication._id);
       };
       const handleStatusChange = (e) => {
         e.stopPropagation();
-        onUpdateStatus({ vehicleId: vehicle._id, newStatus: status === "Active" ? "0" : "1" });
+        onUpdateStatus({ publicationId: publication._id, newStatus: status === "Active" ? "0" : "1" });
       };
       return (
         <DropdownMenu>
