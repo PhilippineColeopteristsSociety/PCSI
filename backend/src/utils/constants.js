@@ -27,7 +27,10 @@ const MESSAGES = {
   EMAIL_VERIFIED: 'Email verified successfully',
   PASSWORD_RESET_SENT: 'Password reset email sent',
   PASSWORD_RESET_SUCCESS: 'Password reset successful',
-  
+  OTP_VALIDATED: 'OTP validated successfully',
+  OTP_VERIFIED: 'OTP verified successfully',
+  INVALID_OTP: 'Invalid OTP code',
+
   // Error messages
   INVALID_CREDENTIALS: 'Invalid email or password',
   EMAIL_ALREADY_EXISTS: 'Email already exists',

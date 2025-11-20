@@ -86,7 +86,7 @@
   --sidebar-ring: oklch(0.723 0.219 149.579);
 
   /* custom theme */
-  --dark-green: oklch(26.539% 0.06512 152.793);
+  --dark-green: rgb(3, 46, 21);
   --lighter-green: oklch(48.656% 0.10023 150.182);
   --accent-orange: oklch(69.392% 0.11753 62.447);
 }

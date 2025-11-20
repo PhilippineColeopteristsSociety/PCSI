@@ -5,6 +5,7 @@ import featureService from "@/services/featureService";
 import { toast } from "sonner";
 import { NoData } from "@/components/common/NoData";
 import { DATA_LIMIT, STATUS } from "@/constants/dataFilter";
+import { Spinner } from "@/components/ui/spinner";
 
 const Feature = () => {
   const [feature, setFeature] = useState(null);
@@ -39,14 +40,15 @@ const Feature = () => {
 
         {loading ? (
           <div className="flex items-center justify-center py-10">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            {/* <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div> */}
+            <Spinner className={"size-6"}/>
           </div>
         ) : (
           <div className="flex flex-col md:flex-row lg:p-4 gap-15">
             <div className="aspect-square flex-shrink-0 overflow-hidden w-full bg-muted md:w-1/3">
-              {feature.banner || images.beatle_8 ? (
+              {feature.banner ? (
                 <img
-                  src={feature.banner || images.beatle_8}
+                  src={feature.banner}
                   alt={feature.name}
                   className="w-full h-full object-cover"
                 />

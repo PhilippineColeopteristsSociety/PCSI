@@ -235,9 +235,6 @@ Make sure to set up production environment variables for both frontend and backe
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 📞 Support
 
@@ -256,4 +253,4 @@ For support and questions:
 
 ---
 
-**PCSI** - Building the future of coleopterological research in the Philippines 🪲
+

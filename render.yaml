@@ -32,9 +32,9 @@ services:
       - key: EMAIL_PASS
         sync: false
       - key: CLIENT_URL
-        sync: false
+        value: https://pcsi.vercel.app
       - key: CLIENT_URLS
-        sync: false
+        value: https://pcsi.vercel.app,http://localhost:5173,http://localhost:3000
     regions:
       - oregon
     branch: main

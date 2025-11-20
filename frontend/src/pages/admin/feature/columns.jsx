@@ -25,8 +25,8 @@ export const featureColumns = (onEdit, onUpdateStatus, submitting) => [
     header: "",
     cell: ({ row }) => (
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>CN</AvatarFallback>
+        <AvatarImage src={row.getValue("banner")} />
+        <AvatarFallback></AvatarFallback>
       </Avatar>
     ),
   },

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -29,35 +30,91 @@ import {
 } from "@/components/ui/form";
 import TextEditor from "@/components/common/TextEditor";
 import { Spinner } from "@/components/ui/spinner";
+import { MAX_FILE_SIZE } from "@/constants/maxFileSize";
 
 export default function PublicationForm({
   open,
   onOpenChange,
   onSubmit,
-  data,
+  data, // Add this prop to receive current data
   submitting,
   title,
   form,
 }) {
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [removeBanner, setRemoveBanner] = useState(false);
+  const fileInputRef = useRef(null);
+
+  // Effect to handle existing image when editing
+  useEffect(() => {
+    if (data && data.banner) {
+      // If editing and has existing banner, show it as preview
+      setImagePreview(data.banner);
+      setImage(null); // No new file selected yet
+      setRemoveBanner(false); // Reset remove flag
+    } else if (!open) {
+      // Reset when form closes
+      setImage(null);
+      setImagePreview(null);
+      setRemoveBanner(false);
+    }
+  }, [data, open]);
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
+
     if (file) {
-      setImage({
-        file,
-        preview: URL.createObjectURL(file),
-      });
+      // Check file size
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error(`File size exceeds ${MAX_FILE_SIZE / 1024 / 1024} MB limit`);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = null;
+        }
+        return;
+      }
+
+      // Check file type
+      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Only .jpg, .jpeg, and .png files are allowed");
+        if (fileInputRef.current) {
+          fileInputRef.current.value = null;
+        }
+        return;
+      }
+
+      setImage(file);
+
+      // Create preview for new file
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const removeImage = () => {
     setImage(null);
+    setImagePreview(null);
+    setRemoveBanner(true); // Mark that user wants to remove the banner
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null;
+    }
   };
 
   const handleFormSubmit = (formData) => {
-    onSubmit(formData);
+    const submissionData = {
+      ...formData,
+      image: image, // New image file if one was selected
+      removeBanner: removeBanner && !image, // True if user clicked X and didn't upload new image
+      existingBanner: data?.banner, // Pass existing banner URL for backend reference
+    };
+
+    onSubmit(submissionData);
   };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={""} showCloseButton={false}>
@@ -67,18 +124,18 @@ export default function PublicationForm({
             Please fill in all required fields and click submit to save.
           </DialogDescription>
         </DialogHeader>
-        <div className="overflow-y-auto max-h-[calc(95vh-120px)] ">
+        <div className="overflow-y-auto max-h-[calc(95vh-120px)]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleFormSubmit)}>
               <FieldGroup>
                 <FieldSet>
                   <Field>
                     <div className="relative min-h-40 bg-muted rounded-lg flex items-center justify-center overflow-hidden">
-                      {image ? (
+                      {imagePreview ? (
                         <>
                           <img
-                            src={image.preview}
-                            alt="Uploaded banner"
+                            src={imagePreview}
+                            alt="Publication banner"
                             className="w-full h-full object-cover"
                           />
                           <button
@@ -88,6 +145,11 @@ export default function PublicationForm({
                           >
                             <X size={16} />
                           </button>
+                          {/* {data?.banner && !image && (
+                            <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                              Existing Banner
+                            </div>
+                          )} */}
                         </>
                       ) : (
                         <label
@@ -95,8 +157,9 @@ export default function PublicationForm({
                           className="h-full w-full flex flex-col items-center justify-center font-semibold text-muted-foreground cursor-pointer"
                         >
                           <File size={30} />
-                          <span>Upload Banner</span>
+                          <span>Upload Image</span>
                           <input
+                            ref={fileInputRef}
                             id="banner-upload"
                             type="file"
                             accept="image/*"
@@ -106,6 +169,9 @@ export default function PublicationForm({
                         </label>
                       )}
                     </div>
+                    <FieldDescription className={"text-xs"}>
+                      Accepted formats: .jpg, .jpeg, .png | Max size: 5 MB
+                    </FieldDescription>
                   </Field>
 
                   <FormField

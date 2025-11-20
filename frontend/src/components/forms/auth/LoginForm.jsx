@@ -24,6 +24,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { images } from "@/constants/images";
 import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function LoginForm({ className, ...props }) {
   const { login } = useAuth();
@@ -44,7 +45,7 @@ export default function LoginForm({ className, ...props }) {
       const result = await login(data);
       if (!result.success) {
    
-        toast.error(result.error);
+        setLoginError(result.error);
       }
 
       // If successful, AuthContext will handle the redirect
@@ -136,13 +137,17 @@ export default function LoginForm({ className, ...props }) {
                 disabled={form.formState.isSubmitting}
                 className="w-full"
               >
-                {form.formState.isSubmitting ? "Logging in..." : "Login"}
+                {form.formState.isSubmitting ?  (
+                      <>
+                        <Spinner /> Logging in...
+                      </>
+                    ) : "Login"}
               </Button>
             </Field>
 
             <div className="ml-auto">
               <a
-                href="#"
+                href="/admin/auth/forgot-password"
                 className="ml-auto text-sm underline-offset-4 hover:underline"
               >
                 Forgot your password?

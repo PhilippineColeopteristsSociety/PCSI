@@ -27,21 +27,32 @@ export const AuthProvider = ({ children }) => {
       const token = authService.getAccessToken();
       
       if (storedUser && token) {
-        // Verify token is still valid by making a request
-        const result = await authService.getCurrentUser();
+        // Set user immediately from stored data to prevent redirects
+        setUser(storedUser);
+        setIsAuthenticated(true);
         
-        if (result.success) {
-          setUser(result.data.data.user);
-          setIsAuthenticated(true);
-        } else {
-          // Token is invalid, try to refresh
-          await handleTokenRefresh();
+        // Verify token in background without blocking UI
+        try {
+          const result = await authService.getCurrentUser();
+          if (result.success) {
+            setUser(result.data.data.user);
+            setIsAuthenticated(true);
+          } else {
+            // Token is invalid, try to refresh in background
+            const refreshSuccess = await handleTokenRefresh();
+            if (!refreshSuccess) {
+              // Only logout if refresh fails
+              await logout();
+            }
+          }
+        } catch (error) {
+          console.error('Background auth verification failed:', error);
+          // Don't logout immediately, let user continue
         }
       }
     } catch (error) {
       console.error('Auth initialization error:', error);
-      // Clear invalid auth data
-      await logout();
+      // Don't logout immediately on error
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +81,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
 
       const result = await authService.login(credentials);
       
@@ -85,9 +96,10 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Login error:', error);
       return { success: false, error: 'An unexpected error occurred' };
-    } finally {
-      setIsLoading(false);
-    }
+    } 
+    // finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const logout = async () => {

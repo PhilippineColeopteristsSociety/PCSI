@@ -51,9 +51,11 @@ const errorHandler = (err, req, res, next) => {
 
 // 404 handler for undefined routes
 const notFound = (req, res, next) => {
-  const error = new Error(`Not found - ${req.originalUrl}`);
-  res.status(STATUS_CODES.NOT_FOUND);
-  next(error);
+  res.status(STATUS_CODES.NOT_FOUND).json({
+    success: false,
+    message: `Route not found - ${req.originalUrl}`,
+    statusCode: STATUS_CODES.NOT_FOUND
+  });
 };
 
 // Async error handler wrapper

@@ -33,7 +33,25 @@ const publicationService = {
   // Create new publication
   createPublication: async (publicationData) => {
     try {
-      const response = await api.post('/publications', publicationData);
+      const formData = new FormData();
+      
+      // Append text fields
+      formData.append('title', publicationData.title);
+      formData.append('description', publicationData.description);
+      if (publicationData.status) {
+        formData.append('status', publicationData.status);
+      }
+      
+      // Append image file if exists
+      if (publicationData.image) {
+        formData.append('image', publicationData.image);
+      }
+      
+      const response = await api.post('/publications', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       return { success: true, data: response.data };
     } catch (error) {
       return { 
@@ -46,7 +64,27 @@ const publicationService = {
   // Update publication
   updatePublication: async (id, publicationData) => {
     try {
-      const response = await api.put(`/publications/${id}`, publicationData);
+      const formData = new FormData();
+      
+      formData.append('title', publicationData.title);
+      formData.append('description', publicationData.description);
+      if (publicationData.status) {
+        formData.append('status', publicationData.status);
+      }
+      if (publicationData.removeBanner) {
+        formData.append('removeBanner', publicationData.removeBanner);
+      }
+
+      // Only append image if a new one was selected
+      if (publicationData.image) {
+        formData.append('image', publicationData.image);
+      }
+      
+      const response = await api.put(`/publications/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       return { success: true, data: response.data };
     } catch (error) {
       return { 

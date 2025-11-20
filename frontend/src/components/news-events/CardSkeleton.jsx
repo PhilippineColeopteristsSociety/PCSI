@@ -5,7 +5,7 @@ export default function CardSkeleton({totalCard }) {
   return (
     <>
     {Array.from({ length: totalCard }).map((_, index) => (
-    <div key={index} className="flex flex-col shadow-sm    overflow-clip mb-4">
+    <div key={index} className="flex flex-col shadow-sm  rounded-lg  overflow-clip mb-4">
       <div
         className="h-[192px]  overflow-clip bg-muted"
       ></div>

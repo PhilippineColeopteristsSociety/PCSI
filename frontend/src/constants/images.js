@@ -23,6 +23,10 @@ import service_3 from "@/assets/images/service_3.JPG";
 import service_4 from "@/assets/images/service_4.JPG";
 import service_5 from "@/assets/images/service_5.JPG";
 import service_6 from "@/assets/images/service_6.JPG";
+import field_work from "@/assets/images/field_work.jpg";
+import field_work2 from "@/assets/images/field_work2.jpg";
+import field_work3 from "@/assets/images/field_work3.jpg";
+import field_work4 from "@/assets/images/field_work4.jpg";
 
 export const images = {
     beatle_1,
@@ -49,5 +53,9 @@ export const images = {
     service_3,
     service_4,
     service_5,
-    service_6
+    service_6,
+    field_work,
+    field_work2,
+    field_work3,
+    field_work4
 }

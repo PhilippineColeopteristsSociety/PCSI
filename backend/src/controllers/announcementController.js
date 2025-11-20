@@ -4,8 +4,10 @@ import { STATUS_CODES } from '../utils/constants.js';
 
 const announcementController = {
   createAnnouncement: asyncHandler(async (req, res) => {
-    const { title, description, image } = req.body;
-    const announcement = await announcementService.createAnnouncement(title, description, image);
+    const { title, description } = req.body;
+    const banner = req.file ? req.file.path : null; // Get file path from Cloudinary upload
+
+    const announcement = await announcementService.createAnnouncement(title, description, banner);
     res.status(STATUS_CODES.CREATED).json({
       success: true,
       message: 'Announcement created successfully',
@@ -45,7 +47,26 @@ const announcementController = {
     });
   }),
   updateAnnouncement: asyncHandler(async (req, res) => {
-    const announcement = await announcementService.updateAnnouncement(req.params.id, req.body);
+    const { title, description, removeBanner } = req.body;
+    const banner = req.file ? req.file.path : null; // Get file path from Cloudinary upload
+
+    const updateData = {
+      title,
+      description,
+    };
+
+    // Handle banner updates
+    if (banner) {
+      // User uploaded a new banner - replace old one
+      updateData.banner = banner;
+    } else if (removeBanner === 'true' || removeBanner === true) {
+      // User wants to remove the banner
+      updateData.banner = null;
+      updateData.removeBanner = true;
+    }
+    // If neither, keep existing banner (don't include banner field)
+   
+    const announcement = await announcementService.updateAnnouncement(req.params.id, updateData);
     res.status(STATUS_CODES.OK).json({
       success: true,
       message: 'Announcement updated successfully',
@@ -63,4 +84,4 @@ const announcementController = {
   }),
 };
 
-export default announcementController;   
+export default announcementController;

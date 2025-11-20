@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import Home from "./pages/home";
 import MainLayout from "./layout/main";
 import About from "./pages/ajis/About";
@@ -37,6 +37,8 @@ import ErrorPage from "./pages/errors/ErrorPage";
 // Auth components
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PublicRoute from "./components/auth/PublicRoute";
+import ForgotPassword from "./pages/admin/auth/ForgotPassword";
+import ResetPassword from "./pages/admin/auth/ResetPassword";
 
 const routes = createBrowserRouter([
   {
@@ -96,7 +98,7 @@ const routes = createBrowserRouter([
       {
         path: "/publications",
         Component: PublicationsPage,
-      },  
+      },
       {
         path: "/announcements",
         Component: AnnouncementsPage,
@@ -142,7 +144,10 @@ const routes = createBrowserRouter([
       </PublicRoute>
     ),
     children: [
+      { index: true, element: <Navigate to="/admin/auth/login" replace /> },
       { path: "login", Component: Login },
+      { path: "forgot-password", Component: ForgotPassword },
+      { path: "reset-password", Component: ResetPassword },
     ],
   },
   // Error routes

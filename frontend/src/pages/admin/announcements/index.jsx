@@ -86,7 +86,7 @@ const Announcements = () => {
   };
 
   const handleEdit = (announcementId) => {
-    // Find the publication data by ID
+    // Find the announcement data by ID
     const announcement = announcements.find((announcement) => announcement._id === announcementId);
     if (!announcement) return;
 
@@ -122,17 +122,30 @@ const Announcements = () => {
 
       if (currentData) {
         // Update existing announcement
-        result = await announcementService.updateAnnouncement(currentData._id, {
+        const updateData = {
           title: data.title,
           description: data.description,
           status: data.status,
-        });
+        };
+        
+        // Handle banner based on user action
+        if (data.image) {
+          // User uploaded a new banner - replace old one
+          updateData.image = data.image;
+        } else if (data.removeBanner) {
+          // User clicked X to remove banner - set to null
+          updateData.removeBanner = true;
+        }
+        // If neither, keep existing banner (don't send banner field)
+        
+        result = await announcementService.updateAnnouncement(currentData._id, updateData);
       } else {
         // Create new announcement
         result = await announcementService.createAnnouncement({
           title: data.title,
           description: data.description,
           status: data.status,
+          image: data.image,
         });
       }
 

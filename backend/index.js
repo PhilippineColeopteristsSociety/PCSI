@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+
+// Load environment variables first
 dotenv.config();
 
 import express from "express";
@@ -20,25 +22,76 @@ const app = express();
 // Connect to database
 connectDB();
 
-const allowedOrigins = ["http://localhost:5173", "http://localhost:3000"];
+// CORS configuration to support multiple origins
+const allowedOrigins = process.env.CLIENT_URLS 
+  ? process.env.CLIENT_URLS.split(',').map(url => url.trim())
+  : [
+      process.env.CLIENT_URL,
+      'http://localhost:3000',
+      'http://localhost:5173',
+    ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      // Allow requests with no origin (like mobile apps, curl, or Render health checks)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        // Log the blocked origin for debugging
+        console.log(`CORS blocked origin: ${origin}`);
+        console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
         callback(new Error("Not allowed by CORS"));
       }
     },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
   })
 );
 
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+// Only parse JSON/URL-encoded for non-multipart requests
+app.use((req, res, next) => {
+  if (req.is('multipart/form-data')) {
+    return next();
+  }
+  express.json({ limit: "10mb" })(req, res, next);
+});
 
-// Test email configuration on startup
-emailService.testEmailConfiguration();
+app.use((req, res, next) => {
+  if (req.is('multipart/form-data')) {
+    return next();
+  }
+  express.urlencoded({ extended: true, limit: "10mb" })(req, res, next);
+});
+
+// Test email configuration on startup (only if email is configured)
+if (process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  emailService.testEmailConfiguration();
+} else {
+  console.log('Email service: Not configured - skipping email test');
+}
+
+// Root endpoint
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "PCSI Backend API is running",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development",
+    endpoints: {
+      health: "/api/health",
+      auth: "/api/auth",
+      users: "/api/users",
+      publications: "/api/publications",
+      announcements: "/api/announcements",
+      features: "/api/features"
+    }
+  });
+});
 
 // Health check endpoint (no API key required)
 app.get("/api/health", (req, res) => {

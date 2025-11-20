@@ -1,6 +1,6 @@
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-const API_KEY = import.meta.env.VITE_API_KEY || 'your_api_key_here';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_KEY = import.meta.env.VITE_API_KEY ;
 
 // Default headers for all requests
 const defaultHeaders = {

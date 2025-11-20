@@ -1,4 +1,6 @@
 import { MESSAGES, STATUS_CODES } from '../utils/constants.js';
+import dotenv from "dotenv";
+dotenv.config();
 
 // API Key validation middleware
 export const validateApiKey = (req, res, next) => {
