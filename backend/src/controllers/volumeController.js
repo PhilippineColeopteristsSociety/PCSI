@@ -4,10 +4,17 @@ import { STATUS_CODES } from "../utils/constants.js";
 
 const volumeController = {
   createVolume: asyncHandler(async (req, res) => {
-    const { title, description } = req.body;
+    const { volumeNo, seriesNo, month, year, doi } = req.body;
     const banner = req.file ? req.file.path : null;
 
-    const volume = await volumeService.createVolume(title, description, banner);
+    const volume = await volumeService.createVolume(
+      volumeNo,
+      seriesNo,
+      month,
+      year,
+      doi,
+      banner
+    );
     res.status(STATUS_CODES.CREATED).json({
       success: true,
       message: "Volume created successfully",
@@ -51,8 +58,11 @@ const volumeController = {
     const banner = req.file ? req.file.path : null; // Get file path from Cloudinary upload
 
     const updateData = {
-      title,
-      description,
+      volumeNo,
+      seriesNo,
+      month,
+      year,
+      doi,
     };
 
     // Handle banner updates

@@ -100,8 +100,11 @@ const validatePublication = [
     .withMessage("Remove banner must be a boolean"),
 ];
 const validateVolume = [
-  body("title").notEmpty().withMessage("Title is required"),
-  body("description").notEmpty().withMessage("Description is required"),
+  body("volumeNo").notEmpty().withMessage("Volume No. is required"),
+  body("seriesNo").notEmpty().withMessage("Series No. is required"),
+  body("month").notEmpty().withMessage("Month is required"),
+  body("year").notEmpty().withMessage("Year is required"),
+  body("doi").notEmpty().withMessage("DOI is required"),
   handleValidationErrors,
   body("removeBanner")
     .optional()

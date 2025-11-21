@@ -2,26 +2,54 @@ import mongoose from "mongoose";
 
 const volumeSchema = new mongoose.Schema(
   {
-    title: {
+    volumeNo: {
       type: String,
-      required: [true, "Title is required"],
+      required: [true, "Volume No. is required"],
       trim: true,
-      maxlength: [200, "Title cannot exceed 200 characters"],
+      maxlength: [3, "Volume No. cannot exceed 3 characters"],
     },
-    description: {
+
+    seriesNo: {
       type: String,
-      required: [true, "Description is required"],
+      required: [true, "Series No. is required"],
       trim: true,
+      maxlength: [3, "Series No. cannot exceed 3 characters"],
     },
+
+    month: {
+      type: String,
+      required: [true, "Month is required"],
+      trim: true,
+      maxlength: [15, "Month cannot exceed 15 characters"],
+    },
+
+    year: {
+      type: String,
+      required: [true, "Year is required"],
+      trim: true,
+      maxlength: [4, "Year must be 4 digits"],
+      validate: {
+        validator: (value) => /^\d{4}$/.test(value),
+        message: "Year must be in YYYY format",
+      },
+    },
+
+    doi: {
+      type: String,
+      required: [true, "DOI is required"],
+      trim: true,
+      unique: true, // DOIs are usually unique
+    },
+
     banner: {
-      type: String, // URL or file path to banner image
+      type: String, // URL or file path
       default: null,
       trim: true,
     },
-    // Publication status (active, inactive)
+
     status: {
       type: String,
-      enum: ["1", "0"],
+      enum: ["1", "0"], // 1 = active, 0 = inactive
       default: "1",
     },
   },
@@ -31,7 +59,13 @@ const volumeSchema = new mongoose.Schema(
 );
 
 // Index for better performance
-volumeSchema.index({ title: "text", description: "text" });
+volumeSchema.index({
+  volumeNo: "text",
+  seriesNo: "text",
+  month: "text",
+  year: "text",
+});
+volumeSchema.index({ doi: 1 }, { unique: true });
 volumeSchema.index({ status: 1 });
 
 export default mongoose.model("Volume", volumeSchema);

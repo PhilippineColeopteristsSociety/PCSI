@@ -1,12 +1,12 @@
 import Header from "@/components/common/Header";
 import React, { useState, useEffect } from "react";
 import DataTable from "./table";
-import { publicationColumns } from "./columns";
-import PublicationForm from "@/components/forms/publication/PublicationForm";
+import { volumeColumns } from "./columns";
+import VolumeForm from "@/components/forms/volumes/VolumeForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PublicationSchema } from "@/components/forms/publication/schema";
-import publicationService from "@/services/publicationService";
+import { VolumeSchema } from "@/components/forms/volumes/schema";
+import volumeService from "@/services/volumeService";
 import { toast } from "sonner";
 import { formatDate } from "@/util/formatDate";
 
@@ -15,42 +15,45 @@ const statusMap = {
   0: "Inactive",
 };
 
-const Publications = () => {
+const Volumes = () => {
   const [showForm, setShowForm] = useState(false);
   const [formTitle, setFormTitle] = useState("");
   const [currentData, setCurrentData] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [publications, setPublications] = useState("");
+  const [volumes, setVolumes] = useState("");
   const [loading, setLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState({});
 
   const form = useForm({
-    resolver: zodResolver(PublicationSchema),
+    resolver: zodResolver(VolumeSchema),
     defaultValues: {
-      title: "",
-      description: "",
+      volumeNo: "",
+      seriesNo: "",
+      month: "",
+      year: "",
+      doi: "",
       status: "1",
     },
   });
 
-  const fetchPublications = async () => {
+  const fetchVolumes = async () => {
     setLoading(true);
     try {
-      const result = await publicationService.getPublications();
+      const result = await volumeService.getVolumes();
       if (result.success) {
-        const data = result?.data?.data?.map((publication) => ({
-          ...publication,
-          status: statusMap[publication.status],
-          createdAt: formatDate(publication.createdAt),
+        const data = result?.data?.data?.map((volume) => ({
+          ...volume,
+          status: statusMap[volume.status],
+          createdAt: formatDate(volume.createdAt),
         }));
 
-        setPublications(data || []);
+        setVolumes(data || []);
       } else {
-        toast.error(result.error || "Failed to fetch publications");
+        toast.error(result.error || "Failed to fetch volumes");
       }
     } catch (error) {
-      console.error("Error fetching publications:", error);
-      toast.error("Failed to fetch publications");
+      console.error("Error fetching volumes:", error);
+      toast.error("Failed to fetch volumes");
     } finally {
       setLoading(false);
     }
@@ -58,19 +61,19 @@ const Publications = () => {
 
   // Fetch publications on component mount
   useEffect(() => {
-    fetchPublications();
+    fetchVolumes();
   }, []);
 
-  const handleUpdateStatus = async ({ publicationId, newStatus }) => {
+  const handleUpdateStatus = async ({ volumeId, newStatus }) => {
     const promise = async () => {
       setSubmitting(true);
       // console.log(publicationId);
       try {
-        const result = await publicationService.togglePublicationStatus(
-          publicationId,
+        const result = await volumeService.toggleVolumeStatus(
+          volumeId,
           newStatus
         );
-        await fetchPublications();
+        await fetchVolumes();
         return result;
       } catch (error) {
         console.log(error);
@@ -87,21 +90,22 @@ const Publications = () => {
     });
   };
 
-  const handleEdit = (publicationId) => {
+  const handleEdit = (volumeId) => {
     // Find the publication data by ID
-    const publication = publications.find(
-      (publication) => publication._id === publicationId
-    );
-    if (!publication) return;
+    const volume = volumes.find((volume) => volume._id === volumeId);
+    if (!volume) return;
 
     setShowForm(true);
     setFormTitle("Edit Volume");
-    setCurrentData(publication);
+    setCurrentData(volume);
 
     // Populate form with existing data
     form.reset({
-      title: publication.title || "",
-      description: publication.description || "",
+      volumeNo: volume.volumeNo || "",
+      seriesNo: volume.seriesNo || "",
+      month: volume.month || "",
+      year: volume.year || "",
+      doi: volume.volumeNo || "doi",
       status: publication.status === "Active" ? "1" : "0",
     });
   };
@@ -112,9 +116,12 @@ const Publications = () => {
     setCurrentData(null);
     // Reset form to default values
     form.reset({
-      title: "",
-      description: "",
+      volumeNo: "",
+      seriesNo: "",
       date: "",
+      month: "",
+      year: "",
+      doi: "",
       status: "1",
     });
   };
@@ -127,8 +134,11 @@ const Publications = () => {
       if (currentData) {
         // Update existing publication
         const updateData = {
-          title: data.title,
-          description: data.description,
+          volumeNo: data.volumeNo,
+          seriesNo: data.seriesNo,
+          month: data.month,
+          year: data.year,
+          doi: data.doi,
           status: data.status,
         };
 
@@ -142,15 +152,15 @@ const Publications = () => {
         }
         // If neither, keep existing banner (don't send banner field)
 
-        result = await publicationService.updatePublication(
-          currentData._id,
-          updateData
-        );
+        result = await volumeService.updateVolume(currentData._id, updateData);
       } else {
         // Create new publication
-        result = await publicationService.createPublication({
-          title: data.title,
-          description: data.description,
+        result = await volumeService.createVolume({
+          volumeNo: data.volumeNo,
+          seriesNo: data.seriesNo,
+          month: data.month,
+          year: data.year,
+          doi: data.doi,
           status: data.status,
           image: data.image,
         });
@@ -168,7 +178,7 @@ const Publications = () => {
         form.reset();
 
         // Refresh the data
-        fetchPublications();
+        fetchVolumes();
       } else {
         toast.error(result.error || "Failed to save volume");
       }
@@ -185,17 +195,17 @@ const Publications = () => {
       <Header>Volumes</Header>
       <div>
         <DataTable
-          data={publications}
+          data={Volumes}
           onAdd={() => handleAdd()}
           onEdit={(data) => handleEdit(data)}
           onUpdateStatus={handleUpdateStatus}
           submitting={submitting}
           loading={loading}
-          filters={["title", "description", "createdAt", "status"]}
-          tableColumn={publicationColumns}
+          filters={["volumeNo", "seriesNo", "createdAt", "status"]}
+          tableColumn={volumeColumns}
         />
       </div>
-      <PublicationForm
+      <VolumeForm
         open={showForm}
         onOpenChange={setShowForm}
         data={currentData}
@@ -209,4 +219,4 @@ const Publications = () => {
   );
 };
 
-export default Publications;
+export default Volumes;

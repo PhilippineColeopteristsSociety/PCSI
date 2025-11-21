@@ -3,10 +3,13 @@ import { getCloudinaryPublicId } from "../utils/getPublicId.js";
 import cloudinary from "../config/cloudinaryConfig.js";
 
 const volumeService = {
-  createVolume: async (title, description, banner) => {
+  createVolume: async (volumeNo, seriesNo, month, year, doi, banner) => {
     const volume = await Volume.create({
-      title,
-      description,
+      volumeNo,
+      seriesNo,
+      month,
+      year,
+      doi,
       banner,
     });
     return volume;

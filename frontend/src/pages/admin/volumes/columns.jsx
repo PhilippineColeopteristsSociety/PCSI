@@ -18,9 +18,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ro } from "date-fns/locale";
 
-export const publicationColumns = (onEdit, onUpdateStatus, submitting) => [
+export const volumeColumns = (onEdit, onUpdateStatus, submitting) => [
   {
     accessorKey: "banner",
     header: "",
@@ -34,40 +33,36 @@ export const publicationColumns = (onEdit, onUpdateStatus, submitting) => [
   {
     accessorKey: "volumeNo",
     header: "Volume No.",
-    cell: ({ row }) => <div className="w-10 truncate">{row.getValue("")}</div>,
+    cell: ({ row }) => (
+      <div className="w-10 truncate">{row.getValue("volumeNo")}</div>
+    ),
   },
   {
     accessorKey: "seriesNo",
     header: "Series No.",
-    cell: ({ row }) => <div className="w-10 truncate">{row.getValue("")}</div>,
+    cell: ({ row }) => (
+      <div className="w-10 truncate">{row.getValue("seriesNo")}</div>
+    ),
   },
   {
     accessorKey: "month",
     header: "Month",
-    cell: ({ row }) => <div className="w-10 truncate">{row.getValue("")}</div>,
+    cell: ({ row }) => (
+      <div className="w-20 truncate">{row.getValue("month")}</div>
+    ),
   },
   {
     accessorKey: "year",
     header: "Year",
-    cell: ({ row }) => <div className="w-10 truncate">{row.getValue("")}</div>,
+    cell: ({ row }) => (
+      <div className="w-10 truncate">{row.getValue("year")}</div>
+    ),
   },
   {
     accessorKey: "doi",
     header: "DOI",
-    cell: ({ row }) => <div className="w-10 truncate">{row.getValue("")}</div>,
-  },
-  {
-    accessorKey: "title",
-    header: "Title",
     cell: ({ row }) => (
-      <div className="w-52 truncate">{row.getValue("title")}</div>
-    ),
-  },
-  {
-    accessorKey: "description",
-    header: "Description",
-    cell: ({ row }) => (
-      <div className="w-52 truncate">{row.getValue("description")}</div>
+      <div className="w-52 truncate">{row.getValue("doi")}</div>
     ),
   },
   {
