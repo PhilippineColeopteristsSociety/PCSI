@@ -33,7 +33,7 @@ export const announcementColumns = (onEdit, onUpdateStatus, submitting) => [
   {
     accessorKey: "title",
     header: "Title",
-    cell: ({ row }) => <div className="">{row.getValue("title")}</div>,
+    cell: ({ row }) => <div className="w-52 truncate">{row.getValue("title")}</div>,
   },
   {
     accessorKey: "description",
@@ -81,14 +81,14 @@ export const announcementColumns = (onEdit, onUpdateStatus, submitting) => [
     enableHiding: false,
     cell: ({ row }) => {
       const status = row.original.status;
-      const vehicle = row.original;
+      const announcement = row.original;
       const handleEdit = (e) => {
         e.stopPropagation();
-        onEdit(vehicle._id);
+        onEdit(announcement._id);
       };
       const handleStatusChange = (e) => {
         e.stopPropagation();
-        onUpdateStatus({ vehicleId: vehicle._id, newStatus: status === "Active" ? "0" : "1" });
+        onUpdateStatus({ announcementId: announcement._id, newStatus: status === "Active" ? "0" : "1" });
       };
       return (
         <DropdownMenu>

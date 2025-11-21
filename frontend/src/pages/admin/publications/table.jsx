@@ -43,7 +43,6 @@ const DataTable = ({
   tableColumn,
   data,
   loading,
-  onRowClick,
   onAdd,
   onEdit,
   onUpdateStatus,
@@ -138,7 +137,6 @@ const DataTable = ({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  onClick={() => onRowClick(row.original)}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
