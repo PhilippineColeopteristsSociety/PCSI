@@ -32,6 +32,31 @@ export const publicationColumns = (onEdit, onUpdateStatus, submitting) => [
     ),
   },
   {
+    accessorKey: "volumeNo",
+    header: "Volume No.",
+    cell: ({ row }) => <div className="w-10 truncate">{row.getValue("")}</div>,
+  },
+  {
+    accessorKey: "seriesNo",
+    header: "Series No.",
+    cell: ({ row }) => <div className="w-10 truncate">{row.getValue("")}</div>,
+  },
+  {
+    accessorKey: "month",
+    header: "Month",
+    cell: ({ row }) => <div className="w-10 truncate">{row.getValue("")}</div>,
+  },
+  {
+    accessorKey: "year",
+    header: "Year",
+    cell: ({ row }) => <div className="w-10 truncate">{row.getValue("")}</div>,
+  },
+  {
+    accessorKey: "doi",
+    header: "DOI",
+    cell: ({ row }) => <div className="w-10 truncate">{row.getValue("")}</div>,
+  },
+  {
     accessorKey: "title",
     header: "Title",
     cell: ({ row }) => (
