@@ -25,8 +25,8 @@ const MENU = [
   {
     label: "Membership",
     children: [
-      { name: "Affiliates", path: "#" },
       { name: "How to be a member?", path: "#" },
+      { name: "Affiliates", path: "#" },
     ],
   },
   {
@@ -40,9 +40,9 @@ const MENU = [
       { name: "Author Guidelines", path: "/ajis/author-guidelines" },
       { name: "Editorial Board", path: "/ajis/editorial-board" },
       { name: "Manuscript Preparation", path: "/ajis/manuscript-preparation" },
-      { name: "Deposition", path: "/ajis/deposition" },
       { name: "Submission Process", path: "/ajis/submission-process" },
       { name: "Review Process", path: "/ajis/review-process" },
+      { name: "Issues", path: "/ajis/archives" },
       { name: "Abstracting and Indexing", path: "/ajis/abstracting-indexing" },
       { name: "Submit Manuscript", path: "/ajis/submit-manuscript" },
     ],

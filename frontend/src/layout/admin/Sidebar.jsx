@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/sidebar";
 import {
   Bell,
+  BookOpen,
   Calendar,
   Home,
   Inbox,
@@ -32,9 +33,14 @@ const items = [
     icon: Home,
   },
   {
+    title: "Volumes",
+    url: "/admin/volumes",
+    icon: Newspaper,
+  },
+  {
     title: "Publications",
     url: "/admin/publications",
-    icon: Newspaper,
+    icon: BookOpen,
   },
   {
     title: "Announcements",

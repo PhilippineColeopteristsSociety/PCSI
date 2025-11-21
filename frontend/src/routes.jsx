@@ -5,9 +5,9 @@ import About from "./pages/ajis/About";
 import AuthorGuidelines from "./pages/ajis/AuthorGuidelines";
 import ManuscriptPreparation from "./pages/ajis/ManuscriptPreparation";
 import EditorialBoard from "./pages/ajis/EditorialBoard";
-import Deposition from "./pages/ajis/Deposition";
 import SubmissionProcess from "./pages/ajis/SubmissionProcess";
 import ReviewProcess from "./pages/ajis/ReviewProcess";
+import Issues from "./pages/ajis/Issues";
 import AbstractingIndexing from "./pages/ajis/AbstractingIndexing";
 import SubmitManuscript from "./pages/ajis/SubmitManuscript";
 import StrategicInitiatives from "./pages/strategic-initiatives";
@@ -51,7 +51,6 @@ const routes = createBrowserRouter([
       { path: "/support", Component: Support },
       {
         path: "/ajis",
-        Component: MainLayout,
         children: [
           {
             path: "about",
@@ -70,8 +69,8 @@ const routes = createBrowserRouter([
             Component: EditorialBoard,
           },
           {
-            path: "deposition",
-            Component: Deposition,
+            path: "issues",
+            Component: Issues,
           },
           {
             path: "submission-process",

@@ -41,7 +41,7 @@ const Publications = () => {
         const data = result?.data?.data?.map((publication) => ({
           ...publication,
           status: statusMap[publication.status],
-          createdAt: formatDate(publication.createdAt)
+          createdAt: formatDate(publication.createdAt),
         }));
 
         setPublications(data || []);
@@ -88,13 +88,15 @@ const Publications = () => {
 
   const handleEdit = (publicationId) => {
     // Find the publication data by ID
-    const publication = publications.find((publication) => publication._id === publicationId);
+    const publication = publications.find(
+      (publication) => publication._id === publicationId
+    );
     if (!publication) return;
 
     setShowForm(true);
     setFormTitle("Edit Publication");
     setCurrentData(publication);
-  
+
     // Populate form with existing data
     form.reset({
       title: publication.title || "",
@@ -128,7 +130,7 @@ const Publications = () => {
           description: data.description,
           status: data.status,
         };
-        
+
         // Handle banner based on user action
         if (data.image) {
           // User uploaded a new banner - replace old one
@@ -139,8 +141,10 @@ const Publications = () => {
         }
         // If neither, keep existing banner (don't send banner field)
 
-        result = await publicationService.updatePublication(currentData._id, updateData);
-  
+        result = await publicationService.updatePublication(
+          currentData._id,
+          updateData
+        );
       } else {
         // Create new publication
         result = await publicationService.createPublication({

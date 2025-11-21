@@ -9,7 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-function Deposition() {
+function Archives() {
   return (
     <div className="min-h-screen bg-white py-10">
       <Container>
@@ -19,7 +19,7 @@ function Deposition() {
             Asian Journal of Insect Science (AJIS)
           </h1>
           <h2 className="font-serif text-1xl md:text-2xl text-gray-600 font-semibold">
-            Deposition
+            Issues
           </h2>
         </div>
       </Container>
@@ -27,4 +27,4 @@ function Deposition() {
   );
 }
 
-export default Deposition;
+export default Archives;

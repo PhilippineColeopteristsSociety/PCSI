@@ -100,12 +100,12 @@ function ManuscriptPreparation() {
               of each author/s must be given followed by the email address and
               ORCID numbers. If one or two authors share the same institutional
               address, a superscript number can be assigned. For example,
-              1Philippine National Museum, Ermita, Manila, Philippines. The
-              superscript number can then be assigned to the upper left corner
-              of the author's name. For example,{" "}
+              <sup>1</sup>Philippine National Museum, Ermita, Manila,
+              Philippines. The superscript number can then be assigned to the
+              upper left corner of the author's name. For example,{" "}
               <b>
-                1Milton Norman D. Medina, 2Jhonnel P. Villegas, and 1Analyn A.
-                Cabras
+                <sup>1</sup>Milton Norman D. Medina, <sup>2</sup>Jhonnel P.
+                Villegas, and <sup>1</sup>Analyn A. Cabras
               </b>
               .
             </p>
