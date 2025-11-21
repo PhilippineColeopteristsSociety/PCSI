@@ -42,7 +42,7 @@ const MENU = [
       { name: "Manuscript Preparation", path: "/ajis/manuscript-preparation" },
       { name: "Submission Process", path: "/ajis/submission-process" },
       { name: "Review Process", path: "/ajis/review-process" },
-      { name: "Issues", path: "/ajis/archives" },
+      { name: "Issues", path: "/ajis/issues" },
       { name: "Abstracting and Indexing", path: "/ajis/abstracting-indexing" },
       { name: "Submit Manuscript", path: "/ajis/submit-manuscript" },
     ],

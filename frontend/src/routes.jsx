@@ -20,6 +20,7 @@ import AnnouncementsPage from "./pages/announcements";
 // Admin routes
 import AdminLayout from "./layout/admin";
 import AdminDashboard from "./pages/admin";
+import Volumes from "./pages/admin/volumes";
 import Publications from "./pages/admin/publications";
 import Announcements from "./pages/admin/announcements";
 import Merchandise from "./pages/admin/merchandise";
@@ -113,6 +114,10 @@ const routes = createBrowserRouter([
     ),
     children: [
       { index: true, Component: AdminDashboard },
+      {
+        path: "volumes",
+        Component: Volumes,
+      },
       {
         path: "publications",
         Component: Publications,
