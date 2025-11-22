@@ -75,11 +75,11 @@ export const volumeColumns = (onEdit, onUpdateStatus, submitting) => [
     header: "Status",
     cell: ({ row }) => {
       const [status, setStatus] = useState(row.original.status);
-      const vehicleId = row.original._id;
+      const volumeId = row.original._id;
 
       const handleStatusChange = async (newStatus) => {
         setStatus(newStatus);
-        onUpdateStatus({ vehicleId, newStatus });
+        onUpdateStatus({ volumeId, newStatus });
       };
 
       return (
@@ -113,7 +113,7 @@ export const volumeColumns = (onEdit, onUpdateStatus, submitting) => [
       const handleStatusChange = (e) => {
         e.stopPropagation();
         onUpdateStatus({
-          publicationId: publication._id,
+          volumeId: publication._id,
           newStatus: status === "Active" ? "0" : "1",
         });
       };

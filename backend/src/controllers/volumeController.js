@@ -21,6 +21,7 @@ const volumeController = {
       data: volume,
     });
   }),
+
   getVolumes: asyncHandler(async (req, res) => {
     const { limit, status, ...otherFilters } = req.query;
 
@@ -35,7 +36,16 @@ const volumeController = {
       }
     });
 
+    console.log("[DEBUG] VolumeController.getVolumes filters:", filters);
     const volumes = await volumeService.getVolumes(limit, filters);
+    console.log("[DEBUG] VolumeController.getVolumes count:", volumes.length);
+    if (volumes.length > 0) {
+      console.log(
+        "[DEBUG] VolumeController.getVolumes sample volume:",
+        volumes[0]
+      );
+    }
+
     res.status(STATUS_CODES.OK).json({
       success: true,
       message: "Volumes fetched successfully",
@@ -45,17 +55,19 @@ const volumeController = {
       filters: filters,
     });
   }),
+
   getVolume: asyncHandler(async (req, res) => {
     const volume = await volumeService.getVolume(req.params.id);
     res.status(STATUS_CODES.OK).json({
       success: true,
-      message: "Volumed fetched successfully",
+      message: "Volume fetched successfully",
       data: volume,
     });
   }),
+
   updateVolume: asyncHandler(async (req, res) => {
-    const { title, description, removeBanner } = req.body;
-    const banner = req.file ? req.file.path : null; // Get file path from Cloudinary upload
+    const { volumeNo, seriesNo, month, year, doi, removeBanner } = req.body;
+    const banner = req.file ? req.file.path : null;
 
     const updateData = {
       volumeNo,
@@ -67,23 +79,34 @@ const volumeController = {
 
     // Handle banner updates
     if (banner) {
-      // User uploaded a new banner - replace old one
       updateData.banner = banner;
     } else if (removeBanner === "true" || removeBanner === true) {
-      // User wants to remove the banner
       updateData.banner = null;
       updateData.removeBanner = true;
     }
 
-    // If neither, keep existing banner (don't include banner field)
-
-    const volume = await volumeService.updateVolume(req.params.id, updateData);
-    res.status(STATUS_CODES.OK).json({
-      success: true,
-      message: "Volume updated successfully",
-      data: volume,
-    });
+    try {
+      const volume = await volumeService.updateVolume(
+        req.params.id,
+        updateData
+      );
+      res.status(STATUS_CODES.OK).json({
+        success: true,
+        message: "Volume updated successfully",
+        data: volume,
+      });
+    } catch (error) {
+      if (error.message.includes("already exists")) {
+        res.status(400).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        throw error;
+      }
+    }
   }),
+
   toggleVolumeStatus: asyncHandler(async (req, res) => {
     const { status } = req.body;
     const volume = await volumeService.toggleVolumeStatus(

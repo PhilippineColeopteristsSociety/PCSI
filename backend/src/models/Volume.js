@@ -3,17 +3,15 @@ import mongoose from "mongoose";
 const volumeSchema = new mongoose.Schema(
   {
     volumeNo: {
-      type: String,
+      type: Number,
       required: [true, "Volume No. is required"],
-      trim: true,
-      maxlength: [3, "Volume No. cannot exceed 3 characters"],
+      max: [999, "Volume No. cannot exceed 3 digits"],
     },
 
     seriesNo: {
-      type: String,
+      type: Number,
       required: [true, "Series No. is required"],
-      trim: true,
-      maxlength: [3, "Series No. cannot exceed 3 characters"],
+      max: [999, "Series No. cannot exceed 3 digits"],
     },
 
     month: {
@@ -24,12 +22,10 @@ const volumeSchema = new mongoose.Schema(
     },
 
     year: {
-      type: String,
+      type: Number,
       required: [true, "Year is required"],
-      trim: true,
-      maxlength: [4, "Year must be 4 digits"],
       validate: {
-        validator: (value) => /^\d{4}$/.test(value),
+        validator: (value) => /^\d{4}$/.test(String(value)),
         message: "Year must be in YYYY format",
       },
     },
@@ -38,18 +34,18 @@ const volumeSchema = new mongoose.Schema(
       type: String,
       required: [true, "DOI is required"],
       trim: true,
-      unique: true, // DOIs are usually unique
+      unique: true,
     },
 
     banner: {
-      type: String, // URL or file path
+      type: String,
       default: null,
       trim: true,
     },
 
     status: {
       type: String,
-      enum: ["1", "0"], // 1 = active, 0 = inactive
+      enum: ["1", "0"],
       default: "1",
     },
   },
@@ -58,13 +54,11 @@ const volumeSchema = new mongoose.Schema(
   }
 );
 
-// Index for better performance
-volumeSchema.index({
-  volumeNo: "text",
-  seriesNo: "text",
-  month: "text",
-  year: "text",
-});
+// Indexes
+volumeSchema.index({ volumeNo: 1 });
+volumeSchema.index({ seriesNo: 1 });
+volumeSchema.index({ month: "text" });
+volumeSchema.index({ year: 1 });
 volumeSchema.index({ doi: 1 }, { unique: true });
 volumeSchema.index({ status: 1 });
 

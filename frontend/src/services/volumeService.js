@@ -8,7 +8,8 @@ const volumeService = {
       if (limit) params.limit = limit;
 
       const response = await api.get("/volumes", { params });
-      return { success: true, data: response.data };
+      // Fix: return only the data property containing the volumes array, not the whole response
+      return { success: true, data: response.data.data };
     } catch (error) {
       return {
         success: false,

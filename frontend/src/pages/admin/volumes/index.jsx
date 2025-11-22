@@ -43,7 +43,7 @@ const Volumes = () => {
       if (result.success) {
         const data = result?.data?.data?.map((volume) => ({
           ...volume,
-          status: statusMap[volume.status],
+          status: statusMap[Number(volume.status)],
           createdAt: formatDate(volume.createdAt),
         }));
 
@@ -105,8 +105,8 @@ const Volumes = () => {
       seriesNo: volume.seriesNo || "",
       month: volume.month || "",
       year: volume.year || "",
-      doi: volume.volumeNo || "doi",
-      status: publication.status === "Active" ? "1" : "0",
+      doi: volume.doi || "",
+      status: volume.status === "Active" ? "1" : "0",
     });
   };
 
@@ -195,7 +195,7 @@ const Volumes = () => {
       <Header>Volumes</Header>
       <div>
         <DataTable
-          data={Volumes}
+          data={volumes}
           onAdd={() => handleAdd()}
           onEdit={(data) => handleEdit(data)}
           onUpdateStatus={handleUpdateStatus}

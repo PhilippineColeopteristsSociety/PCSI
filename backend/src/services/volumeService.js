@@ -1,6 +1,7 @@
 import Volume from "../models/Volume.js";
 import { getCloudinaryPublicId } from "../utils/getPublicId.js";
 import cloudinary from "../config/cloudinaryConfig.js";
+import mongoose from "mongoose";
 
 const volumeService = {
   createVolume: async (volumeNo, seriesNo, month, year, doi, banner) => {
@@ -15,6 +16,13 @@ const volumeService = {
     return volume;
   },
   getVolumes: async (limit = null, filters = {}) => {
+    // Adjust filter for status to support both string "1" and numeric 1
+    if (filters.status === "1" || filters.status === 1) {
+      filters.status = { $in: ["1", 1] };
+    }
+
+    console.log("Volume filter applied:", filters);
+
     let query = Volume.find(filters).sort({ createdAt: -1 });
 
     if (limit && limit > 0) {
@@ -22,6 +30,7 @@ const volumeService = {
     }
 
     const volumes = await query;
+    console.log("Volumes returned:", volumes.length);
     return volumes;
   },
   getVolume: async (id) => {
@@ -29,8 +38,33 @@ const volumeService = {
     return volume;
   },
   updateVolume: async (id, data) => {
-    const volume = await Volume.findById(id);
-    // console.log(data)
+    const objectId = new mongoose.Types.ObjectId(id);
+
+    // Fetch existing volume
+    const volume = await Volume.findById(objectId);
+    if (!volume) {
+      throw new Error("Volume not found");
+    }
+
+    // Build uniqueness check conditions only for fields that are being changed
+    const orConditions = [];
+    if (data.doi && data.doi !== volume.doi) {
+      orConditions.push({ doi: data.doi });
+    }
+    if (data.volumeNo !== undefined && data.volumeNo !== volume.volumeNo) {
+      orConditions.push({ volumeNo: data.volumeNo });
+    }
+
+    if (orConditions.length > 0) {
+      const existingVolume = await Volume.findOne({
+        $or: orConditions,
+        _id: { $ne: objectId },
+      });
+      if (existingVolume) {
+        throw new Error("Volume No. or DOI already exists");
+      }
+    }
+
     // Handle banner deletion scenarios
     if (volume.banner) {
       if (data.banner) {
@@ -50,7 +84,7 @@ const volumeService = {
     // Remove removeBanner flag from update data as it's not a model field
     const { removeBanner, ...updateData } = data;
 
-    const result = await Volume.findByIdAndUpdate(id, updateData, {
+    const result = await Volume.findByIdAndUpdate(objectId, updateData, {
       new: true,
     });
     return result;
