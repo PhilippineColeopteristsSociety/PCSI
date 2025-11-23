@@ -11,18 +11,16 @@ function VolumeCard({ volume }) {
         <img
           src={banner}
           alt={`Vol. ${volumeNo} No. ${seriesNo} Banner`}
-          className="w-full h-72 object-cover"
+          className="w-full h-68 object-cover"
           loading="lazy"
         />
       ) : (
-        <div className="w-full h-72 bg-gray-200 flex items-center justify-center text-gray-400">
+        <div className="w-full h-68 bg-gray-200 flex items-center justify-center text-gray-400">
           No Image
         </div>
       )}
       <div className="p-2">
-        <p className="font-semibold text-lg text-center">
-          {month}
-        </p>
+        <p className="font-semibold text-lg text-center">{month}</p>
         <p className="font-semibold font-serif text-sm text-center">
           Vol. {volumeNo} No. {seriesNo} ({year})
         </p>
@@ -118,7 +116,7 @@ function Issues() {
               <div>
                 {latestVolume ? (
                   <div>
-                    <p className="mb-4 font-serif text-xl md:text-2xl font-semibold">
+                    <p className="mb-4 font-serif text-xl md:text-xl font-semibold">
                       Vol. {latestVolume.volumeNo} No. {latestVolume.seriesNo} (
                       {latestVolume.year}): {latestVolume.month}
                     </p>
@@ -127,7 +125,7 @@ function Issues() {
                         <img
                           src={latestVolume.banner}
                           alt={`Vol. ${latestVolume.volumeNo} No. ${latestVolume.seriesNo} Banner`}
-                          className="max-h-[240px] object-contain rounded-lg shadow-lg"
+                          className="max-h-[280px] object-contain rounded-lg shadow-lg"
                         />
                         <p className="mt-3 font-serif text-gray-500 font-medium">
                           <b>DOI:</b> <u>{latestVolume.doi}</u>

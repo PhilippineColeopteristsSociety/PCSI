@@ -38,9 +38,14 @@ const items = [
     icon: Newspaper,
   },
   {
+    title: "Articles",
+    url: "/admin/articles",
+    icon: BookOpen,
+  },
+  {
     title: "Publications",
     url: "/admin/publications",
-    icon: BookOpen,
+    icon: Inbox,
   },
   {
     title: "Announcements",

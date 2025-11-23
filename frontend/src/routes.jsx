@@ -21,6 +21,7 @@ import AnnouncementsPage from "./pages/announcements";
 import AdminLayout from "./layout/admin";
 import AdminDashboard from "./pages/admin";
 import Volumes from "./pages/admin/volumes";
+import Articles from "./pages/admin/articles";
 import Publications from "./pages/admin/publications";
 import Announcements from "./pages/admin/announcements";
 import Merchandise from "./pages/admin/merchandise";
@@ -117,6 +118,10 @@ const routes = createBrowserRouter([
       {
         path: "volumes",
         Component: Volumes,
+      },
+      {
+        path: "articles",
+        Component: Articles,
       },
       {
         path: "publications",

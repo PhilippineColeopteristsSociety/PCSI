@@ -1,13 +1,13 @@
 import { asyncHandler } from "../middlewares/errorHandler.js";
-import volumeService from "../services/volumeService.js";
+import articleService from "../services/articleService.js";
 import { STATUS_CODES } from "../utils/constants.js";
 
-const volumeController = {
-  createVolume: asyncHandler(async (req, res) => {
+const articleController = {
+  createArticle: asyncHandler(async (req, res) => {
     const { volumeNo, seriesNo, month, year, doi } = req.body;
     const banner = req.file ? req.file.path : null;
 
-    const volume = await volumeService.createVolume(
+    const article = await articleService.createArticle(
       volumeNo,
       seriesNo,
       month,
@@ -17,12 +17,12 @@ const volumeController = {
     );
     res.status(STATUS_CODES.CREATED).json({
       success: true,
-      message: "Volume created successfully",
-      data: volume,
+      message: "Article created successfully",
+      data: article,
     });
   }),
 
-  getVolumes: asyncHandler(async (req, res) => {
+  getArticles: asyncHandler(async (req, res) => {
     const { limit, status, ...otherFilters } = req.query;
 
     // Build filters object
@@ -36,28 +36,28 @@ const volumeController = {
       }
     });
 
-    const volumes = await volumeService.getVolumes(limit, filters);
+    const articles = await articleService.getArticles(limit, filters);
 
     res.status(STATUS_CODES.OK).json({
       success: true,
-      message: "Volumes fetched successfully",
-      data: volumes,
-      count: volumes.length,
+      message: "Articles fetched successfully",
+      data: articles,
+      count: articles.length,
       limit: limit ? parseInt(limit) : null,
       filters: filters,
     });
   }),
 
-  getVolume: asyncHandler(async (req, res) => {
-    const volume = await volumeService.getVolume(req.params.id);
+  getArticle: asyncHandler(async (req, res) => {
+    const article = await articleService.getArticle(req.params.id);
     res.status(STATUS_CODES.OK).json({
       success: true,
-      message: "Volume fetched successfully",
-      data: volume,
+      message: "Article fetched successfully",
+      data: article,
     });
   }),
 
-  updateVolume: asyncHandler(async (req, res) => {
+  updateArticle: asyncHandler(async (req, res) => {
     const { volumeNo, seriesNo, month, year, doi, removeBanner } = req.body;
     const banner = req.file ? req.file.path : null;
 
@@ -78,13 +78,13 @@ const volumeController = {
     }
 
     try {
-      const volume = await volumeService.updateVolume(
+      const article = await articleService.updateArticle(
         req.params.id,
         updateData
       );
       res.status(STATUS_CODES.OK).json({
         success: true,
-        message: "Volume updated successfully",
+        message: "Article updated successfully",
         data: volume,
       });
     } catch (error) {
@@ -99,18 +99,18 @@ const volumeController = {
     }
   }),
 
-  toggleVolumeStatus: asyncHandler(async (req, res) => {
+  toggleArticleStatus: asyncHandler(async (req, res) => {
     const { status } = req.body;
-    const volume = await volumeService.toggleVolumeStatus(
+    const article = await articleService.toggleArticleStatus(
       req.params.id,
       status
     );
     res.status(STATUS_CODES.OK).json({
       success: true,
-      message: "Volume status updated successfully",
-      data: volume,
+      message: "Article status updated successfully",
+      data: article,
     });
   }),
 };
 
-export default volumeController;
+export default articleController;

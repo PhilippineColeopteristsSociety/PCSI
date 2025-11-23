@@ -59,7 +59,7 @@ const Volumes = () => {
     }
   };
 
-  // Fetch publications on component mount
+  // Fetch articles on component mount
   useEffect(() => {
     fetchVolumes();
   }, []);
@@ -112,7 +112,7 @@ const Volumes = () => {
 
   const handleAdd = () => {
     setShowForm(true);
-    setFormTitle("Add Volume");
+    setFormTitle("Add Article");
     setCurrentData(null);
     // Reset form to default values
     form.reset({
@@ -192,7 +192,7 @@ const Volumes = () => {
 
   return (
     <div className="">
-      <Header>Volumes</Header>
+      <Header>Articles</Header>
       <div>
         <DataTable
           data={volumes}
