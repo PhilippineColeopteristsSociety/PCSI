@@ -51,7 +51,7 @@ const publicationService = {
     return result;
   },
   togglePublicationStatus: async (id, status) => {
-    console.log(id)
+
     const publication = await Publication.findByIdAndUpdate(
       id,
       { status: status.toLowerCase() },
