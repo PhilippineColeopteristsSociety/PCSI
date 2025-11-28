@@ -42,26 +42,49 @@ export default function ContactModal({ open, onOpenChange, subject = "", body = 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    setIsLoading(true);
+    // API submission (commented out)
+    // setIsLoading(true);
+    // try {
+    //   await contactService.sendContactEmail(formData);
+    //   toast.success("Email sent successfully!");
+    //   // Reset form and close modal
+    //   setFormData({
+    //     email: "",
+    //     subject: "",
+    //     body: "",
+    //   });
+    //   onOpenChange(false);
+    // } catch (error) {
+    //   console.error("Error sending email:", error);
+    //   toast.error(error.response?.data?.message || "Failed to send email. Please try again.");
+    // } finally {
+    //   setIsLoading(false);
+    // }
+
+    // Use mailto instead
+    handleMailTo();
+  };
+
+  const handleMailTo = () => {
+    const subject = encodeURIComponent(formData.subject);
+    const body = encodeURIComponent(
+      `From: ${formData.email}\n\n${formData.body}`
+    );
     
-    try {
-      await contactService.sendContactEmail(formData);
-      
-      toast.success("Email sent successfully!");
-      
-      // Reset form and close modal
-      setFormData({
-        email: "",
-        subject: "",
-        body: "",
-      });
-      onOpenChange(false);
-    } catch (error) {
-      console.error("Error sending email:", error);
-      toast.error(error.response?.data?.message || "Failed to send email. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    const mailtoLink = `mailto:philcolsoc@gmail.com?subject=${subject}&body=${body}`;
+    
+    // Create a temporary anchor element and click it
+    const anchor = document.createElement('a');
+    anchor.href = mailtoLink;
+    anchor.click();
+    
+    // Reset form and close modal
+    setFormData({
+      email: "",
+      subject: "",
+      body: "",
+    });
+    onOpenChange(false);
   };
 
   return (
