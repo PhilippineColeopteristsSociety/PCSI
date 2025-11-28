@@ -27,6 +27,12 @@ import field_work from "@/assets/images/field_work.jpg";
 import field_work2 from "@/assets/images/field_work2.jpg";
 import field_work3 from "@/assets/images/field_work3.jpg";
 import field_work4 from "@/assets/images/field_work4.jpg";
+import merch_1 from "@/assets/images/merch_1.png";
+import merch_2 from "@/assets/images/merch_2.png";
+import merch_3 from "@/assets/images/merch_3.png";
+import merch_4 from "@/assets/images/merch_4.png";
+import merch_5 from "@/assets/images/merch_5.png";
+import merch_6 from "@/assets/images/merch_6.png";
 
 export const images = {
     beatle_1,
@@ -57,5 +63,11 @@ export const images = {
     field_work,
     field_work2,
     field_work3,
-    field_work4
+    field_work4,
+    merch_1,
+    merch_2,
+    merch_3,
+    merch_4,
+    merch_5,
+    merch_6
 }

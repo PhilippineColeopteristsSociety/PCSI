@@ -131,6 +131,20 @@ const validateFeature = [
   handleValidationErrors
 ];
 
+const validateNews = [
+  body('title')
+    .notEmpty()
+    .withMessage('Title is required'),
+  body('description')
+    .notEmpty()
+    .withMessage('Description is required'),
+  handleValidationErrors,
+  body("removeBanner")
+    .optional()
+    .isBoolean()
+    .withMessage('Remove banner must be a boolean'),
+];
+
 export {
   validateRegister,
   validateLogin,
@@ -141,5 +155,6 @@ export {
   validatePublication,
   validateAnnouncement,
   validateFeature,
+  validateNews,
   handleValidationErrors
 };

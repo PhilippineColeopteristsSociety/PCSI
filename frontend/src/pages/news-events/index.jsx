@@ -4,6 +4,7 @@ import Feature from './Feature';
 import { Separator } from '@/components/ui/separator';
 import Publications from './Publications';
 import Announcements from './Announcements';
+import NewsList from './NewsList';
 
 const NewsAndEvents = () => {
   return (
@@ -11,6 +12,7 @@ const NewsAndEvents = () => {
       <Hero/>
       <Publications/>
       <Feature/>
+      <NewsList/>
       <Announcements/>
 
     </div>
