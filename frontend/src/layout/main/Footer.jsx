@@ -59,11 +59,11 @@ function Footer() {
                 <div className="space-y-2">
                   <h1 className="text-lg font-serif">GET IN TOUCH</h1>
                   <p>
-                    pcsi@gmail.com
+                    philcolsoc@gmail.com
                   </p>
-                  <p>
+                  {/* <p>
                    +639 11 234 5678
-                  </p>
+                  </p> */}
                   <p>
                     <a
                       href="https://www.facebook.com/philcolsoc"
