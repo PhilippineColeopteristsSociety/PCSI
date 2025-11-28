@@ -7,7 +7,13 @@ export default function MerchandiseCard({ image, name, onOrder, onSeeDetail }) {
   return (
     <div className="group relative overflow-hidden rounded-lg aspect-square cursor-pointer bg-white shadow-md">
       {/* Image */}
-      <img src={image} alt={name} className="w-full h-full object-cover" />
+      {image ? (
+        <img src={image} alt={name} className="w-full h-full object-cover" />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-neutral-200 to-neutral-100">
+          <p className="text-neutral-500 text-sm font-medium">No image available</p>
+        </div>
+      )}
 
       {/* Sliding panel from bottom */}
       <div className="absolute bottom-0 left-0 right-0 border-t  bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out p-2 px-4 flex flex-col lg:flex-row justify-between items-start lg:items-center">

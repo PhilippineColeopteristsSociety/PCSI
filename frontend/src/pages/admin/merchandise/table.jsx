@@ -43,7 +43,6 @@ const DataTable = ({
   tableColumn,
   data,
   loading,
-  onRowClick,
   onAdd,
   onEdit,
   onUpdateStatus,
@@ -97,7 +96,7 @@ const DataTable = ({
         `}
       >
         <Input
-          placeholder={"Search Merhcandise..."}
+          placeholder={"Search Merchandise..."}
           value={globalFilter ?? ""}
           onChange={(event) => setGlobalFilter(event.target.value)}
           className={"hidden h-8 md:inline md:max-w-sm flex-shrink"}
@@ -106,7 +105,7 @@ const DataTable = ({
         <div className="flex gap-2 justify-end md:justify-normal md:items-center">
           <Button onClick={onAdd} className={"w-min flex items-center gap-2"}>
             <Plus />
-            <span className="hidden lg:inline">{"Add Merchandise"}</span>
+            <span className="hidden lg:inline">{"New Merchandise"}</span>
           </Button>
           <TableViewOptions table={table} />
         </div>
@@ -138,7 +137,6 @@ const DataTable = ({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  onClick={() => onRowClick(row.original)}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
