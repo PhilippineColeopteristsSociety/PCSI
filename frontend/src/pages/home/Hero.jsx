@@ -89,6 +89,21 @@ function Hero() {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/30  z-0 pointer-events-none" />
 
+      {/* Image Credits */}
+      <div className="absolute bottom-4 right-4 z-10 bg-black/50 backdrop-blur-sm px-3 py-2 rounded text-white text-xs">
+        <p className="opacity-80">
+          Image credits{" "}
+          <a
+            href="https://www.facebook.com/markkineth.casindac"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:opacity-100 transition-opacity pointer-events-auto"
+          >
+            @Mark Kineth Casindac
+          </a>
+        </p>
+      </div>
+
       {/* Content */}
       {/* <div className="relative z-20 flex h-full items-center justify-center">
         <Container className={"h-full py-8 md:py-0"}>
