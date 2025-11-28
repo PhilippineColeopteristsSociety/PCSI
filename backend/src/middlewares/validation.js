@@ -145,6 +145,20 @@ const validateNews = [
     .withMessage('Remove banner must be a boolean'),
 ];
 
+const validateMerchandise = [
+  body('name')
+    .notEmpty()
+    .withMessage('Name is required'),
+  body('description')
+    .notEmpty()
+    .withMessage('Description is required'),
+  handleValidationErrors,
+  body("removeBanner")
+    .optional()
+    .isBoolean()
+    .withMessage('Remove banner must be a boolean'),
+];
+
 export {
   validateRegister,
   validateLogin,
@@ -156,5 +170,6 @@ export {
   validateAnnouncement,
   validateFeature,
   validateNews,
+  validateMerchandise,
   handleValidationErrors
 };

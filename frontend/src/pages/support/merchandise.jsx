@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { LayoutGrid } from "@/components/ui/layout-grid";
 import { images } from "@/constants/images";
 import Container from "@/components/common/Container";
@@ -17,9 +17,16 @@ import {
 import { NoData } from "@/components/common/NoData";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import MerchandiseCard from "@/components/merchandise/MerchandiseCard";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import ContactModal from "@/components/forms/contact/ContactModal";
+import merchandiseService from "@/services/merchandiseService";
+import { toast } from "sonner";
 
 const Skeleton = () => (
   <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
@@ -29,50 +36,48 @@ const Image = ({ src, alt }) => (
   <img src={src} alt={alt} className="w-full h-full object-cover rounded-xl" />
 );
 
-const items = [
-  {
-    name: "Tote Bag",
-    description: "Explore the birth of groundbreaking ideas and inventions.",
-    header: <Image src={images.merch_1} alt="Tote Bag" />,
-    // icon: <ClipboardCopy className="h-4 w-4 text-neutral-500" />,
-  },
-  {
-    name: "Stickers",
-    description: "Dive into the transformative power of technology.",
-    header: <Image src={images.merch_2} alt="Stickers" />,
-    // icon: <FileBadge className="h-4 w-4 text-neutral-500" />,
-  },
-  {
-    name: "Key Laces",
-    description: "Discover the beauty of thoughtful and functional design.",
-    header: <Image src={images.merch_3} alt="Key Laces" />,
-    // icon: <Signature className="h-4 w-4 text-neutral-500" />,
-  },
-  {
-    name: "Stainless Cup",
-    description:
-      "Understand the impact of effective communication in our lives.",
-    header: <Image src={images.merch_4} alt="Stainless cup" />,
-    // icon: <Table className="h-4 w-4 text-neutral-500" />,
-  },
-  {
-    name: "Bucket Hat",
-    description: "Join the quest for understanding and enlightenment.",
-    header: <Image src={images.merch_5} alt="Bucket Hat" />,
-    // icon: <ArrowUpDown className="h-4 w-4 text-neutral-500" />,
-  },
-  {
-    name: "Key Chain",
-    description: "Experience the thrill of bringing ideas to life.",
-    header: <Image src={images.merch_6} alt="Key Chain" />,
-    // icon: <BoxSelectIcon className="h-4 w-4 text-neutral-500" />,
-  },
-];
 export default function Merchandise() {
   const [seeDetail, setSeeDetail] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showContactModal, setShowContactModal] = useState(false);
   const [contactData, setContactData] = useState({ subject: "", body: "" });
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch active merchandise on component mount
+  useEffect(() => {
+    const fetchMerchandise = async () => {
+      setLoading(true);
+      try {
+        const result = await merchandiseService.getAllMerchandise();
+        if (result.success) {
+          // Filter only active merchandise (status === "1")
+          const activeMerchandise =
+            result?.data?.data?.filter((merch) => merch.status === "1") || [];
+
+          // Map to the format expected by the component
+          const formattedItems = activeMerchandise.map((merch) => ({
+            _id: merch._id,
+            name: merch.name,
+            description: merch.description,
+            header: <Image src={merch.banner} alt={merch.name} />,
+            banner: merch.banner,
+          }));
+
+          setItems(formattedItems);
+        } else {
+          toast.error(result.error || "Failed to fetch merchandise");
+        }
+      } catch (error) {
+        console.error("Error fetching merchandise:", error);
+        toast.error("Failed to fetch merchandise");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMerchandise();
+  }, []);
 
   const handleSeeDetail = (item) => {
     setSeeDetail(true);
@@ -82,11 +87,28 @@ export default function Merchandise() {
   const handleOrder = (item) => {
     const subject = `Order Request: ${item.name}`;
     const body = `Dear PCSI Team,\n\nI would like to order: ${item.name}\n\nPlease send me pricing and availability details.\n\nThank you.`;
-    
+
     setContactData({ subject, body });
     setShowContactModal(true);
     setSeeDetail(false);
   };
+
+  if (loading) {
+    return (
+      <div className="bg-accent py-20 space-y-5">
+        <Container>
+          <div className="flex flex-col  gap-5">
+            <h1 className="font-serif text-4xl font-bold ">Merchandise</h1>
+          </div>
+        </Container>
+        <Container className={"w-full"}>
+          <div className="flex items-center justify-center py-20">
+            <p>Loading merchandise...</p>
+          </div>
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-accent py-20 space-y-5">
@@ -104,13 +126,20 @@ export default function Merchandise() {
       </Container>
 
       <Container className={"w-full"}>
+        {items.length === 0 && (
+          <NoData
+            title={"No Merchandise Available"}
+            description={
+              "Check back soon for updates on our latest merchandise."
+            }
+          />
+        )}
         <div className="w-full h-full grid grid-cols-1 md:grid-cols-3 max-w-7xl mx-auto gap-4 relative">
-          {items.length === 0 && <NoData />}
           {items.length > 0 &&
             items.map((item, i) => (
               <MerchandiseCard
                 key={i}
-                image={item.header.props.src}
+                image={item.banner || item.header.props.src}
                 name={item.name}
                 onOrder={() => handleOrder(item)}
                 onSeeDetail={() => handleSeeDetail(item)}
@@ -120,7 +149,11 @@ export default function Merchandise() {
       </Container>
       <Dialog open={seeDetail} onOpenChange={() => setSeeDetail(false)}>
         <DialogContent>
-          <div>{selectedItem?.header}</div>
+          {selectedItem?.banner ? (
+            <div>{selectedItem?.header}</div>
+          ) : (
+            <div className="w-full aspect-video rounded-xl bg-gradient-to-br from-neutral-200 to-neutral-100"></div>
+          )}
           <DialogHeader>
             <DialogTitle className="font-serif text-2xl font-bold ">
               {selectedItem?.name}
@@ -129,10 +162,7 @@ export default function Merchandise() {
           <DialogDescription className={"mb-4"}>
             To purchase, send email to philcolsoc@gmail.com
           </DialogDescription>
-          <Button 
-            variant={"outline"}
-            onClick={() => handleOrder(selectedItem)}
-          >
+          <Button variant={"outline"} onClick={() => handleOrder(selectedItem)}>
             <ShoppingCart className=" h-4 w-4" />
             Order Now
           </Button>

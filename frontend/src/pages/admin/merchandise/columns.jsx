@@ -19,26 +19,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export const vehicleColumns = (onEdit, onUpdateStatus, submitting) => [
-  {
-    accessorKey: "id",
-    header: "Id.",
-    cell: ({ row }) => <div className="">{row.getValue("id")}</div>,
-  },
+export const merchandiseColumns = (onEdit, onUpdateStatus, submitting) => [
   {
     accessorKey: "banner",
     header: "",
     cell: ({ row }) => (
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>CN</AvatarFallback>
+        <AvatarImage src={row.getValue("banner")} />
+        <AvatarFallback></AvatarFallback>
       </Avatar>
     ),
   },
   {
-    accessorKey: "title",
-    header: "Title",
-    cell: ({ row }) => <div className="">{row.getValue("title")}</div>,
+    accessorKey: "name",
+    header: "Name",
+    cell: ({ row }) => <div className="w-52 truncate">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "description",
@@ -46,11 +41,6 @@ export const vehicleColumns = (onEdit, onUpdateStatus, submitting) => [
     cell: ({ row }) => (
       <div className="w-52 truncate">{row.getValue("description")}</div>
     ),
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => <div className="">{row.getValue("date")}</div>,
   },
   {
     accessorKey: "createdAt",
@@ -62,11 +52,11 @@ export const vehicleColumns = (onEdit, onUpdateStatus, submitting) => [
     header: "Status",
     cell: ({ row }) => {
       const [status, setStatus] = useState(row.original.status);
-      const vehicleId = row.original._id;
+      const merchandiseId = row.original._id;
 
       const handleStatusChange = async (newStatus) => {
         setStatus(newStatus);
-        onUpdateStatus({ vehicleId, newStatus });
+        onUpdateStatus({ merchandiseId, newStatus });
       };
 
       return (
@@ -90,11 +80,15 @@ export const vehicleColumns = (onEdit, onUpdateStatus, submitting) => [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const [status, setStatus] = useState(row.original.status);
-      const vehicle = row.original;
+      const status = row.original.status;
+      const merchandise = row.original;
       const handleEdit = (e) => {
         e.stopPropagation();
-        onEdit(vehicle._id);
+        onEdit(merchandise._id);
+      };
+      const handleStatusChange = (e) => {
+        e.stopPropagation();
+        onUpdateStatus({ merchandiseId: merchandise._id, newStatus: status === "Active" ? "0" : "1" });
       };
       return (
         <DropdownMenu>
@@ -111,7 +105,7 @@ export const vehicleColumns = (onEdit, onUpdateStatus, submitting) => [
               Edit
               <Edit />
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleEdit}>
+            <DropdownMenuItem onClick={handleStatusChange}>
               {status === "Active" ? (
                 <>
                   Deactivate
