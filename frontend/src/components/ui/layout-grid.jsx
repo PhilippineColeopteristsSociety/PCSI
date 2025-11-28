@@ -1,4 +1,3 @@
-"use client";;
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -21,9 +20,9 @@ export const LayoutGrid = ({
 
   return (
     <div
-      className="w-full h-full grid grid-cols-1 md:grid-cols-3  max-w-7xl mx-auto gap-4 relative">
+      className="w-full h-full grid grid-cols-1 md:grid-cols-3 max-w-7xl mx-auto gap-4 relative">
       {cards.map((card, i) => (
-        <div key={i} className={cn(card.className, "")}>
+        <div key={i} className={cn(card.className, "min-h-[400px]")}>
           <motion.div
             onClick={() => handleClick(card)}
             className={cn(card.className, "relative overflow-hidden", selected?.id === card.id
@@ -31,6 +30,7 @@ export const LayoutGrid = ({
               : lastSelected?.id === card.id
               ? "z-40 bg-white rounded-xl h-full w-full"
               : "bg-white rounded-xl h-full w-full")}
+            layout
             layoutId={`card-${card.id}`}>
             {selected?.id === card.id && <SelectedCard selected={selected} />}
             <ImageComponent card={card} />
