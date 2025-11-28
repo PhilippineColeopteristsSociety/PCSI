@@ -27,10 +27,11 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import ContactModal from "@/components/forms/contact/ContactModal";
 import merchandiseService from "@/services/merchandiseService";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const Skeleton = () => (
-  <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
-);
+// const Skeleton = () => (
+//   <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
+// );
 
 const Image = ({ src, alt }) => (
   <img src={src} alt={alt} className="w-full h-full object-cover rounded-xl" />
@@ -103,8 +104,8 @@ export default function Merchandise() {
         </Container>
         <Container className={"w-full"}>
           <div className="w-full h-full grid grid-cols-1 md:grid-cols-3 max-w-7xl mx-auto gap-4 relative">
-            {[...Array(6)].map((_, i) => (
-              <Skeleton key={i} className="aspect-square bg-neutral-300 rounded-lg" />
+            {[...Array(5)].map((_, i) => (
+              <Skeleton key={i} className="aspect-square rounded-lg" />
             ))}
           </div>
         </Container>
