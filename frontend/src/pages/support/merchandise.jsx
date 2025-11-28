@@ -104,8 +104,8 @@ export default function Merchandise() {
         </Container>
         <Container className={"w-full"}>
           <div className="w-full h-full grid grid-cols-1 md:grid-cols-3 max-w-7xl mx-auto gap-4 relative">
-            {[...Array(5)].map((_, i) => (
-              <Skeleton key={i} className="aspect-square rounded-lg" />
+            {[...Array(6)].map((_, i) => (
+              <Skeleton key={i} className="aspect-square bg-neutral-300 rounded-lg" />
             ))}
           </div>
         </Container>
