@@ -3,36 +3,56 @@ import path from 'path';
 import cloudinary from '../config/cloudinaryConfig.js';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
-// Configure Cloudinary storage for Multer
+// Cloudinary Storage
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'pcsi', // Folder name on Cloudinary
-    public_id: (req, file) => {
-      // Create custom file name with timestamp and pcsi_image prefix
-      const timestamp = Date.now();
-      const fileName = `${timestamp}_pcsi_image`;
-      return fileName;
-    },
-    allowed_formats: ['jpg', 'jpeg', 'png'], // Only allow these formats
+  cloudinary,
+  params: (req, file) => {
+    const timestamp = Date.now();
+    const baseName = `${timestamp}_pcsi`;
+
+    const isImage = /jpeg|jpg|png/.test(file.mimetype);
+    const isDocument = /pdf|doc|docx/.test(file.mimetype);
+
+    // Decide folder and resource type
+    let folder = "pcsi/others";
+    let resourceType = "auto"; // Changed from "raw" to "auto" for better handling
+
+    if (isImage) {
+      folder = "pcsi/banners";
+      resourceType = "image";
+    }
+
+    if (isDocument) {
+      folder = "pcsi/files";
+      resourceType = "auto"; // Use "auto" for documents to make them viewable
+    }
+
+    return {
+      folder,
+      public_id: baseName,
+      allowed_formats: ["jpg", "jpeg", "png", "pdf", "doc", "docx"],
+      resource_type: resourceType,
+      // For PDFs, add flags to ensure they're viewable in browser
+      ...(file.mimetype === 'application/pdf' && {
+        flags: 'attachment:inline'
+      })
+    };
+  }
+});
+
+// Multer instance
+const upload = multer({
+  storage,
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20 MB
+  fileFilter: (req, file, cb) => {
+    const allowed = /jpeg|jpg|png|pdf|doc|docx/;
+    const extname = allowed.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowed.test(file.mimetype);
+
+    if (mimetype && extname) return cb(null, true);
+
+    cb(new Error("Only jpg, jpeg, png, pdf, doc, docx are allowed."));
   },
 });
 
-// Create multer instance with the storage configuration
-const upload = multer({
-  storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10 MB
-  fileFilter: (req, file, cb) => {
-    // Allow only jpeg, jpg, and png file types
-    const allowedTypes = /jpeg|jpg|png|pdf|doc|docx/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-
-    if (mimetype && extname) {
-      cb(null, true); // File is valid
-    } else {
-      cb(new Error('Only .jpg, .jpeg, .png, .pdf, .doc, and .docx files are allowed!')); // Reject the file
-    }
-  }
-});
 export default upload;
