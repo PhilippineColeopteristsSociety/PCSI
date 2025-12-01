@@ -22,6 +22,15 @@ function SubmitManuscript() {
             Submit Manuscript
           </h2>
         </div>
+
+        <div className="mt-8">
+          {/* New Section: */}
+          <div className="mt-8 space-y-3">
+            <p className="text-lg leading-relaxed">
+              Submit your documents to <u>editor.ajis.pcsi@gmail.com</u>
+            </p>
+          </div>
+        </div>
       </Container>
     </div>
   );

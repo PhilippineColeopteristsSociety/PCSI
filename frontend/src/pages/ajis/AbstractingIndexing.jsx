@@ -22,6 +22,13 @@ function AbstractingIndexing() {
             Abstracting and Indexing
           </h2>
         </div>
+
+        {/* Coming Soon Message */}
+        <div className="text-center mt-12">
+          <h3 className="text-2xl font-semibold text-gray-700">
+            Coming Soon...
+          </h3>
+        </div>
       </Container>
     </div>
   );

@@ -13,6 +13,8 @@ import emailService from "./src/services/emailService.js";
 // Import routes
 import authRoutes from "./src/routes/authRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
+import volumeRoutes from "./src/routes/volumeRoutes.js";
+import articleRoutes from "./src/routes/articleRoutes.js";
 import publicationRoutes from "./src/routes/publicationRoutes.js";
 import announcementRoutes from "./src/routes/announcementRoutes.js";
 import featureRoutes from "./src/routes/featureRoutes.js";
@@ -26,55 +28,55 @@ const app = express();
 connectDB();
 
 // CORS configuration to support multiple origins
-const allowedOrigins = process.env.CLIENT_URLS 
-  ? process.env.CLIENT_URLS.split(',').map(url => url.trim())
-  : [
-      process.env.CLIENT_URL,
-      'http://localhost:3000',
-      'http://localhost:5173',
-    ];
+const allowedOrigins = process.env.CLIENT_URLS
+  ? process.env.CLIENT_URLS.split(",").map((url) => url.trim())
+  : [process.env.CLIENT_URL, "http://localhost:3000", "http://localhost:5173"];
 
 app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps, curl, or Render health checks)
       if (!origin) return callback(null, true);
-      
+
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         // Log the blocked origin for debugging
         console.log(`CORS blocked origin: ${origin}`);
-        console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
+        console.log(`Allowed origins: ${allowedOrigins.join(", ")}`);
         callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-api-key"],
   })
 );
 
 // Only parse JSON/URL-encoded for non-multipart requests
 app.use((req, res, next) => {
-  if (req.is('multipart/form-data')) {
+  if (req.is("multipart/form-data")) {
     return next();
   }
   express.json({ limit: "10mb" })(req, res, next);
 });
 
 app.use((req, res, next) => {
-  if (req.is('multipart/form-data')) {
+  if (req.is("multipart/form-data")) {
     return next();
   }
   express.urlencoded({ extended: true, limit: "10mb" })(req, res, next);
 });
 
 // Test email configuration on startup (only if email is configured)
-if (process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+if (
+  process.env.EMAIL_HOST &&
+  process.env.EMAIL_USER &&
+  process.env.EMAIL_PASS
+) {
   emailService.testEmailConfiguration();
 } else {
-  console.log('Email service: Not configured - skipping email test');
+  console.log("Email service: Not configured - skipping email test");
 }
 
 // Root endpoint
@@ -89,10 +91,12 @@ app.get("/", (req, res) => {
       health: "/api/health",
       auth: "/api/auth",
       users: "/api/users",
+      volumes: "/api/volumes",
+      articles: "/api/articles",
       publications: "/api/publications",
       announcements: "/api/announcements",
-      features: "/api/features"
-    }
+      features: "/api/features",
+    },
   });
 });
 
@@ -106,15 +110,26 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// Apply API key middleware to all other API routes
+// Welcome endpoint (no API key required)
+app.get("/api/welcome", (req, res) => {
+  console.log(`Request received: ${req.method} ${req.path}`);
+  res.status(200).json({
+    success: true,
+    message: "Welcome to the PCSI Backend API",
+  });
+});
+
+// Apply API key middleware to all other API routes except auth
+app.use("/api/auth", authRoutes);
 app.use("/api", validateApiKey);
 
 // Routes
-app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/articles", articleRoutes);
 app.use("/api/publications", publicationRoutes);
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/features", featureRoutes);
+app.use("/api/volumes", volumeRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/merchandise", merchandiseRoutes);

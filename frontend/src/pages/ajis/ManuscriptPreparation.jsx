@@ -1,5 +1,6 @@
 import React from "react";
 import Container from "@/components/common/Container";
+import SubPageHero from "@/components/common/SubPageHero";
 import { images } from "@/constants/images";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -11,8 +12,9 @@ import {
 
 function ManuscriptPreparation() {
   return (
-    <div className="min-h-screen bg-white py-10">
-      <Container>
+    <div className="min-h-screen bg-white">
+      <SubPageHero />
+      <Container className="py-10">
         {/* Main Heading */}
         <div className="mb-12">
           <h1 className="font-serif text-4xl md:text-4xl font-bold mb-2">
@@ -52,7 +54,7 @@ function ManuscriptPreparation() {
           {/* New Section: Copyediting services */}
           <div className="mt-8 space-y-3">
             <h3 className="font-serif text-2xl md:text-2xl font-bold">
-              Copyediting Services
+              Copy-editing Services
             </h3>
             <Separator />
             <p className="text-lg leading-relaxed">
@@ -80,7 +82,7 @@ function ManuscriptPreparation() {
               the species being described in the paper should be in parentheses.
               For example:{" "}
               <b>
-                A new species of the genus Pachyrhynchus Germar, 1824
+                A new species of the genus <i>Pachyrhynchus</i> Germar, 1824
                 (Coleoptera: Curculionidae: Entiminae)
               </b>
               .
@@ -100,12 +102,12 @@ function ManuscriptPreparation() {
               of each author/s must be given followed by the email address and
               ORCID numbers. If one or two authors share the same institutional
               address, a superscript number can be assigned. For example,
-              1Philippine National Museum, Ermita, Manila, Philippines. The
-              superscript number can then be assigned to the upper left corner
-              of the author's name. For example,{" "}
+              <sup>1</sup>Philippine National Museum, Ermita, Manila,
+              Philippines. The superscript number can then be assigned to the
+              upper left corner of the author's name. For example,{" "}
               <b>
-                1Milton Norman D. Medina, 2Jhonnel P. Villegas, and 1Analyn A.
-                Cabras
+                <sup>1</sup>Milton Norman D. Medina, <sup>2</sup>Jhonnel P.
+                Villegas, and <sup>1</sup>Analyn A. Cabras
               </b>
               .
             </p>

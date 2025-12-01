@@ -21,6 +21,10 @@ const ajisItems = [
     title: "About the Journal",
     href: "/ajis/about",
   },
+  // {
+  //   title: "Issues",
+  //   href: "/ajis/issues",
+  // },
   {
     title: "Author Guidelines",
     href: "/ajis/author-guidelines",
@@ -34,16 +38,16 @@ const ajisItems = [
     href: "/ajis/manuscript-preparation",
   },
   {
-    title: "Deposition",
-    href: "/ajis/deposition",
-  },
-  {
     title: "Submission Process",
     href: "/ajis/submission-process",
   },
   {
     title: "Review Process",
     href: "/ajis/review-process",
+  },
+  {
+    title: "Issues",
+    href: "/ajis/issues",
   },
   {
     title: "Abstracting and Indexing",
@@ -96,18 +100,18 @@ function Navigation() {
                   <ul className="w-[200px] gap-1">
                     <li>
                       <NavigationMenuLink asChild>
-                        <Link to="/affiliates">
+                        <Link to="/how-to-be-member">
                           <div className="text-sm leading-none font-medium">
-                            Affiliates
+                            How to be a member?
                           </div>
                         </Link>
                       </NavigationMenuLink>
                     </li>
                     <li>
                       <NavigationMenuLink asChild>
-                        <Link to="/how-to-be-member">
+                        <Link to="/affiliates">
                           <div className="text-sm leading-none font-medium">
-                            How to be a member?
+                            Affiliates
                           </div>
                         </Link>
                       </NavigationMenuLink>

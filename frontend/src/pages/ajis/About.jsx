@@ -1,5 +1,6 @@
 import React from "react";
 import Container from "@/components/common/Container";
+import SubPageHero from "@/components/common/SubPageHero";
 import { images } from "@/constants/images";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -11,8 +12,9 @@ import {
 
 function About() {
   return (
-    <div className="min-h-screen bg-white py-10">
-      <Container>
+    <div className="min-h-screen bg-white">
+      <SubPageHero />
+      <Container className="py-10">
         {/* Main Heading */}
         <div className="mb-12">
           <h1 className="font-serif text-4xl md:text-4xl font-bold mb-2">
