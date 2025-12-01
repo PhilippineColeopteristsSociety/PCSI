@@ -5,9 +5,10 @@ import About from "./pages/ajis/About";
 import AuthorGuidelines from "./pages/ajis/AuthorGuidelines";
 import ManuscriptPreparation from "./pages/ajis/ManuscriptPreparation";
 import EditorialBoard from "./pages/ajis/EditorialBoard";
-import Deposition from "./pages/ajis/Deposition";
 import SubmissionProcess from "./pages/ajis/SubmissionProcess";
 import ReviewProcess from "./pages/ajis/ReviewProcess";
+import Issues from "./pages/ajis/Issues";
+import ArticleDetails from "./pages/ajis/ArticleDetails";
 import AbstractingIndexing from "./pages/ajis/AbstractingIndexing";
 import SubmitManuscript from "./pages/ajis/SubmitManuscript";
 import StrategicInitiatives from "./pages/strategic-initiatives";
@@ -21,6 +22,8 @@ import News from "./pages/news";//news & features page
 // Admin routes
 import AdminLayout from "./layout/admin";
 import AdminDashboard from "./pages/admin";
+import Volumes from "./pages/admin/volumes";
+import Articles from "./pages/admin/articles";
 import Publications from "./pages/admin/publications";
 import Announcements from "./pages/admin/announcements";
 import Merchandise from "./pages/admin/merchandise";
@@ -53,7 +56,6 @@ const routes = createBrowserRouter([
       { path: "/support", Component: Support },
       {
         path: "/ajis",
-        Component: MainLayout,
         children: [
           {
             path: "about",
@@ -72,8 +74,12 @@ const routes = createBrowserRouter([
             Component: EditorialBoard,
           },
           {
-            path: "deposition",
-            Component: Deposition,
+            path: "issues",
+            Component: Issues,
+          },
+          {
+            path: "issues/article/:id",
+            Component: ArticleDetails,
           },
           {
             path: "submission-process",
@@ -121,6 +127,14 @@ const routes = createBrowserRouter([
     children: [
       { index: true, Component: AdminDashboard },
       {
+        path: "volumes",
+        Component: Volumes,
+      },
+      {
+        path: "articles",
+        Component: Articles,
+      },
+      {
         path: "publications",
         Component: Publications,
       },
@@ -141,6 +155,9 @@ const routes = createBrowserRouter([
         Component: UserProfile,
       },
       {
+        path: "volumes",
+        Component: Volumes,
+      },
         path: "news-features",
         Component: AdminNewsAndEvents,
       }

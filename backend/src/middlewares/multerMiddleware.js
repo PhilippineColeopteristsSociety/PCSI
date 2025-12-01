@@ -1,7 +1,7 @@
-import multer from 'multer';
-import path from 'path';
-import cloudinary from '../config/cloudinaryConfig.js';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import multer from "multer";
+import path from "path";
+import cloudinary from "../config/cloudinaryConfig.js";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 // Cloudinary Storage
 const storage = new CloudinaryStorage({
@@ -24,20 +24,25 @@ const storage = new CloudinaryStorage({
 
     if (isDocument) {
       folder = "pcsi/files";
-      resourceType = "auto"; // Use "auto" for documents to make them viewable
+      resourceType = "raw"; // Use "raw" for documents to ensure proper upload
+    }
+
+    // For raw files, preserve the original filename to get proper URLs
+    let publicId = baseName;
+    if (resourceType === "raw") {
+      const ext = path.extname(file.originalname);
+      const nameWithoutExt = path.basename(file.originalname, ext);
+      // Use timestamp + original filename to avoid conflicts
+      publicId = `${timestamp}_${nameWithoutExt}${ext}`;
     }
 
     return {
       folder,
-      public_id: baseName,
+      public_id: publicId,
       allowed_formats: ["jpg", "jpeg", "png", "pdf", "doc", "docx"],
       resource_type: resourceType,
-      // For PDFs, add flags to ensure they're viewable in browser
-      ...(file.mimetype === 'application/pdf' && {
-        flags: 'attachment:inline'
-      })
     };
-  }
+  },
 });
 
 // Multer instance

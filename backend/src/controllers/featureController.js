@@ -62,14 +62,17 @@ const featureController = {
     if (banner) {
       // User uploaded a new banner - replace old one
       updateData.banner = banner;
-    } else if (removeBanner === 'true' || removeBanner === true) {
+    } else if (removeBanner === "true" || removeBanner === true) {
       // User wants to remove the banner
       updateData.banner = null;
       updateData.removeBanner = true;
     }
     // If neither, keep existing banner (don't include banner field)
 
-    const feature = await featureService.updateFeature(req.params.id, updateData);
+    const feature = await featureService.updateFeature(
+      req.params.id,
+      updateData
+    );
     res.status(STATUS_CODES.OK).json({
       success: true,
       message: "Feature updated successfully",
