@@ -1,6 +1,5 @@
 import React from "react";
 import Container from "@/components/common/Container";
-import SubPageHero from "@/components/common/SubPageHero";
 import { images } from "@/constants/images";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -12,9 +11,8 @@ import {
 
 function AbstractingIndexing() {
   return (
-    <div className="min-h-screen bg-white">
-      <SubPageHero />
-      <Container className="py-10">
+    <div className="min-h-screen bg-white py-10">
+      <Container>
         {/* Main Heading */}
         <div className="mb-12">
           <h1 className="font-serif text-4xl md:text-4xl font-bold mb-2">
@@ -25,15 +23,11 @@ function AbstractingIndexing() {
           </h2>
         </div>
 
-        {/* Coming Soon Section */}
-        <div className="mt-8 space-y-3">
-          <h3 className="font-serif text-2xl md:text-2xl font-bold">
-            Coming Soon
+        {/* Coming Soon Message */}
+        <div className="text-center mt-12">
+          <h3 className="text-2xl font-semibold text-gray-700">
+            Coming Soon...
           </h3>
-          <Separator />
-          <p className="text-lg leading-relaxed">
-            Abstracting and indexing information will be available soon.
-          </p>
         </div>
       </Container>
     </div>

@@ -21,12 +21,15 @@ const EMAIL_TEMPLATES = {
 // API response messages
 const MESSAGES = {
   // Auth messages
-  REGISTER_SUCCESS: "User registered successfully. Please verify your email.",
-  LOGIN_SUCCESS: "Login successful",
-  LOGOUT_SUCCESS: "Logout successful",
-  EMAIL_VERIFIED: "Email verified successfully",
-  PASSWORD_RESET_SENT: "Password reset email sent",
-  PASSWORD_RESET_SUCCESS: "Password reset successful",
+  REGISTER_SUCCESS: 'User registered successfully. Please verify your email.',
+  LOGIN_SUCCESS: 'Login successful',
+  LOGOUT_SUCCESS: 'Logout successful',
+  EMAIL_VERIFIED: 'Email verified successfully',
+  PASSWORD_RESET_SENT: 'Password reset email sent',
+  PASSWORD_RESET_SUCCESS: 'Password reset successful',
+  OTP_VALIDATED: 'OTP validated successfully',
+  OTP_VERIFIED: 'OTP verified successfully',
+  INVALID_OTP: 'Invalid OTP code',
 
   // Error messages
   INVALID_CREDENTIALS: "Invalid email or password",

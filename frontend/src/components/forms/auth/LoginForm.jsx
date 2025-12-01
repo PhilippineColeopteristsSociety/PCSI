@@ -45,7 +45,7 @@ export default function LoginForm({ className, ...props }) {
       const result = await login(data);
       if (!result.success) {
    
-        toast.error(result.error);
+        setLoginError(result.error);
       }
 
       // If successful, AuthContext will handle the redirect
@@ -147,7 +147,7 @@ export default function LoginForm({ className, ...props }) {
 
             <div className="ml-auto">
               <a
-                href="#"
+                href="/admin/auth/forgot-password"
                 className="ml-auto text-sm underline-offset-4 hover:underline"
               >
                 Forgot your password?

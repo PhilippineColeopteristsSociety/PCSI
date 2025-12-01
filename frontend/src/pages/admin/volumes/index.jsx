@@ -2,10 +2,10 @@ import Header from "@/components/common/Header";
 import React, { useState, useEffect } from "react";
 import DataTable from "./table";
 import { volumeColumns } from "./columns";
-import VolumeForm from "@/components/forms/volume/VolumeForm";
+import VolumeForm from "@/components/forms/volumes/VolumeForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VolumeSchema } from "@/components/forms/volume/schema";
+import { VolumeSchema } from "@/components/forms/volumes/schema";
 import volumeService from "@/services/volumeService";
 import { toast } from "sonner";
 import { formatDate } from "@/util/formatDate";
@@ -18,9 +18,9 @@ const statusMap = {
 const Volumes = () => {
   const [showForm, setShowForm] = useState(false);
   const [formTitle, setFormTitle] = useState("");
-  const [currentData, setCurrentData] = useState(null);
+  const [currentData, setCurrentData] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [volumes, setVolumes] = useState([]);
+  const [volumes, setVolumes] = useState("");
   const [loading, setLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState({});
 
@@ -31,7 +31,7 @@ const Volumes = () => {
       seriesNo: "",
       month: "",
       year: "",
-      doiLink: "",
+      doi: "",
       status: "1",
     },
   });
@@ -41,13 +41,10 @@ const Volumes = () => {
     try {
       const result = await volumeService.getVolumes();
       if (result.success) {
-        const data = result?.data?.data?.map((volume) => ({
+        const data = result?.data?.map((volume) => ({
           ...volume,
-          status: statusMap[volume.status],
+          status: statusMap[Number(volume.status)],
           createdAt: formatDate(volume.createdAt),
-          publishedDate: volume.publishedDate
-            ? formatDate(volume.publishedDate)
-            : null,
         }));
 
         setVolumes(data || []);
@@ -62,7 +59,7 @@ const Volumes = () => {
     }
   };
 
-  // Fetch volumes on component mount
+  // Fetch publications on component mount
   useEffect(() => {
     fetchVolumes();
   }, []);
@@ -70,6 +67,7 @@ const Volumes = () => {
   const handleUpdateStatus = async ({ volumeId, newStatus }) => {
     const promise = async () => {
       setSubmitting(true);
+      // console.log(publicationId);
       try {
         const result = await volumeService.toggleVolumeStatus(
           volumeId,
@@ -87,22 +85,27 @@ const Volumes = () => {
 
     toast.promise(promise(), {
       loading: "Updating Status...",
-      success: "Volume status updated successfully",
+      success: `Volume status updated`,
       error: (error) => error.message || "Failed to update volume status",
     });
   };
 
-  const handleEdit = (volume) => {
+  const handleEdit = (volumeId) => {
+    // Find the publication data by ID
+    const volume = volumes.find((volume) => volume._id === volumeId);
+    if (!volume) return;
+
     setShowForm(true);
     setFormTitle("Edit Volume");
     setCurrentData(volume);
+
     // Populate form with existing data
     form.reset({
       volumeNo: volume.volumeNo || "",
       seriesNo: volume.seriesNo || "",
       month: volume.month || "",
-      year: volume.year?.toString() || "",
-      doiLink: volume.doiLink || "",
+      year: volume.year || "",
+      doi: volume.doi || "",
       status: volume.status === "Active" ? "1" : "0",
     });
   };
@@ -115,9 +118,10 @@ const Volumes = () => {
     form.reset({
       volumeNo: "",
       seriesNo: "",
+      date: "",
       month: "",
       year: "",
-      doiLink: "",
+      doi: "",
       status: "1",
     });
   };
@@ -128,24 +132,37 @@ const Volumes = () => {
       let result;
 
       if (currentData) {
-        // Update existing volume
-        result = await volumeService.updateVolume(currentData._id, {
+        // Update existing publication
+        const updateData = {
           volumeNo: data.volumeNo,
           seriesNo: data.seriesNo,
           month: data.month,
-          year: parseInt(data.year),
-          doiLink: data.doiLink || null,
+          year: data.year,
+          doi: data.doi,
           status: data.status,
-        });
+        };
+
+        // Handle banner based on user action
+        if (data.image) {
+          // User uploaded a new banner - replace old one
+          updateData.image = data.image;
+        } else if (data.removeBanner) {
+          // User clicked X to remove banner - set to null
+          updateData.removeBanner = true;
+        }
+        // If neither, keep existing banner (don't send banner field)
+
+        result = await volumeService.updateVolume(currentData._id, updateData);
       } else {
-        // Create new volume
+        // Create new publication
         result = await volumeService.createVolume({
           volumeNo: data.volumeNo,
           seriesNo: data.seriesNo,
           month: data.month,
-          year: parseInt(data.year),
-          doiLink: data.doiLink || null,
+          year: data.year,
+          doi: data.doi,
           status: data.status,
+          image: data.image,
         });
       }
 
@@ -180,18 +197,11 @@ const Volumes = () => {
         <DataTable
           data={volumes}
           onAdd={() => handleAdd()}
-          onEdit={(volume) => handleEdit(volume)}
+          onEdit={(data) => handleEdit(data)}
           onUpdateStatus={handleUpdateStatus}
           submitting={submitting}
           loading={loading}
-          filters={[
-            "volumeNo",
-            "seriesNo",
-            "month",
-            "year",
-            "createdAt",
-            "status",
-          ]}
+          filters={["volumeNo", "seriesNo", "createdAt", "status"]}
           tableColumn={volumeColumns}
         />
       </div>

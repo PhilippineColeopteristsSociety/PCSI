@@ -46,6 +46,10 @@ const ajisItems = [
     href: "/ajis/review-process",
   },
   {
+    title: "Issues",
+    href: "/ajis/issues",
+  },
+  {
     title: "Abstracting and Indexing",
     href: "/ajis/abstracting-indexing",
   },

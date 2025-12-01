@@ -1,13 +1,14 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import Home from "./pages/home";
 import MainLayout from "./layout/main";
 import About from "./pages/ajis/About";
 import AuthorGuidelines from "./pages/ajis/AuthorGuidelines";
 import ManuscriptPreparation from "./pages/ajis/ManuscriptPreparation";
 import EditorialBoard from "./pages/ajis/EditorialBoard";
-import Issues from "./pages/ajis/Issues";
 import SubmissionProcess from "./pages/ajis/SubmissionProcess";
 import ReviewProcess from "./pages/ajis/ReviewProcess";
+import Issues from "./pages/ajis/Issues";
+import ArticleDetails from "./pages/ajis/ArticleDetails";
 import AbstractingIndexing from "./pages/ajis/AbstractingIndexing";
 import SubmitManuscript from "./pages/ajis/SubmitManuscript";
 import StrategicInitiatives from "./pages/strategic-initiatives";
@@ -20,6 +21,8 @@ import AnnouncementsPage from "./pages/announcements";
 // Admin routes
 import AdminLayout from "./layout/admin";
 import AdminDashboard from "./pages/admin";
+import Volumes from "./pages/admin/volumes";
+import Articles from "./pages/admin/articles";
 import Publications from "./pages/admin/publications";
 import Announcements from "./pages/admin/announcements";
 import Merchandise from "./pages/admin/merchandise";
@@ -38,6 +41,8 @@ import ErrorPage from "./pages/errors/ErrorPage";
 // Auth components
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PublicRoute from "./components/auth/PublicRoute";
+import ForgotPassword from "./pages/admin/auth/ForgotPassword";
+import ResetPassword from "./pages/admin/auth/ResetPassword";
 
 const routes = createBrowserRouter([
   {
@@ -70,6 +75,10 @@ const routes = createBrowserRouter([
           {
             path: "issues",
             Component: Issues,
+          },
+          {
+            path: "issues/article/:id",
+            Component: ArticleDetails,
           },
           {
             path: "submission-process",
@@ -113,6 +122,14 @@ const routes = createBrowserRouter([
     children: [
       { index: true, Component: AdminDashboard },
       {
+        path: "volumes",
+        Component: Volumes,
+      },
+      {
+        path: "articles",
+        Component: Articles,
+      },
+      {
         path: "publications",
         Component: Publications,
       },
@@ -145,7 +162,12 @@ const routes = createBrowserRouter([
         <AuthLayout />
       </PublicRoute>
     ),
-    children: [{ path: "login", Component: Login }],
+    children: [
+      { index: true, element: <Navigate to="/admin/auth/login" replace /> },
+      { path: "login", Component: Login },
+      { path: "forgot-password", Component: ForgotPassword },
+      { path: "reset-password", Component: ResetPassword },
+    ],
   },
   // Error routes
   {

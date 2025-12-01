@@ -94,6 +94,34 @@ const validatePublication = [
   body("title").notEmpty().withMessage("Title is required"),
   body("description").notEmpty().withMessage("Description is required"),
   handleValidationErrors,
+  body("removeBanner")
+    .optional()
+    .isBoolean()
+    .withMessage("Remove banner must be a boolean"),
+];
+const validateVolume = [
+  body("volumeNo").notEmpty().withMessage("Volume No. is required"),
+  body("seriesNo").notEmpty().withMessage("Series No. is required"),
+  body("month").notEmpty().withMessage("Month is required"),
+  body("year").notEmpty().withMessage("Year is required"),
+  body("doi").notEmpty().withMessage("DOI is required"),
+  handleValidationErrors,
+  body("removeBanner")
+    .optional()
+    .isBoolean()
+    .withMessage("Remove banner must be a boolean"),
+];
+const validateArticle = [
+  body("volumeNo").notEmpty().withMessage("Volume No. is required"),
+  body("seriesNo").notEmpty().withMessage("Series No. is required"),
+  body("month").notEmpty().withMessage("Month is required"),
+  body("year").notEmpty().withMessage("Year is required"),
+  body("doi").notEmpty().withMessage("DOI is required"),
+  handleValidationErrors,
+  body("removeBanner")
+    .optional()
+    .isBoolean()
+    .withMessage("Remove banner must be a boolean"),
 ];
 const validateAnnouncement = [
   body("title").notEmpty().withMessage("Title is required"),
@@ -142,9 +170,10 @@ export {
   validatePasswordReset,
   validateProfileUpdate,
   validateRefreshToken,
+  validateVolume,
+  validateArticle,
   validatePublication,
   validateAnnouncement,
   validateFeature,
-  validateVolume,
   handleValidationErrors,
 };

@@ -59,3 +59,9 @@ export const passwordChangeSchema = z.object({
     message: "Passwords do not match",
     path: ["confirmPassword"]
 });
+export const otpSchema = z.object({
+  otp: z
+    .string()
+    .min(6, "OTP must be 6 characters long")
+    .max(6, "OTP must be 6 characters long"),
+});

@@ -69,7 +69,7 @@ const Announcements = () => {
           newStatus
         );
         await fetchAnnouncements();
-        return result;
+        // return result;
       } catch (error) {
         console.log(error);
         throw error;

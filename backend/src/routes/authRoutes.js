@@ -18,8 +18,9 @@ router.post('/logout', validateRefreshToken, authController.logout);
 router.post('/refresh', validateRefreshToken, authController.refreshToken);
 router.get('/verify-email/:token', authController.verifyEmail);
 router.post('/forgot-password', validatePasswordResetRequest, authController.requestPasswordReset);
+router.post('/validate-otp', authController.validateOTP);
 router.post('/reset-password/:token', validatePasswordReset, authController.resetPassword);
-
+router.post('/send-change-email-otp', authController.sendChangeEmailOTP);
 // Protected routes (authentication required)
 router.get('/me', verifyToken, authController.getMe);
 

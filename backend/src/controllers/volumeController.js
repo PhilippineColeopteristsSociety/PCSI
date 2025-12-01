@@ -1,70 +1,114 @@
-import volumeService from "../services/volumeService.js";
 import { asyncHandler } from "../middlewares/errorHandler.js";
+import volumeService from "../services/volumeService.js";
 import { STATUS_CODES } from "../utils/constants.js";
 
 const volumeController = {
-  // Get all volumes
-  getAllVolumes: asyncHandler(async (req, res) => {
-    const volumes = await volumeService.getAllVolumes();
-
-    res.status(STATUS_CODES.OK).json({
-      success: true,
-      data: {
-        volumes,
-      },
-    });
-  }),
-
-  // Get volume by ID
-  getVolumeById: asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const volume = await volumeService.getVolumeById(id);
-
-    res.status(STATUS_CODES.OK).json({
-      success: true,
-      data: {
-        volume,
-      },
-    });
-  }),
-
-  // Create new volume
   createVolume: asyncHandler(async (req, res) => {
-    const volumeData = req.body;
-    const volume = await volumeService.createVolume(volumeData);
+    const { volumeNo, seriesNo, month, year, doi } = req.body;
+    const banner = req.file ? req.file.path : null;
 
+    const volume = await volumeService.createVolume(
+      volumeNo,
+      seriesNo,
+      month,
+      year,
+      doi,
+      banner
+    );
     res.status(STATUS_CODES.CREATED).json({
       success: true,
       message: "Volume created successfully",
-      data: {
-        volume,
-      },
+      data: volume,
     });
   }),
 
-  // Update volume
+  getVolumes: asyncHandler(async (req, res) => {
+    const { limit, status, ...otherFilters } = req.query;
+
+    // Build filters object
+    const filters = {};
+    if (status) filters.status = status;
+
+    // Add other filters dynamically
+    Object.keys(otherFilters).forEach((key) => {
+      if (otherFilters[key] !== undefined && otherFilters[key] !== "") {
+        filters[key] = otherFilters[key];
+      }
+    });
+
+    const volumes = await volumeService.getVolumes(limit, filters);
+
+    res.status(STATUS_CODES.OK).json({
+      success: true,
+      message: "Volumes fetched successfully",
+      data: volumes,
+      count: volumes.length,
+      limit: limit ? parseInt(limit) : null,
+      filters: filters,
+    });
+  }),
+
+  getVolume: asyncHandler(async (req, res) => {
+    const volume = await volumeService.getVolume(req.params.id);
+    res.status(STATUS_CODES.OK).json({
+      success: true,
+      message: "Volume fetched successfully",
+      data: volume,
+    });
+  }),
+
   updateVolume: asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const updateData = req.body;
-    const volume = await volumeService.updateVolume(id, updateData);
+    const { volumeNo, seriesNo, month, year, doi, removeBanner } = req.body;
+    const banner = req.file ? req.file.path : null;
 
-    res.status(STATUS_CODES.OK).json({
-      success: true,
-      message: "Volume updated successfully",
-      data: {
-        volume,
-      },
-    });
+    const updateData = {
+      volumeNo,
+      seriesNo,
+      month,
+      year,
+      doi,
+    };
+
+    // Handle banner updates
+    if (banner) {
+      updateData.banner = banner;
+    } else if (removeBanner === "true" || removeBanner === true) {
+      updateData.banner = null;
+      updateData.removeBanner = true;
+    }
+
+    try {
+      const volume = await volumeService.updateVolume(
+        req.params.id,
+        updateData
+      );
+      res.status(STATUS_CODES.OK).json({
+        success: true,
+        message: "Volume updated successfully",
+        data: volume,
+      });
+    } catch (error) {
+      if (error.message.includes("already exists")) {
+        res.status(400).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        throw error;
+      }
+    }
   }),
 
-  // Delete volume
-  deleteVolume: asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    await volumeService.deleteVolume(id);
-
+  toggleVolumeStatus: asyncHandler(async (req, res) => {
+    const { status } = req.body;
+    const volume = await volumeService.toggleVolumeStatus(
+      req.params.id,
+      status
+    );
     res.status(STATUS_CODES.OK).json({
       success: true,
-      message: "Volume deleted successfully",
+      message: "Volume status updated successfully",
+      data: volume,
     });
   }),
 };

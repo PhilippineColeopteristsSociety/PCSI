@@ -43,7 +43,6 @@ const Feature = () => {
           status: statusMap[feature.status],
           createdAt: formatDate(feature.createdAt),
         }));
-        console.log(data);
 
         setFeatures(data || []);
       } else {
@@ -62,12 +61,12 @@ const Feature = () => {
     fetchFeatures();
   }, []);
 
-  const handleUpdateStatus = async ({ vehicleId, newStatus }) => {
+  const handleUpdateStatus = async ({ featureId, newStatus }) => {
     const promise = async () => {
       setSubmitting(true);
       try {
         const result = await featureService.toggleFeatureStatus(
-          vehicleId,
+          featureId,
           newStatus
         );
         await fetchFeatures();

@@ -13,6 +13,8 @@ import emailService from "./src/services/emailService.js";
 // Import routes
 import authRoutes from "./src/routes/authRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
+import volumeRoutes from "./src/routes/volumeRoutes.js";
+import articleRoutes from "./src/routes/articleRoutes.js";
 import publicationRoutes from "./src/routes/publicationRoutes.js";
 import announcementRoutes from "./src/routes/announcementRoutes.js";
 import featureRoutes from "./src/routes/featureRoutes.js";
@@ -87,10 +89,11 @@ app.get("/", (req, res) => {
       health: "/api/health",
       auth: "/api/auth",
       users: "/api/users",
+      volumes: "/api/volumes",
+      articles: "/api/articles",
       publications: "/api/publications",
       announcements: "/api/announcements",
       features: "/api/features",
-      volumes: "/api/volumes",
     },
   });
 });
@@ -120,6 +123,8 @@ app.use("/api", validateApiKey);
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/volumes", volumeRoutes);
+app.use("/api/articles", articleRoutes);
 app.use("/api/publications", publicationRoutes);
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/features", featureRoutes);

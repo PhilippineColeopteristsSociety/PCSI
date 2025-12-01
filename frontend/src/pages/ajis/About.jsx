@@ -75,8 +75,8 @@ function About() {
           <Separator />
           <p className="text-lg leading-relaxed">
             <i>Asian Journal of Insect Science</i> follows the Single-Blind peer
-            review process, where both the referee and the author remain
-            anonymous throughout the review process.
+            review process, where the referee remains anonymous throughout the
+            review process.
           </p>
         </div>
 
@@ -134,7 +134,7 @@ function About() {
                   prejudice, or conflicts of interest. Reviewers having a
                   potential conflict of interest with the authors must inform
                   the editor and decline to review the manuscript. Although the
-                  journal follows a double-blind review process, we respect
+                  journal follows a single-blind review process, we respect
                   reviewers if they prefer their identity to be known.
                 </p>
               </AccordionContent>

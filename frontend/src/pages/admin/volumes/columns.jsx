@@ -21,53 +21,49 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const volumeColumns = (onEdit, onUpdateStatus, submitting) => [
   {
-    accessorKey: "volumeCoverImage",
+    accessorKey: "banner",
     header: "",
     cell: ({ row }) => (
       <Avatar>
-        <AvatarImage src={row.getValue("volumeCoverImage")} />
-        <AvatarFallback>VC</AvatarFallback>
+        <AvatarImage src={row.getValue("banner")} />
+        <AvatarFallback>CN</AvatarFallback>
       </Avatar>
     ),
   },
   {
     accessorKey: "volumeNo",
-    header: "Volume No",
-    cell: ({ row }) => <div className="">{row.getValue("volumeNo")}</div>,
+    header: "Volume No.",
+    cell: ({ row }) => (
+      <div className="w-10 truncate">{row.getValue("volumeNo")}</div>
+    ),
   },
   {
     accessorKey: "seriesNo",
-    header: "Series No",
-    cell: ({ row }) => <div className="">{row.getValue("seriesNo")}</div>,
+    header: "Series No.",
+    cell: ({ row }) => (
+      <div className="w-10 truncate">{row.getValue("seriesNo")}</div>
+    ),
   },
   {
     accessorKey: "month",
     header: "Month",
-    cell: ({ row }) => <div className="">{row.getValue("month")}</div>,
+    cell: ({ row }) => (
+      <div className="w-20 truncate">{row.getValue("month")}</div>
+    ),
   },
   {
     accessorKey: "year",
     header: "Year",
-    cell: ({ row }) => <div className="">{row.getValue("year")}</div>,
+    cell: ({ row }) => (
+      <div className="w-10 truncate">{row.getValue("year")}</div>
+    ),
   },
   {
-    accessorKey: "doiLink",
-    header: "DOI Link",
-    cell: ({ row }) => {
-      const doiLink = row.getValue("doiLink");
-      return doiLink ? (
-        <a
-          href={doiLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:underline"
-        >
-          {doiLink.length > 30 ? `${doiLink.substring(0, 30)}...` : doiLink}
-        </a>
-      ) : (
-        <span className="text-gray-400">N/A</span>
-      );
-    },
+    accessorKey: "doi",
+    header: "DOI",
+    cell: ({ row }) => (
+      <div className="w-52 truncate">{row.getValue("doi")}</div>
+    ),
   },
   {
     accessorKey: "createdAt",
@@ -90,10 +86,12 @@ export const volumeColumns = (onEdit, onUpdateStatus, submitting) => [
         <div>
           {status === "Active" ? (
             <span className="flex border text-sm border-green-600 bg-green-100 text-green-600 rounded-sm py-1 px-2 items-center gap-2 w-min">
-              <CheckCircle2Icon size={15} /> Active
+              {" "}
+              <CheckCircle2Icon size={15} /> Active{" "}
             </span>
           ) : (
             <span className="flex border text-sm border-red-500 text-red-500 bg-red-100 rounded-sm py-1 px-2 items-center gap-2 w-min">
+              {" "}
               <CircleAlert size={15} /> Inactive
             </span>
           )}
@@ -106,15 +104,16 @@ export const volumeColumns = (onEdit, onUpdateStatus, submitting) => [
     enableHiding: false,
     cell: ({ row }) => {
       const status = row.original.status;
-      const volume = row.original;
+      const publication = row.original;
+
       const handleEdit = (e) => {
         e.stopPropagation();
-        onEdit(volume);
+        onEdit(publication._id);
       };
       const handleStatusChange = (e) => {
         e.stopPropagation();
         onUpdateStatus({
-          volumeId: volume._id,
+          volumeId: publication._id,
           newStatus: status === "Active" ? "0" : "1",
         });
       };
