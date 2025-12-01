@@ -21,10 +21,10 @@ const ajisItems = [
     title: "About the Journal",
     href: "/ajis/about",
   },
-  {
-    title: "Issues",
-    href: "/ajis/issues",
-  },
+  // {
+  //   title: "Issues",
+  //   href: "/ajis/issues",
+  // },
   {
     title: "Author Guidelines",
     href: "/ajis/author-guidelines",

@@ -18,7 +18,6 @@ import articleRoutes from "./src/routes/articleRoutes.js";
 import publicationRoutes from "./src/routes/publicationRoutes.js";
 import announcementRoutes from "./src/routes/announcementRoutes.js";
 import featureRoutes from "./src/routes/featureRoutes.js";
-import volumeRoutes from "./src/routes/volumeRoutes.js";
 
 const app = express();
 
@@ -123,7 +122,6 @@ app.use("/api", validateApiKey);
 
 // Routes
 app.use("/api/users", userRoutes);
-app.use("/api/volumes", volumeRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/publications", publicationRoutes);
 app.use("/api/announcements", announcementRoutes);

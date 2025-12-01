@@ -28,7 +28,6 @@ import Announcements from "./pages/admin/announcements";
 import Merchandise from "./pages/admin/merchandise";
 import Feature from "./pages/admin/feature";
 import UserProfile from "./pages/admin/user";
-import Volumes from "./pages/admin/volumes";
 
 //auth routes
 import AuthLayout from "./layout/auth";
