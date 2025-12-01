@@ -1,12 +1,12 @@
 import Header from "@/components/common/Header";
 import React, { useState, useEffect } from "react";
 import DataTable from "./table";
-import { volumeColumns } from "./columns";
-import VolumeForm from "@/components/forms/volumes/VolumeForm";
+import { articleColumns } from "./columns";
+import ArticleForm from "@/components/forms/articles/ArticleForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VolumeSchema } from "@/components/forms/volumes/schema";
-import volumeService from "@/services/volumeService";
+import { ArticleSchema } from "@/components/forms/articles/schema";
+import articleService from "@/services/articleService";
 import { toast } from "sonner";
 import { formatDate } from "@/util/formatDate";
 
@@ -15,45 +15,61 @@ const statusMap = {
   0: "Inactive",
 };
 
-const Volumes = () => {
+const Articles = () => {
   const [showForm, setShowForm] = useState(false);
   const [formTitle, setFormTitle] = useState("");
   const [currentData, setCurrentData] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [volumes, setVolumes] = useState("");
+
+  const [articles, setArticles] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState({});
 
   const form = useForm({
-    resolver: zodResolver(VolumeSchema),
+    resolver: zodResolver(ArticleSchema),
     defaultValues: {
       volumeNo: "",
       seriesNo: "",
       month: "",
       year: "",
+      title: "",
+      abstract: "",
       doi: "",
+      pageRange: "",
       status: "1",
+      authors: [
+        {
+          firstname: "",
+          middlename: "",
+          lastname: "",
+          department: "",
+          school: "",
+          city: "",
+          country: "",
+        },
+      ],
     },
   });
 
-  const fetchVolumes = async () => {
+  const fetchArticles = async () => {
     setLoading(true);
     try {
-      const result = await volumeService.getVolumes();
+      const result = await articleService.getArticles();
       if (result.success) {
-        const data = result?.data?.map((volume) => ({
-          ...volume,
-          status: statusMap[Number(volume.status)],
-          createdAt: formatDate(volume.createdAt),
+        const data = result?.data?.map((article) => ({
+          ...article,
+          status: statusMap[Number(article.status)],
+          createdAt: formatDate(article.createdAt),
         }));
 
-        setVolumes(data || []);
+        setArticles(data || []);
       } else {
-        toast.error(result.error || "Failed to fetch volumes");
+        toast.error(result.error || "Failed to fetch articles");
       }
     } catch (error) {
-      console.error("Error fetching volumes:", error);
-      toast.error("Failed to fetch volumes");
+      console.error("Error fetching articles:", error);
+      toast.error("Failed to fetch articles");
     } finally {
       setLoading(false);
     }
@@ -61,7 +77,7 @@ const Volumes = () => {
 
   // Fetch articles on component mount
   useEffect(() => {
-    fetchVolumes();
+    fetchArticles();
   }, []);
 
   const handleUpdateStatus = async ({ volumeId, newStatus }) => {
@@ -69,11 +85,11 @@ const Volumes = () => {
       setSubmitting(true);
       // console.log(publicationId);
       try {
-        const result = await volumeService.toggleVolumeStatus(
+        const result = await articleService.toggleArticleStatus(
           volumeId,
           newStatus
         );
-        await fetchVolumes();
+        await fetchArticles();
         return result;
       } catch (error) {
         console.log(error);
@@ -85,28 +101,43 @@ const Volumes = () => {
 
     toast.promise(promise(), {
       loading: "Updating Status...",
-      success: `Volume status updated`,
-      error: (error) => error.message || "Failed to update volume status",
+      success: `Article status updated`,
+      error: (error) => error.message || "Failed to update article status",
     });
   };
 
   const handleEdit = (volumeId) => {
-    // Find the publication data by ID
-    const volume = volumes.find((volume) => volume._id === volumeId);
-    if (!volume) return;
+    // Find the article data by ID
+    const article = articles.find((article) => article._id === volumeId);
+    if (!article) return;
 
     setShowForm(true);
-    setFormTitle("Edit Volume");
-    setCurrentData(volume);
+    setFormTitle("Edit Article");
+    setCurrentData(article);
 
     // Populate form with existing data
     form.reset({
-      volumeNo: volume.volumeNo || "",
-      seriesNo: volume.seriesNo || "",
-      month: volume.month || "",
-      year: volume.year || "",
-      doi: volume.doi || "",
-      status: volume.status === "Active" ? "1" : "0",
+      volumeNo: article.volumeNo || "",
+      seriesNo: article.seriesNo || "",
+      month: article.month || "",
+      year: article.year ? article.year.toString() : "",
+      title: article.title || "",
+      abstract: article.abstract || "",
+      keywords: article.keywords ? article.keywords.join(", ") : "",
+      doi: article.doi || "",
+      pageRange: article.pageRange || "",
+      authors: article.authors || [
+        {
+          firstname: "",
+          middlename: "",
+          lastname: "",
+          department: "",
+          school: "",
+          city: "",
+          country: "",
+        },
+      ],
+      status: article.status === "Active" ? "1" : "0",
     });
   };
 
@@ -118,11 +149,24 @@ const Volumes = () => {
     form.reset({
       volumeNo: "",
       seriesNo: "",
-      date: "",
       month: "",
       year: "",
+      title: "",
+      abstract: "",
       doi: "",
+      pageRange: "",
       status: "1",
+      authors: [
+        {
+          firstname: "",
+          middlename: "",
+          lastname: "",
+          department: "",
+          school: "",
+          city: "",
+          country: "",
+        },
+      ],
     });
   };
 
@@ -138,7 +182,14 @@ const Volumes = () => {
           seriesNo: data.seriesNo,
           month: data.month,
           year: data.year,
+          title: data.title,
+          abstract: data.abstract,
+          keywords: data.keywords
+            ? data.keywords.split(",").map((k) => k.trim())
+            : [],
           doi: data.doi,
+          pageRange: data.pageRange,
+          authors: data.authors,
           status: data.status,
         };
 
@@ -152,25 +203,46 @@ const Volumes = () => {
         }
         // If neither, keep existing banner (don't send banner field)
 
-        result = await volumeService.updateVolume(currentData._id, updateData);
+        // Handle PDF file based on user action
+        if (data.pdfFile) {
+          // User uploaded a new PDF file - replace old one
+          updateData.pdfFile = data.pdfFile;
+        } else if (data.removePdfFile) {
+          // User clicked X to remove PDF file - set to null
+          updateData.removePdfFile = true;
+        }
+        // If neither, keep existing PDF file (don't send pdfFile field)
+
+        result = await articleService.updateArticle(
+          currentData._id,
+          updateData
+        );
       } else {
-        // Create new publication
-        result = await volumeService.createVolume({
+        // Create new article
+        result = await articleService.createArticle({
           volumeNo: data.volumeNo,
           seriesNo: data.seriesNo,
           month: data.month,
           year: data.year,
+          title: data.title,
+          abstract: data.abstract,
+          keywords: data.keywords
+            ? data.keywords.split(",").map((k) => k.trim())
+            : [],
           doi: data.doi,
+          pageRange: data.pageRange,
+          authors: data.authors,
           status: data.status,
           image: data.image,
+          pdfFile: data.pdfFile,
         });
       }
 
       if (result.success) {
         toast.success(
           currentData
-            ? "Volume updated successfully!"
-            : "Volume created successfully!"
+            ? "Article updated successfully!"
+            : "Article created successfully!"
         );
 
         // Close form and reset
@@ -178,9 +250,9 @@ const Volumes = () => {
         form.reset();
 
         // Refresh the data
-        fetchVolumes();
+        fetchArticles();
       } else {
-        toast.error(result.error || "Failed to save volume");
+        toast.error(result.error || "Failed to save article");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -195,17 +267,17 @@ const Volumes = () => {
       <Header>Articles</Header>
       <div>
         <DataTable
-          data={volumes}
+          data={articles}
           onAdd={() => handleAdd()}
           onEdit={(data) => handleEdit(data)}
           onUpdateStatus={handleUpdateStatus}
           submitting={submitting}
           loading={loading}
           filters={["volumeNo", "seriesNo", "createdAt", "status"]}
-          tableColumn={volumeColumns}
+          tableColumn={articleColumns}
         />
       </div>
-      <VolumeForm
+      <ArticleForm
         open={showForm}
         onOpenChange={setShowForm}
         data={currentData}
@@ -219,4 +291,4 @@ const Volumes = () => {
   );
 };
 
-export default Volumes;
+export default Articles;

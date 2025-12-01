@@ -8,6 +8,7 @@ import EditorialBoard from "./pages/ajis/EditorialBoard";
 import SubmissionProcess from "./pages/ajis/SubmissionProcess";
 import ReviewProcess from "./pages/ajis/ReviewProcess";
 import Issues from "./pages/ajis/Issues";
+import ArticleDetails from "./pages/ajis/ArticleDetails";
 import AbstractingIndexing from "./pages/ajis/AbstractingIndexing";
 import SubmitManuscript from "./pages/ajis/SubmitManuscript";
 import StrategicInitiatives from "./pages/strategic-initiatives";
@@ -73,6 +74,10 @@ const routes = createBrowserRouter([
           {
             path: "issues",
             Component: Issues,
+          },
+          {
+            path: "issues/article/:id",
+            Component: ArticleDetails,
           },
           {
             path: "submission-process",

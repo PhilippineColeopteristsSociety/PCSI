@@ -30,11 +30,33 @@ const articleSchema = new mongoose.Schema(
       },
     },
 
+    title: {
+      type: String,
+      required: [true, "Title is required"],
+      trim: true,
+    },
+
     doi: {
       type: String,
-      required: [true, "DOI is required"],
+      default: "",
       trim: true,
-      unique: true,
+    },
+
+    pageRange: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    abstract: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    keywords: {
+      type: [String],
+      default: [],
     },
 
     banner: {
@@ -42,6 +64,59 @@ const articleSchema = new mongoose.Schema(
       default: null,
       trim: true,
     },
+
+    pdfFile: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+
+    authors: [
+      {
+        firstname: {
+          type: String,
+          required: [true, "First name is required"],
+          trim: true,
+          maxlength: [50, "First name cannot exceed 50 characters"],
+        },
+        middlename: {
+          type: String,
+          default: "",
+          trim: true,
+          maxlength: [50, "Middle name cannot exceed 50 characters"],
+        },
+        lastname: {
+          type: String,
+          required: [true, "Last name is required"],
+          trim: true,
+          maxlength: [50, "Last name cannot exceed 50 characters"],
+        },
+        department: {
+          type: String,
+          default: "",
+          trim: true,
+          maxlength: [100, "Department cannot exceed 100 characters"],
+        },
+        school: {
+          type: String,
+          default: "",
+          trim: true,
+          maxlength: [100, "School cannot exceed 100 characters"],
+        },
+        city: {
+          type: String,
+          default: "",
+          trim: true,
+          maxlength: [50, "City cannot exceed 50 characters"],
+        },
+        country: {
+          type: String,
+          default: "",
+          trim: true,
+          maxlength: [50, "Country cannot exceed 50 characters"],
+        },
+      },
+    ],
 
     status: {
       type: String,
@@ -59,7 +134,7 @@ articleSchema.index({ volumeNo: 1 });
 articleSchema.index({ seriesNo: 1 });
 articleSchema.index({ month: "text" });
 articleSchema.index({ year: 1 });
-articleSchema.index({ doi: 1 }, { unique: true });
+articleSchema.index({ title: 1 });
 articleSchema.index({ status: 1 });
 
 export default mongoose.model("Article", articleSchema);

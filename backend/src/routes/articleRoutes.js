@@ -9,7 +9,10 @@ const router = express.Router();
 router.post(
   "/",
   verifyToken,
-  upload.single("image"),
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "pdfFile", maxCount: 1 },
+  ]),
   validateArticle,
   articleController.createArticle
 );
@@ -18,7 +21,10 @@ router.get("/:id", articleController.getArticle);
 router.put(
   "/:id",
   verifyToken,
-  upload.single("image"),
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "pdfFile", maxCount: 1 },
+  ]),
   validateArticle,
   articleController.updateArticle
 );

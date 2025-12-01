@@ -4,16 +4,40 @@ import { STATUS_CODES } from "../utils/constants.js";
 
 const articleController = {
   createArticle: asyncHandler(async (req, res) => {
-    const { volumeNo, seriesNo, month, year, doi } = req.body;
-    const banner = req.file ? req.file.path : null;
+    const {
+      volumeNo,
+      seriesNo,
+      month,
+      year,
+      title,
+      doi,
+      pageRange,
+      abstract,
+      keywords,
+      authors,
+    } = req.body;
+    const banner =
+      req.files && req.files.image ? req.files.image[0].path : null;
+    const pdfFile =
+      req.files && req.files.pdfFile ? req.files.pdfFile[0].path : null;
+
+    // Parse JSON strings for arrays
+    const parsedKeywords = keywords ? JSON.parse(keywords) : [];
+    const parsedAuthors = authors ? JSON.parse(authors) : [];
 
     const article = await articleService.createArticle(
       volumeNo,
       seriesNo,
       month,
       year,
+      title,
       doi,
-      banner
+      pageRange,
+      abstract,
+      parsedKeywords,
+      parsedAuthors,
+      banner,
+      pdfFile
     );
     res.status(STATUS_CODES.CREATED).json({
       success: true,
@@ -58,15 +82,40 @@ const articleController = {
   }),
 
   updateArticle: asyncHandler(async (req, res) => {
-    const { volumeNo, seriesNo, month, year, doi, removeBanner } = req.body;
-    const banner = req.file ? req.file.path : null;
+    const {
+      volumeNo,
+      seriesNo,
+      month,
+      year,
+      title,
+      doi,
+      pageRange,
+      abstract,
+      keywords,
+      authors,
+      removeBanner,
+      removePdfFile,
+    } = req.body;
+    const banner =
+      req.files && req.files.image ? req.files.image[0].path : null;
+    const pdfFile =
+      req.files && req.files.pdfFile ? req.files.pdfFile[0].path : null;
+
+    // Parse JSON strings for arrays
+    const parsedKeywords = keywords ? JSON.parse(keywords) : [];
+    const parsedAuthors = authors ? JSON.parse(authors) : [];
 
     const updateData = {
       volumeNo,
       seriesNo,
       month,
       year,
+      title,
       doi,
+      pageRange,
+      abstract,
+      keywords: parsedKeywords,
+      authors: parsedAuthors,
     };
 
     // Handle banner updates
@@ -77,6 +126,14 @@ const articleController = {
       updateData.removeBanner = true;
     }
 
+    // Handle PDF file updates
+    if (pdfFile) {
+      updateData.pdfFile = pdfFile;
+    } else if (removePdfFile === "true" || removePdfFile === true) {
+      updateData.pdfFile = null;
+      updateData.removePdfFile = true;
+    }
+
     try {
       const article = await articleService.updateArticle(
         req.params.id,
@@ -85,7 +142,7 @@ const articleController = {
       res.status(STATUS_CODES.OK).json({
         success: true,
         message: "Article updated successfully",
-        data: volume,
+        data: article,
       });
     } catch (error) {
       if (error.message.includes("already exists")) {

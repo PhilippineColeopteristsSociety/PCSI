@@ -23,12 +23,6 @@ function Footer() {
                     Home
                   </Link>
                   <Link
-                    to="/services/training/collection-protocols"
-                    className="hover:text-lighter-green"
-                  >
-                    Specimen Collection Protocols
-                  </Link>
-                  <Link
                     to="/strategic-initiatives"
                     className="hover:text-lighter-green"
                   >
@@ -37,22 +31,19 @@ function Footer() {
                   <Link to="/ajis/about" className="hover:text-lighter-green">
                     About AJIS
                   </Link>
+                  <Link to="/ajis/issues" className="hover:text-lighter-green">
+                    AJIS Issues
+                  </Link>
                   <Link
                     to="/ajis/editorial-board"
                     className="hover:text-lighter-green"
                   >
                     Editorial Board
                   </Link>
-                  <Link
-                    to="/support/volunteer"
-                    className="hover:text-lighter-green"
-                  >
+                  <Link to="/support" className="hover:text-lighter-green">
                     Volunteer
                   </Link>
-                  <Link
-                    to="/support/donate"
-                    className="hover:text-lighter-green"
-                  >
+                  <Link to="/support" className="hover:text-lighter-green">
                     Donate
                   </Link>
                 </div>
@@ -61,8 +52,7 @@ function Footer() {
               <div className="p-2 ">
                 <div className="space-y-2">
                   <h1 className="text-lg font-serif">GET IN TOUCH</h1>
-                  <p>pcsi@gmail.com</p>
-                  <p>+639 11 234 5678</p>
+                  <p>philcolsoc@gmail.com</p>
                   <p>
                     <a
                       href="https://www.facebook.com/philcolsoc"
