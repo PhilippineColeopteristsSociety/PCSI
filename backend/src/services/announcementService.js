@@ -47,7 +47,7 @@ const announcementService = {
     return result;
   },
   toggleAnnouncementStatus: async (id, status) => {
-    console.log(id)
+    
     const announcement = await Announcement.findByIdAndUpdate(
       id, 
       { status: status.toLowerCase() }, 

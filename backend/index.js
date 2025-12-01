@@ -18,6 +18,9 @@ import articleRoutes from "./src/routes/articleRoutes.js";
 import publicationRoutes from "./src/routes/publicationRoutes.js";
 import announcementRoutes from "./src/routes/announcementRoutes.js";
 import featureRoutes from "./src/routes/featureRoutes.js";
+import contactRoutes from "./src/routes/contactRoutes.js";
+import newsRoutes from "./src/routes/newsRoutes.js";
+import merchandiseRoutes from "./src/routes/merchandiseRoutes.js";
 
 const app = express();
 
@@ -127,6 +130,9 @@ app.use("/api/publications", publicationRoutes);
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/features", featureRoutes);
 app.use("/api/volumes", volumeRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/news", newsRoutes);
+app.use("/api/merchandise", merchandiseRoutes);
 // Handle 404 for undefined routes
 app.use(notFound);
 

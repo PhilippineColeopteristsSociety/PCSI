@@ -1,43 +1,43 @@
-import Publication from "../models/Publication.js";
+import News from "../models/News.js";
 import { getCloudinaryPublicId } from "../utils/getPublicId.js";
 import cloudinary from "../config/cloudinaryConfig.js";
 
-const publicationService = {
-  createPublication: async (title, description, banner) => {
-    const publication = await Publication.create({
+const newsService = {
+  createNews: async (title, description, banner) => {
+    const news = await News.create({
       title,
       description,
       banner,
     });
-    return publication;
+    return news;
   },
-  getPublications: async (limit = null, filters = {}) => {
-    let query = Publication.find(filters).sort({ createdAt: -1 });
+  getAllNews: async (limit = null, filters = {}) => {
+    let query = News.find(filters).sort({ createdAt: -1 });
 
     if (limit && limit > 0) {
       query = query.limit(parseInt(limit));
     }
 
-    const publications = await query;
-    return publications;
+    const news = await query;
+    return news;
   },
-  getPublication: async (id) => {
-    const publication = await Publication.findById(id);
-    return publication;
+  getNews: async (id) => {
+    const news = await News.findById(id);
+    return news;
   },
-  updatePublication: async (id, data) => {
-    const publication = await Publication.findById(id);
-    // console.log(data)
+  updateNews: async (id, data) => {
+    const news = await News.findById(id);
+    
     // Handle banner deletion scenarios
-    if (publication.banner) {
+    if (news.banner) {
       if (data.banner) {
         // Scenario 1: User uploaded a new banner - delete old banner
-        const publicId = `pcsi/${getCloudinaryPublicId(publication.banner)}`;
+        const publicId = `pcsi/${getCloudinaryPublicId(news.banner)}`;
         await cloudinary.uploader.destroy(publicId);
         console.log(`Deleted old banner with public ID: ${publicId}`);
       } else if (data.removeBanner) {
         // Scenario 2: User clicked X to remove banner - delete old banner
-        const publicId = `pcsi/${getCloudinaryPublicId(publication.banner)}`;
+        const publicId = `pcsi/${getCloudinaryPublicId(news.banner)}`;
         await cloudinary.uploader.destroy(publicId);
         console.log(`Removed banner with public ID: ${publicId}`);
       }
@@ -47,18 +47,17 @@ const publicationService = {
     // Remove removeBanner flag from update data as it's not a model field
     const { removeBanner, ...updateData } = data;
 
-    const result = await Publication.findByIdAndUpdate(id, updateData, { new: true });
+    const result = await News.findByIdAndUpdate(id, updateData, { new: true });
     return result;
   },
-  togglePublicationStatus: async (id, status) => {
-
-    const publication = await Publication.findByIdAndUpdate(
+  toggleNewsStatus: async (id, status) => {
+    const news = await News.findByIdAndUpdate(
       id,
       { status: status.toLowerCase() },
       { new: true }
     );
-    return publication;
+    return news;
   },
 };
 
-export default publicationService;
+export default newsService;

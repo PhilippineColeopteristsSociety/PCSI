@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import {
   CheckCircle2Icon,
   CircleAlert,
-  CopyMinus,
   Edit,
   EllipsisVerticalIcon,
-  Plus,
-  Trash,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -19,21 +16,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export const merchandiseColumns = (onEdit, onUpdateStatus, submitting) => [
+export const newsColumns = (onEdit, onUpdateStatus, submitting) => [
   {
     accessorKey: "banner",
     header: "",
     cell: ({ row }) => (
       <Avatar>
         <AvatarImage src={row.getValue("banner")} />
-        <AvatarFallback></AvatarFallback>
+        <AvatarFallback>CN</AvatarFallback>
       </Avatar>
     ),
   },
   {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => <div className="w-52 truncate">{row.getValue("name")}</div>,
+    accessorKey: "title",
+    header: "Title",
+    cell: ({ row }) => <div className="w-52 truncate">{row.getValue("title")}</div>,
   },
   {
     accessorKey: "description",
@@ -52,12 +49,6 @@ export const merchandiseColumns = (onEdit, onUpdateStatus, submitting) => [
     header: "Status",
     cell: ({ row }) => {
       const [status, setStatus] = useState(row.original.status);
-      const merchandiseId = row.original._id;
-
-      const handleStatusChange = async (newStatus) => {
-        setStatus(newStatus);
-        onUpdateStatus({ merchandiseId, newStatus });
-      };
 
       return (
         <div>
@@ -81,14 +72,15 @@ export const merchandiseColumns = (onEdit, onUpdateStatus, submitting) => [
     enableHiding: false,
     cell: ({ row }) => {
       const status = row.original.status;
-      const merchandise = row.original;
+      const news = row.original;
+   
       const handleEdit = (e) => {
         e.stopPropagation();
-        onEdit(merchandise._id);
+        onEdit(news._id);
       };
       const handleStatusChange = (e) => {
         e.stopPropagation();
-        onUpdateStatus({ merchandiseId: merchandise._id, newStatus: status === "Active" ? "0" : "1" });
+        onUpdateStatus({ newsId: news._id, newStatus: status === "Active" ? "0" : "1" });
       };
       return (
         <DropdownMenu>

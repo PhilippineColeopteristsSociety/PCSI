@@ -15,21 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import {
-  ChevronLeft,
-  ChevronRight,
-  LoaderCircle,
   Plus,
-  Settings2,
-  Trash,
 } from "lucide-react";
 import {TableSkeleton} from "@/components/common/TableSkeleton";
 import { Label } from "@/components/ui/label";
@@ -53,10 +41,9 @@ const DataTable = ({
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
-    pageSize: 10, // Default rows per page
+    pageSize: 10,
   });
   const [globalFilter, setGlobalFilter] = React.useState("");
-  // Define the columns where you want to apply the global filter
   const filterColumns = filters;
 
   const table = useReactTable({
@@ -72,7 +59,6 @@ const DataTable = ({
     onColumnVisibilityChange: setColumnVisibility,
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: (row, columnIds, filterValue) => {
-      // This function will filter across multiple columns
       return filterColumns.some((columnId) => {
         const cellValue = row.getValue(columnId);
         return String(cellValue)
@@ -96,7 +82,7 @@ const DataTable = ({
         `}
       >
         <Input
-          placeholder={"Search Merchandise..."}
+          placeholder={"Search News..."}
           value={globalFilter ?? ""}
           onChange={(event) => setGlobalFilter(event.target.value)}
           className={"hidden h-8 md:inline md:max-w-sm flex-shrink"}
@@ -105,7 +91,7 @@ const DataTable = ({
         <div className="flex gap-2 justify-end md:justify-normal md:items-center">
           <Button onClick={onAdd} className={"w-min flex items-center gap-2"}>
             <Plus />
-            <span className="hidden lg:inline">{"New Merchandise"}</span>
+            <span className="hidden lg:inline">{"Add News"}</span>
           </Button>
           <TableViewOptions table={table} />
         </div>

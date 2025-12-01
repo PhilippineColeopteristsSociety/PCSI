@@ -58,6 +58,11 @@ const mainItems = [
     url: "/admin/feature",
     icon: Megaphone,
   },
+   {
+    title: "News & Features",
+    url: "/admin/news-features",
+    icon: Newspaper,
+  },
   {
     title: "Merchandise",
     url: "/admin/merchandise",

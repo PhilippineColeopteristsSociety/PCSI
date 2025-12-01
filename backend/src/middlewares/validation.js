@@ -163,6 +163,34 @@ const validateVolume = [
   handleValidationErrors,
 ];
 
+const validateNews = [
+  body('title')
+    .notEmpty()
+    .withMessage('Title is required'),
+  body('description')
+    .notEmpty()
+    .withMessage('Description is required'),
+  handleValidationErrors,
+  body("removeBanner")
+    .optional()
+    .isBoolean()
+    .withMessage('Remove banner must be a boolean'),
+];
+
+const validateMerchandise = [
+  body('name')
+    .notEmpty()
+    .withMessage('Name is required'),
+  body('description')
+    .notEmpty()
+    .withMessage('Description is required'),
+  handleValidationErrors,
+  body("removeBanner")
+    .optional()
+    .isBoolean()
+    .withMessage('Remove banner must be a boolean'),
+];
+
 export {
   validateRegister,
   validateLogin,
@@ -175,5 +203,7 @@ export {
   validatePublication,
   validateAnnouncement,
   validateFeature,
-  handleValidationErrors,
+  validateNews,
+  validateMerchandise,
+  handleValidationErrors
 };

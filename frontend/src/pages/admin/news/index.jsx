@@ -1,75 +1,74 @@
 import Header from "@/components/common/Header";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import DataTable from "./table";
-import { merchandiseColumns } from "./columns";
-import { MerchandiseSchema } from "@/components/forms/merchandise/schema";
-import merchandiseService from "@/services/merchandiseService";
-import { toast } from "sonner";
-import { formatDate } from "@/util/formatDate";
-import MerchandiseForm from "@/components/forms/merchandise/MerchandiseForm";
+import { newsColumns } from "./columns";
+import NewsForm from "@/components/forms/news/NewsForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { NewsSchema } from "@/components/forms/news/schema";
+import newsService from "@/services/newsService";
+import { toast } from "sonner";
+import { formatDate } from "@/util/formatDate";
 
 const statusMap = {
   1: "Active",
   0: "Inactive",
 };
 
-const Merchandise = () => {
+const News = () => {
   const [showForm, setShowForm] = useState(false);
   const [formTitle, setFormTitle] = useState("");
   const [currentData, setCurrentData] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [merchandise, setMerchandise] = useState("");
+  const [news, setNews] = useState("");
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(MerchandiseSchema),
+    resolver: zodResolver(NewsSchema),
     defaultValues: {
-      name: "",
+      title: "",
       description: "",
       status: "1",
     },
   });
 
-  const fetchMerchandise = async () => {
+  const fetchNews = async () => {
     setLoading(true);
     try {
-      const result = await merchandiseService.getAllMerchandise();
+      const result = await newsService.getAllNews();
       if (result.success) {
-        const data = result?.data?.data?.map((merch) => ({
-          ...merch,
-          status: statusMap[merch.status],
-          createdAt: formatDate(merch.createdAt),
+        const data = result?.data?.data?.map((news) => ({
+          ...news,
+          status: statusMap[news.status],
+          createdAt: formatDate(news.createdAt)
         }));
 
-        setMerchandise(data || []);
+        setNews(data || []);
       } else {
-        toast.error(result.error || "Failed to fetch merchandise");
+        toast.error(result.error || "Failed to fetch news");
       }
     } catch (error) {
-      console.error("Error fetching merchandise:", error);
-      toast.error("Failed to fetch merchandise");
+      console.error("Error fetching news:", error);
+      toast.error("Failed to fetch news");
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch merchandise on component mount
+  // Fetch news on component mount
   useEffect(() => {
-    fetchMerchandise();
+    fetchNews();
   }, []);
 
-  const handleUpdateStatus = async ({ merchandiseId, newStatus }) => {
+  const handleUpdateStatus = async ({ newsId, newStatus }) => {
     const promise = async () => {
       setSubmitting(true);
       try {
-        const result = await merchandiseService.toggleMerchandiseStatus(
-          merchandiseId,
+        const result = await newsService.toggleNewsStatus(
+          newsId,
           newStatus
         );
-        await fetchMerchandise();
+        await fetchNews();
         return result;
       } catch (error) {
         console.log(error);
@@ -81,37 +80,36 @@ const Merchandise = () => {
 
     toast.promise(promise(), {
       loading: "Updating Status...",
-      success: `Merchandise status updated`,
-      error: (error) => error.message || "Failed to update merchandise status",
+      success: `News status updated`,
+      error: (error) => error.message || "Failed to update news status",
     });
   };
 
-  const handleEdit = (merchandiseId) => {
-    // Find the merchandise data by ID
-    const merch = merchandise.find((merch) => merch._id === merchandiseId);
-    if (!merch) return;
+  const handleEdit = (newsId) => {
+    // Find the news data by ID
+    const newsItem = news.find((item) => item._id === newsId);
+    if (!newsItem) return;
 
     setShowForm(true);
-    setFormTitle("Edit Merchandise");
-    setCurrentData(merch);
-
+    setFormTitle("Edit News");
+    setCurrentData(newsItem);
+  
     // Populate form with existing data
     form.reset({
-      name: merch.name || "",
-      description: merch.description || "",
-      status: merch.status === "Active" ? "1" : "0",
+      title: newsItem.title || "",
+      description: newsItem.description || "",
+      status: newsItem.status === "Active" ? "1" : "0",
     });
   };
 
   const handleAdd = () => {
     setShowForm(true);
-    setFormTitle("Add Merchandise");
+    setFormTitle("Add News");
     setCurrentData(null);
     // Reset form to default values
     form.reset({
-      name: "",
+      title: "",
       description: "",
-      banner: "",
       status: "1",
     });
   };
@@ -122,13 +120,13 @@ const Merchandise = () => {
       let result;
 
       if (currentData) {
-        // Update existing merchandise
+        // Update existing news
         const updateData = {
-          name: data.name,
+          title: data.title,
           description: data.description,
           status: data.status,
         };
-
+        
         // Handle banner based on user action
         if (data.image) {
           // User uploaded a new banner - replace old one
@@ -139,14 +137,12 @@ const Merchandise = () => {
         }
         // If neither, keep existing banner (don't send banner field)
 
-        result = await merchandiseService.updateMerchandise(
-          currentData._id,
-          updateData
-        );
+        result = await newsService.updateNews(currentData._id, updateData);
+  
       } else {
-        // Create new merchandise
-        result = await merchandiseService.createMerchandise({
-          name: data.name,
+        // Create new news
+        result = await newsService.createNews({
+          title: data.title,
           description: data.description,
           status: data.status,
           image: data.image,
@@ -156,8 +152,8 @@ const Merchandise = () => {
       if (result.success) {
         toast.success(
           currentData
-            ? "Merchandise updated successfully!"
-            : "Merchandise created successfully!"
+            ? "News updated successfully!"
+            : "News created successfully!"
         );
 
         // Close form and reset
@@ -165,9 +161,9 @@ const Merchandise = () => {
         form.reset();
 
         // Refresh the data
-        fetchMerchandise();
+        fetchNews();
       } else {
-        toast.error(result.error || "Failed to save merchandise");
+        toast.error(result.error || "Failed to save news");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -179,20 +175,20 @@ const Merchandise = () => {
 
   return (
     <div className="">
-      <Header>Merchandise</Header>
+      <Header>News & Features</Header>
       <div>
         <DataTable
-          data={merchandise}
+          data={news}
           onAdd={() => handleAdd()}
           onEdit={(data) => handleEdit(data)}
           onUpdateStatus={handleUpdateStatus}
           submitting={submitting}
           loading={loading}
-          filters={["name", "description", "createdAt", "status"]}
-          tableColumn={merchandiseColumns}
+          filters={["title", "description", "createdAt", "status"]}
+          tableColumn={newsColumns}
         />
       </div>
-      <MerchandiseForm
+      <NewsForm
         open={showForm}
         onOpenChange={setShowForm}
         data={currentData}
@@ -206,4 +202,4 @@ const Merchandise = () => {
   );
 };
 
-export default Merchandise;
+export default News;
