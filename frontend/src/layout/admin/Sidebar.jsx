@@ -34,16 +34,6 @@ const mainItems = [
     icon: Home,
   },
   {
-    title: "Volumes",
-    url: "/admin/volumes",
-    icon: Newspaper,
-  },
-  {
-    title: "Articles",
-    url: "/admin/articles",
-    icon: BookOpen,
-  },
-  {
     title: "Publications",
     url: "/admin/publications",
     icon: Inbox,

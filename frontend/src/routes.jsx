@@ -158,6 +158,7 @@ const routes = createBrowserRouter([
         path: "volumes",
         Component: Volumes,
       },
+      {
         path: "news-features",
         Component: AdminNewsAndEvents,
       }
