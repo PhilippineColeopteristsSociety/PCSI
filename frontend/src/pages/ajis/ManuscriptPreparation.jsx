@@ -60,7 +60,7 @@ function ManuscriptPreparation() {
             <p className="text-lg leading-relaxed">
               Our linguistic team could help improve the English grammar of your
               manuscript. If you wish to avail of this service, kindly contact
-              the Managing Editor: <u>emailaddress@managing.editor</u>.
+              the Managing Editor: <u>editor.ajis.pcsi@gmail.com</u>.
             </p>
             <p className="text-lg leading-relaxed">
               We respect each author’s style, but the journal's general

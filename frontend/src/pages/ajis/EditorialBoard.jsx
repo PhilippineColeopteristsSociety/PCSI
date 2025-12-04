@@ -196,7 +196,7 @@ function EditorialBoard() {
               California Academy of Sciences, San Francisco, California, USA
             </h3>
             <h3 className="font-serif text-1xl md:text-1xl">
-              Molecular genetics, bioinformatics
+              Molecular Genetics & Bioinformatics
             </h3>
             
           </div>
