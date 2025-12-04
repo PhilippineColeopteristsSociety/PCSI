@@ -51,7 +51,7 @@ function Footer() {
               <div className="p-2 ">
                 <div className="space-y-2">
                   <h1 className="text-lg font-serif">GET IN TOUCH</h1>
-                  <p>philcolsoc@gmail.com</p>
+                  <p>philippinecoleopterist@gmail.com</p>
                   <p>
                     <a
                       href="https://www.facebook.com/philcolsoc"
@@ -77,7 +77,7 @@ function Footer() {
                     "text-accent-foreground bg-accent hover:bg-lighter-green rounded-full font-bold"
                   }
                 >
-                  Be a member
+                  <a href="https://forms.gle/LHjJjZLtXFaVQqSq8" target="_blank">Be a member</a>
                 </Button>
                 <div className="mt-4">
                   <p className="text-white py-2 text-xs">

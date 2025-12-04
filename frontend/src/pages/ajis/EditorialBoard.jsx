@@ -196,12 +196,12 @@ function EditorialBoard() {
               California Academy of Sciences, San Francisco, California, USA
             </h3>
             <h3 className="font-serif text-1xl md:text-1xl">
-              Molecular genetics, bioinformatics, xxxxxxxxxx
+              Molecular genetics, bioinformatics
             </h3>
             
           </div>
 
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Athena Lam</b>
             </h3>
@@ -209,10 +209,10 @@ function EditorialBoard() {
               California Academy of Sciences, San Francisco, California, USA
             </h3>
             <h3 className="font-serif text-1xl md:text-1xl">
-              Molecular genetics, bioinformatics, xxxxxxxxxx
+              Molecular genetics, bioinformatics
             </h3>
             
-          </div>
+          </div> */}
 
           {/* <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">

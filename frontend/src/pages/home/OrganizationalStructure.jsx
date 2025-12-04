@@ -33,7 +33,7 @@ function OrganizationalStructure() {
     {
       name: "Efrain Loidge Pajota",
       position: "Founding Member of the Board",
-      image: images.beatle_4, // Using placeholder image
+      image: images.efrain, // Using placeholder image
       affiliation: "University of Mindanao, Davao City, Philippines",
     },
   ];

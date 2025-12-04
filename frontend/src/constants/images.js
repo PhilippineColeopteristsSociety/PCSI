@@ -13,6 +13,7 @@ import logo_white2 from "@/assets/images/logo_white2.png";
 import logo_square_white from "@/assets/images/logo_square_white.png";
 import milton from "@/assets/images/DrMilton.jpg";
 import jhonnel from "@/assets/images/DrJhonnel.webp";
+import efrain from "@/assets/images/efrain.jpg";
 import ricksterlie from "@/assets/images/DrRicksterlie.png";
 import markjhon from "@/assets/images/MarkJhon.png";
 import coleopterist from "@/assets/images/coleopterist.png";
@@ -52,6 +53,7 @@ export const images = {
     logo_square_white,
     milton,
     jhonnel,
+    efrain,
     ricksterlie,
     markjhon,
     coleopterist,

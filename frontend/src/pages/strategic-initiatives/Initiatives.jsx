@@ -66,7 +66,7 @@ function Initiatives() {
               conservation.
             </p>
             <button className="bg-dark-green text-white px-6 py-2 rounded-md hover:bg-dark-green/90 transition-colors">
-              Contact Us
+              <a href="mailto:philippinecoleopterist@gmail.com">Contact Us</a>
             </button>
           </div>
         </div>
