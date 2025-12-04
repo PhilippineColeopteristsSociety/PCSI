@@ -18,6 +18,7 @@ import Support from "./pages/support";
 import PublicationsPage from "./pages/publications";
 import AnnouncementsPage from "./pages/announcements";
 import News from "./pages/news";//news & features page
+import Membership from "./pages/membership";
 
 // Admin routes
 import AdminLayout from "./layout/admin";
@@ -114,6 +115,10 @@ const routes = createBrowserRouter([
       {
         path:"/news-features",
         Component: News
+      },
+      {
+        path:"/how-to-be-member",
+        Component: Membership
       }
     ],
   },

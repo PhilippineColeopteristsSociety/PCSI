@@ -163,7 +163,7 @@ export default function MobileNav() {
                       </div>
                     );
                   })}
-                  <div className="w-max  bg-dark-green text-primary-foreground rounded-full text-lg font-medium gap-2 pl-2 pr-1 flex items-center py-1">
+                  {/* <div className="w-max  bg-dark-green text-primary-foreground rounded-full text-lg font-medium gap-2 pl-2 pr-1 flex items-center py-1">
                     Contact Us{" "}
                     <Button
                       // size={"icon"}
@@ -173,7 +173,7 @@ export default function MobileNav() {
                     >
                       <ArrowRight />
                     </Button>
-                  </div>
+                  </div> */}
                 </nav>
               </div>
             </SheetContent>

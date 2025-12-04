@@ -169,7 +169,7 @@ function Navigation() {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-          <div>
+          {/* <div>
             <div className="bg-dark-green text-primary-foreground rounded-full text-sm font-medium gap-2 pl-2 pr-1 flex items-center py-1">
               Contact Us{" "}
               <Button
@@ -181,7 +181,7 @@ function Navigation() {
                 <ArrowRight />
               </Button>
             </div>
-          </div>
+          </div> */}
         </Container>
       </div>
     </div>
