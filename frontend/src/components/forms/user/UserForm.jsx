@@ -52,7 +52,6 @@ export default function UserForm({
         toast.success("Verification code sent to your email");
         setShowVerifyModal(false);
         setShowOTPModal(true);
-
         setOtpToken(sendOTP?.data?.data.token);
       } else {
         toast.error("Failed to send verification code");

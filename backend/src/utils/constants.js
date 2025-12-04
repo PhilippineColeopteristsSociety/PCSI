@@ -12,6 +12,12 @@ const TOKEN_TYPES = {
   PASSWORD_RESET: "password_reset",
 };
 
+// Token expiration times (in milliseconds)
+const TOKEN_EXPIRATION = {
+  RESET_TOKEN: 10 * 60 * 1000, // 10 minutes
+  VERIFICATION_TOKEN: 24 * 60 * 60 * 1000, // 24 hours
+};
+
 // Email templates
 const EMAIL_TEMPLATES = {
   VERIFICATION: "verification",
@@ -63,4 +69,4 @@ const STATUS_CODES = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-export { ROLES, TOKEN_TYPES, EMAIL_TEMPLATES, MESSAGES, STATUS_CODES };
+export { ROLES, TOKEN_TYPES, TOKEN_EXPIRATION, EMAIL_TEMPLATES, MESSAGES, STATUS_CODES };
