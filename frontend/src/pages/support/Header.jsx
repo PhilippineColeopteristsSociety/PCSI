@@ -53,16 +53,20 @@ export default function Header() {
           <p className="break-normal max-w-prose">
             If you wish to be part of conserving our beetle species, you can
             help through donations. For more details on how to donate, please
-            contact us at pcsi@gmail.com
+            contact us at philippinecoleopterist@gmail.com
           </p>
           <p>Every contribution counts.</p>
           <p>
             {" "}
             For donations, contact us at{" "}
-            <a className="font-bold">pcsi@gmail.com</a>
+            <a className="font-bold">philippinecoleopterist@gmail.com</a>
           </p>
 
-          <Button>Donate</Button>
+          <Button>
+            <a href="mailto:philippinecoleopterist@gmail.com" target="_blank">
+              Donate
+            </a>
+            </Button>
         </div>
       </Container>
     </div>
