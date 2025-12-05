@@ -98,6 +98,19 @@ const authService = {
       };
     }
   },
+
+  // Resend OTP
+  resendOTP: async (token, type = 'password-reset') => {
+    try {
+      const response = await api.post("/auth/resend-otp", { token, type });
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Failed to resend OTP",
+      };
+    }
+  },
   // Request password reset
   requestPasswordReset: async (email) => {
     try {

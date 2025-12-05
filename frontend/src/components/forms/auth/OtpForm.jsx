@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { otpSchema } from "./schema";
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { images } from "@/constants/images";
 import { toast } from "sonner";
@@ -45,7 +45,12 @@ import { useNavigate } from "react-router";
 
 export default function OtpForm({ className, ...props }) {
   const [error, setError] = useState("");
+  const [currentToken, setCurrentToken] = useState(props.token);
+  const [countdown, setCountdown] = useState(60); // 1 minute in seconds
+  const [isResending, setIsResending] = useState(false);
+  const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
+  
   const form = useForm({
     resolver: zodResolver(otpSchema),
     defaultValues: {
@@ -53,15 +58,81 @@ export default function OtpForm({ className, ...props }) {
     },
   });
 
+  // Update currentToken when props.token changes
+  useEffect(() => {
+    if (props.token) {
+      setCurrentToken(props.token);
+      setCountdown(60); // Reset countdown when new token is received
+    }
+  }, [props.token]);
+
+  // Countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          setCanResend(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Format countdown time
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleResendOTP = async () => {
+    try {
+      setIsResending(true);
+      setError("");
+      
+      const result = await authService.resendOTP(currentToken, 'password-reset');
+      
+      if (!result.success) {
+        setError(result.error);
+        toast.error(result.error);
+      } else {
+        // Update token if new token is returned
+        if (result.data?.data?.token) {
+          const newToken = result.data.data.token;
+          setCurrentToken(newToken);
+          // Update URL with new token
+          navigate(`/admin/auth/forgot-password?token=${newToken}`, { replace: true });
+        }
+        
+        // Reset countdown
+        setCountdown(60);
+        setCanResend(false);
+        
+        // Clear OTP input
+        form.reset();
+        
+        toast.success("OTP has been resent to your email");
+      }
+    } catch (error) {
+      setError("Failed to resend OTP. Please try again.");
+      toast.error("Failed to resend OTP");
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   const onSubmit = async (data) => {
     try {
       setError("");
-      const result = await authService.validateOTP({ token: props.token, otp: data.otp });
+      const result = await authService.validateOTP({ token: currentToken, otp: data.otp });
       if (!result.success) {
         setError(result.error);
       } else {
         toast.success("OTP verified successfully!");
-        navigate("/admin/auth/reset-password?token=" + props.token);
+        navigate("/admin/auth/reset-password?token=" + currentToken);
       }
     } catch (error) {
       setError("An unexpected error occurred. Please try again.");
@@ -134,10 +205,26 @@ export default function OtpForm({ className, ...props }) {
                       </FormControl>
                       <FormMessage />
                       <div className="ml-auto flex items-center justify-between mt-2 text-xs text-muted-foreground">
-                        <div>Remaining time; <span className=" text-primary font-bold">00:45</span></div>
+                        <div>
+                          Remaining time:{" "}
+                          <span className={`font-bold ${countdown === 0 ? 'text-red-500' : 'text-primary'}`}>
+                            {formatTime(countdown)}
+                          </span>
+                        </div>
                         <div>
                           Didn't receive the code?{" "}
-                          <a className={"text-primary font-bold"}>Resend</a>
+                          <button
+                            type="button"
+                            onClick={handleResendOTP}
+                            disabled={!canResend || isResending}
+                            className={
+                              canResend && !isResending
+                                ? "text-primary font-bold hover:underline cursor-pointer"
+                                : "text-muted-foreground font-bold cursor-not-allowed"
+                            }
+                          >
+                            {isResending ? "Sending..." : "Resend"}
+                          </button>
                         </div>
                       </div>
                     </Field>

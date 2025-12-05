@@ -83,14 +83,14 @@ const getVerificationEmailTemplate = (firstName, verificationToken) => {
 };
 const getChangeEmailOTPTemplate = (firstName, otp) => {
   return {
-    subject: 'Password Reset OTP - PCSI',
+    subject: 'Change Email OTP - PCSI',
     html: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Password Reset</title>
+        <title>Change Email OTP</title>
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -129,14 +129,14 @@ const getChangeEmailOTPTemplate = (firstName, otp) => {
               <div class="otp-code">${otp}</div>
             </div>
             
-            <p>Enter this code on the email change page to continue. This code is valid for <strong>1 hour</strong>.</p>
+            <p>Enter this code on the email change page to continue. This code is valid for <strong>10 minutes</strong>.</p>
             
             <div class="warning">
               <p><strong>Security Notice:</strong></p>
               <ul style="margin: 10px 0; padding-left: 20px;">
                 <li>Never share this OTP with anyone</li>
                 <li>PCSI staff will never ask for your OTP</li>
-                <li>This code expires in 1 hour</li>
+                <li>This code expires in 10 minutes</li>
               </ul>
               <p>If you didn't request a password reset, please ignore this email and consider changing your password immediately for security.</p>
             </div>
@@ -160,7 +160,7 @@ const getChangeEmailOTPTemplate = (firstName, otp) => {
       Security Notice:
       - Never share this OTP with anyone
       - PCSI staff will never ask for your OTP
-      - This code expires in 1 hour
+      - This code expires in 10 minutes
       
       If you didn't request a password reset, please ignore this email and consider changing your password immediately for security.
       
@@ -219,14 +219,14 @@ const getPasswordResetEmailTemplate = (firstName, otp) => {
               <div class="otp-code">${otp}</div>
             </div>
             
-            <p>Enter this code on the password reset page to continue. This code is valid for <strong>1 hour</strong>.</p>
+            <p>Enter this code on the password reset page to continue. This code is valid for <strong>10 minutes</strong>.</p>
             
             <div class="warning">
               <p><strong>Security Notice:</strong></p>
               <ul style="margin: 10px 0; padding-left: 20px;">
                 <li>Never share this OTP with anyone</li>
                 <li>PCSI staff will never ask for your OTP</li>
-                <li>This code expires in 1 hour</li>
+                <li>This code expires in 10 minutes</li>
               </ul>
               <p>If you didn't request a password reset, please ignore this email and consider changing your password immediately for security.</p>
             </div>
@@ -250,7 +250,7 @@ const getPasswordResetEmailTemplate = (firstName, otp) => {
       Security Notice:
       - Never share this OTP with anyone
       - PCSI staff will never ask for your OTP
-      - This code expires in 1 hour
+      - This code expires in 10 minutes
       
       If you didn't request a password reset, please ignore this email and consider changing your password immediately for security.
       
