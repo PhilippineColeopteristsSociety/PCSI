@@ -9,6 +9,7 @@ import logo_portrait from "@/assets/images/Logo-portrait.png";
 import logo_landscape from "@/assets/images/Logo_Landscape.png";
 import logo_square from "@/assets/images/logo_square.png";
 import logo_white from "@/assets/images/logo_white.png";
+import logo_w_cn from "@/assets/images/logo_w_cn.png";
 import logo_white2 from "@/assets/images/logo_white2.png";
 import logo_square_white from "@/assets/images/logo_square_white.png";
 import milton from "@/assets/images/DrMilton.jpg";
@@ -49,6 +50,7 @@ export const images = {
     logo_landscape,
     logo_square,
     logo_white,
+    logo_w_cn,
     logo_white2,
     logo_square_white,
     milton,

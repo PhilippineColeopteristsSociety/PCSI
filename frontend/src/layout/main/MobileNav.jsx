@@ -80,7 +80,7 @@ export default function MobileNav() {
         <Container className="py-5 md:py-1 flex items-center justify-between">
           <Link to={"/"}>
             <img
-              src={images.logo_landscape}
+              src={images.logo_w_cn}
               alt="LOGO"
               className="max-h-15 md:max-h-20"
             />
