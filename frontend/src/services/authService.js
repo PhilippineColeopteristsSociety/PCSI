@@ -100,9 +100,9 @@ const authService = {
   },
 
   // Resend OTP
-  resendOTP: async (token) => {
+  resendOTP: async (token, type = 'password-reset') => {
     try {
-      const response = await api.post("/auth/resend-otp", { token });
+      const response = await api.post("/auth/resend-otp", { token, type });
       return { success: true, data: response.data };
     } catch (error) {
       return {

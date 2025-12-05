@@ -175,7 +175,7 @@ const authService = {
     };
   },
 
-  resendOTP: async (token) => {
+  resendOTP: async (token, type = 'password-reset') => {
     const user = await User.findOne({
       verificationToken: token,
       verificationTokenExpires: { $gt: new Date() },
@@ -194,8 +194,13 @@ const authService = {
 
     await user.save();
 
-    // Send reset email with new OTP
-    await emailService.sendChangeEmailOTP(user.email, user.firstName, otp);
+    // Send appropriate email based on type
+    if (type === 'change-email') {
+      await emailService.sendChangeEmailOTP(user.email, user.firstName, otp);
+    } else {
+      // Default to password reset
+      await emailService.sendPasswordResetEmail(user.email, user.firstName, otp);
+    }
 
     return {
       token: user.verificationToken,

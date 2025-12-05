@@ -170,8 +170,8 @@ const authController = {
   }),
   //resend otp
   resendOTP: asyncHandler(async (req, res) => {
-    const { token } = req.body;
-    const result = await authService.resendOTP(token);
+    const { token, type } = req.body;
+    const result = await authService.resendOTP(token, type);
 
     res.status(STATUS_CODES.OK).json({
       success: true,

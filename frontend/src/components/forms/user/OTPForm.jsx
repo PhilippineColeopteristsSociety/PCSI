@@ -91,7 +91,7 @@ export default function OTPForm({ open, onOpenChange, setAllowEditEmail, ...prop
       setIsResending(true);
       setError("");
       
-      const result = await authService.resendOTP(currentToken);
+      const result = await authService.resendOTP(currentToken, 'change-email');
       
       if (!result.success) {
         setError(result.error);
