@@ -42,7 +42,9 @@ export const ArticleSchema = z.object({
     .refine((val) => val.includes(","), {
       message: "Keywords must be comma separated",
     }),
-  doi: z.string().url({ message: "DOI must be a valid URL" }).optional(),
+  doi: z.string()
+  // .url({ message: "DOI must be a valid URL" })
+  .optional(),
   pageRange: z
     .string()
     .optional()
