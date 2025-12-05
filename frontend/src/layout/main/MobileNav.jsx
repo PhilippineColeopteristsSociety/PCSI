@@ -25,8 +25,8 @@ const MENU = [
   {
     label: "Membership",
     children: [
-      { name: "How to be a member?", path: "#" },
-      { name: "Affiliates", path: "#" },
+      { name: "How to be a member?", path: "/how-to-be-member" },
+      { name: "Affiliates", path: "/affiliates" },
     ],
   },
   {

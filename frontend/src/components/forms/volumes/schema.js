@@ -22,6 +22,6 @@ export const VolumeSchema = z.object({
     .refine((val) => /^\d{4}$/.test(String(val)), {
       message: "Year must be a 4-digit number",
     }),
-  doi: z.string().min(1, { message: "DOI is required" }),
+  doi: z.string().optional(),
   status: z.enum(["0", "1"]).optional(),
 });

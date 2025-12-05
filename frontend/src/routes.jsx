@@ -17,8 +17,9 @@ import NewsAndEvents from "./pages/news-events";
 import Support from "./pages/support";
 import PublicationsPage from "./pages/publications";
 import AnnouncementsPage from "./pages/announcements";
-import News from "./pages/news";//news & features page
+import News from "./pages/news"; //news & features page
 import Membership from "./pages/membership";
+import Affiliates from "./pages/affiliates";
 
 // Admin routes
 import AdminLayout from "./layout/admin";
@@ -44,7 +45,6 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PublicRoute from "./components/auth/PublicRoute";
 import ForgotPassword from "./pages/admin/auth/ForgotPassword";
 import ResetPassword from "./pages/admin/auth/ResetPassword";
-
 
 const routes = createBrowserRouter([
   {
@@ -113,13 +113,17 @@ const routes = createBrowserRouter([
         Component: AnnouncementsPage,
       },
       {
-        path:"/news-features",
-        Component: News
+        path: "/news-features",
+        Component: News,
       },
       {
-        path:"/how-to-be-member",
-        Component: Membership
-      }
+        path: "/how-to-be-member",
+        Component: Membership,
+      },
+      {
+        path: "/affiliates",
+        Component: Affiliates,
+      },
     ],
   },
   {
@@ -166,7 +170,7 @@ const routes = createBrowserRouter([
       {
         path: "news-features",
         Component: AdminNewsAndEvents,
-      }
+      },
     ],
   },
   {
