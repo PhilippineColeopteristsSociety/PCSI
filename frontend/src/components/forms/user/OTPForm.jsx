@@ -71,7 +71,7 @@ export default function OTPForm({ open, onOpenChange, setAllowEditEmail, ...prop
       setError("");
       form.reset();
     }
-  }, [open]);
+  }, [open, form]);
 
   // Countdown timer
   useEffect(() => {
