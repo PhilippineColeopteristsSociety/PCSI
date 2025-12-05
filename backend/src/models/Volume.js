@@ -32,9 +32,8 @@ const volumeSchema = new mongoose.Schema(
 
     doi: {
       type: String,
-      required: [true, "DOI is required"],
+      required: false,
       trim: true,
-      unique: true,
     },
 
     banner: {
@@ -59,7 +58,9 @@ volumeSchema.index({ volumeNo: 1 });
 volumeSchema.index({ seriesNo: 1 });
 volumeSchema.index({ month: "text" });
 volumeSchema.index({ year: 1 });
-volumeSchema.index({ doi: 1 }, { unique: true });
+volumeSchema.index({ doi: 1 });
 volumeSchema.index({ status: 1 });
+
+// Migration logic for dropping unique index on doi field should be handled via a migration script, not in a pre-save hook.
 
 export default mongoose.model("Volume", volumeSchema);

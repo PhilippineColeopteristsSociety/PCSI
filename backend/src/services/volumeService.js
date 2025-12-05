@@ -5,6 +5,14 @@ import mongoose from "mongoose";
 
 const volumeService = {
   createVolume: async (volumeNo, seriesNo, month, year, doi, banner) => {
+    // Check for uniqueness: DOI should be unique if provided
+    if (doi && doi.trim()) {
+      const existingVolumeWithDOI = await Volume.findOne({ doi: doi.trim() });
+      if (existingVolumeWithDOI) {
+        throw new Error("DOI already exists");
+      }
+    }
+
     const volume = await Volume.create({
       volumeNo,
       seriesNo,
@@ -51,9 +59,6 @@ const volumeService = {
     if (data.doi && data.doi !== volume.doi) {
       orConditions.push({ doi: data.doi });
     }
-    if (data.volumeNo !== undefined && data.volumeNo !== volume.volumeNo) {
-      orConditions.push({ volumeNo: data.volumeNo });
-    }
 
     if (orConditions.length > 0) {
       const existingVolume = await Volume.findOne({
@@ -61,7 +66,7 @@ const volumeService = {
         _id: { $ne: objectId },
       });
       if (existingVolume) {
-        throw new Error("Volume No. or DOI already exists");
+        throw new Error("DOI already exists");
       }
     }
 
