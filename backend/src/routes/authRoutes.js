@@ -21,6 +21,7 @@ router.post('/forgot-password', validatePasswordResetRequest, authController.req
 router.post('/validate-otp', authController.validateOTP);
 router.post('/reset-password/:token', validatePasswordReset, authController.resetPassword);
 router.post('/send-change-email-otp', authController.sendChangeEmailOTP);
+router.post("/resend-otp", authController.resendOTP);
 // Protected routes (authentication required)
 router.get('/me', verifyToken, authController.getMe);
 

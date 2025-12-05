@@ -1,7 +1,7 @@
 import User from "../models/User.js";
 import tokenService from "./tokenService.js";
 import emailService from "./emailService.js";
-import { MESSAGES } from "../utils/constants.js";
+import { MESSAGES, TOKEN_EXPIRATION } from "../utils/constants.js";
 
 const authService = {
   // Register new user
@@ -25,7 +25,7 @@ const authService = {
     // Generate verification token
     const verificationToken = tokenService.generateVerificationToken();
     user.verificationToken = verificationToken;
-    user.verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+    user.verificationTokenExpires = new Date(Date.now() + TOKEN_EXPIRATION.VERIFICATION_TOKEN);
 
     await user.save();
 
@@ -139,9 +139,9 @@ const authService = {
     // Generate reset token and OTP
     const resetToken = tokenService.generatePasswordResetToken();
     const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
-    
+
     user.verificationToken = resetToken;
-    user.verificationTokenExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    user.verificationTokenExpires = new Date(Date.now() + TOKEN_EXPIRATION.RESET_TOKEN);
     user.otp = otp;
     await user.save();
 
@@ -159,6 +159,11 @@ const authService = {
     // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
     user.otp = otp;
+    // Generate verification token
+    const resetToken = tokenService.generatePasswordResetToken();
+    user.verificationToken = resetToken;
+    user.verificationTokenExpires = new Date(Date.now() + TOKEN_EXPIRATION.RESET_TOKEN);
+
     await user.save();
 
     // Send email with OTP
@@ -166,11 +171,11 @@ const authService = {
 
     return {
       message: "Verification code sent to your email",
-      token: user.verificationToken
+      token: user.verificationToken,
     };
   },
 
-  resendOTP: async (token) => {
+  resendOTP: async (token, type = 'password-reset') => {
     const user = await User.findOne({
       verificationToken: token,
       verificationTokenExpires: { $gt: new Date() },
@@ -178,30 +183,36 @@ const authService = {
     if (!user) {
       throw new Error(MESSAGES.INVALID_TOKEN);
     }
-    
+
     // Generate new OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
     user.otp = otp;
+    // Generate verification token
+    const resetToken = tokenService.generatePasswordResetToken();
+    user.verificationToken = resetToken;
+    user.verificationTokenExpires = new Date(Date.now() + TOKEN_EXPIRATION.RESET_TOKEN);
+
     await user.save();
-    
-    // Send reset email with new OTP
-    await emailService.sendPasswordResetEmail(
-      user.email,
-      user.firstName,
-      otp
-    );
+
+    // Send appropriate email based on type
+    if (type === 'change-email') {
+      await emailService.sendChangeEmailOTP(user.email, user.firstName, otp);
+    } else {
+      // Default to password reset
+      await emailService.sendPasswordResetEmail(user.email, user.firstName, otp);
+    }
 
     return {
-      token: token,
+      token: user.verificationToken,
       message: "OTP resent successfully",
-    }
+    };
   },
   validateOTP: async (token, otp) => {
     const user = await User.findOne({
       verificationToken: token,
       verificationTokenExpires: { $gt: new Date() },
     });
-    console.log(user)
+
     if (!user) {
       throw new Error(MESSAGES.INVALID_TOKEN);
     }
@@ -256,14 +267,12 @@ const authService = {
 
   // Update user profile
   updateUserProfile: async (userId, updateData) => {
-
     // Get current user
     const currentUser = await User.findById(userId);
     if (!currentUser) {
       throw new Error(MESSAGES.USER_NOT_FOUND);
     }
 
-  
     const user = await User.findByIdAndUpdate(userId, updateData, {
       new: true,
       runValidators: true,

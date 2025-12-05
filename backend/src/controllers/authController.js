@@ -168,6 +168,19 @@ const authController = {
       },
     });
   }),
+  //resend otp
+  resendOTP: asyncHandler(async (req, res) => {
+    const { token, type } = req.body;
+    const result = await authService.resendOTP(token, type);
+
+    res.status(STATUS_CODES.OK).json({
+      success: true,
+      message: result.message,
+      data: {
+        token: result.token,
+      },
+    });
+  }),
 
   // Get current user info (for token verification)
   getMe: asyncHandler(async (req, res) => {
