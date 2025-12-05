@@ -61,22 +61,6 @@ volumeSchema.index({ year: 1 });
 volumeSchema.index({ doi: 1 });
 volumeSchema.index({ status: 1 });
 
-// Drop unique index on doi field if it exists (for migration purposes)
-volumeSchema.pre("save", async function () {
-  try {
-    const collection = this.constructor.collection;
-    const indexes = await collection.indexes();
-    const doiUniqueIndex = indexes.find(
-      (index) => index.name === "doi_1" && index.unique === true
-    );
-    if (doiUniqueIndex) {
-      await collection.dropIndex("doi_1");
-      console.log("Dropped unique index on doi field");
-    }
-  } catch (error) {
-    // Index might not exist, ignore error
-    console.log("No unique index to drop on doi field");
-  }
-});
+// Migration logic for dropping unique index on doi field should be handled via a migration script, not in a pre-save hook.
 
 export default mongoose.model("Volume", volumeSchema);
