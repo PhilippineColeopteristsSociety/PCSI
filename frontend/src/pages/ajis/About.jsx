@@ -29,7 +29,7 @@ function About() {
           setLatestVolumeBanner(latestVolume.banner);
         } else {
           // If no volumes found, keep the default logo
-          setLatestVolumeBanner(null);
+          setLatestVolumeBanner(images.logo_portrait);
         }
       } catch (err) {
         console.error("Failed to fetch latest volume banner:", err);
@@ -66,7 +66,7 @@ function About() {
               <Skeleton className="max-w-xs w-full h-[400px] rounded-lg" />
             ) : (
               <img
-                src={latestVolumeBanner || images.logo_portrait}
+                src={latestVolumeBanner}
                 alt="Asian Journal of Insect Science"
                 className="max-w-xs rounded-lg shadow-lg"
               />
