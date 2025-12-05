@@ -3,6 +3,7 @@ import Container from "@/components/common/Container";
 import SubPageHero from "@/components/common/SubPageHero";
 import { images } from "@/constants/images";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import volumeService from "@/services/volumeService";
 import {
   Accordion,
@@ -61,11 +62,15 @@ function About() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Journal Photo */}
           <div className="flex justify-center">
-            <img
-              src={latestVolumeBanner || images.logo_portrait}
-              alt="Asian Journal of Insect Science"
-              className="max-w-xs rounded-lg shadow-lg"
-            />
+            {loading ? (
+              <Skeleton className="max-w-xs w-full h-[400px] rounded-lg" />
+            ) : (
+              <img
+                src={latestVolumeBanner || images.logo_portrait}
+                alt="Asian Journal of Insect Science"
+                className="max-w-xs rounded-lg shadow-lg"
+              />
+            )}
           </div>
 
           {/* Right Column - Focus and Scope */}
