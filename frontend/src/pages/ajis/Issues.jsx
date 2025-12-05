@@ -10,24 +10,24 @@ function VolumeCard({ volume, onClick }) {
 
   return (
     <div
-      className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+      className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-200 cursor-pointer max-w-[280px] max-h-[350px]"
       onClick={onClick}
     >
       {banner ? (
         <img
           src={banner}
           alt={`Vol. ${volumeNo} No. ${seriesNo} Banner`}
-          className="w-full h-68 object-cover"
+          className="w-full h-72"
           loading="lazy"
         />
       ) : (
-        <div className="w-full h-68 bg-gray-200 flex items-center justify-center text-gray-400">
+        <div className="w-full h-72 bg-gray-200 flex items-center justify-center text-gray-400">
           No Image
         </div>
       )}
       <div className="p-2">
-        <p className="font-semibold text-lg text-center">{month}</p>
-        <p className="font-semibold font-serif text-sm text-center">
+        <p className="font-semibold text-base text-center">{month}</p>
+        <p className="font-semibold font-serif text-xs text-center">
           Vol. {volumeNo} No. {seriesNo} ({year})
         </p>
       </div>
@@ -208,7 +208,6 @@ function Issues() {
                             ).toLocaleDateString(undefined, {
                               year: "numeric",
                               month: "long",
-                              day: "numeric",
                             })}
                           </p>
                         </>
@@ -327,7 +326,6 @@ function Issues() {
                             ).toLocaleDateString(undefined, {
                               year: "numeric",
                               month: "long",
-                              day: "numeric",
                             })}
                           </p>
                         </>

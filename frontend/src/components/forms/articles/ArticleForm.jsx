@@ -52,6 +52,7 @@ export default function ArticleForm({
   const [pdfFilePreview, setPdfFilePreview] = useState(null);
   const [removePdfFile, setRemovePdfFile] = useState(false);
   const [volumes, setVolumes] = useState([]);
+  const [volumeOptions, setVolumeOptions] = useState([]);
   const [seriesOptions, setSeriesOptions] = useState([]);
   const fileInputRef = useRef(null);
   const pdfInputRef = useRef(null);
@@ -87,6 +88,11 @@ export default function ArticleForm({
       const result = await volumeService.getVolumes();
       if (result.success) {
         setVolumes(result.data);
+        // Create unique volume options
+        const uniqueVolumes = Array.from(
+          new Set(result.data.map((vol) => vol.volumeNo))
+        ).sort((a, b) => a - b);
+        setVolumeOptions(uniqueVolumes);
       } else {
         toast.error("Failed to load volumes");
       }
@@ -334,12 +340,12 @@ export default function ArticleForm({
                                 <SelectValue placeholder="Select Volume" />
                               </SelectTrigger>
                               <SelectContent>
-                                {volumes.map((vol) => (
+                                {volumeOptions.map((volumeNo) => (
                                   <SelectItem
-                                    key={vol._id}
-                                    value={vol.volumeNo.toString()}
+                                    key={volumeNo}
+                                    value={volumeNo.toString()}
                                   >
-                                    {vol.volumeNo}
+                                    {volumeNo}
                                   </SelectItem>
                                 ))}
                               </SelectContent>

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Container from "@/components/common/Container";
 import SubPageHero from "@/components/common/SubPageHero";
 import { images } from "@/constants/images";
 import { Separator } from "@/components/ui/separator";
+import volumeService from "@/services/volumeService";
 import {
   Accordion,
   AccordionContent,
@@ -11,6 +12,37 @@ import {
 } from "@/components/ui/accordion";
 
 function About() {
+  const [latestVolumeBanner, setLatestVolumeBanner] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchLatestVolumeBanner() {
+      setLoading(true);
+      setError(null);
+      try {
+        // Fetch the latest volume with status "1" (active)
+        const response = await volumeService.getVolumes(1, { status: "1" });
+        if (response.success && response.data.length > 0) {
+          const latestVolume = response.data[0];
+          setLatestVolumeBanner(latestVolume.banner);
+        } else {
+          // If no volumes found, keep the default logo
+          setLatestVolumeBanner(null);
+        }
+      } catch (err) {
+        console.error("Failed to fetch latest volume banner:", err);
+        setError("Failed to load journal banner");
+        // Keep default logo on error
+        setLatestVolumeBanner(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchLatestVolumeBanner();
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       <SubPageHero />
@@ -30,7 +62,7 @@ function About() {
           {/* Left Column - Journal Photo */}
           <div className="flex justify-center">
             <img
-              src={images.logo_portrait}
+              src={latestVolumeBanner || images.logo_portrait}
               alt="Asian Journal of Insect Science"
               className="max-w-xs rounded-lg shadow-lg"
             />
