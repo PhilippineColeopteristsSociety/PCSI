@@ -89,7 +89,7 @@ export default function OTPForm({ open, onOpenChange, setAllowEditEmail, ...prop
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [open, countdown]);
+  }, [open]);
 
   // Format countdown time
   const formatTime = (seconds) => {
