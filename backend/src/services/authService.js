@@ -195,7 +195,7 @@ const authService = {
     await user.save();
 
     // Send reset email with new OTP
-    await emailService.sendPasswordResetEmail(user.email, user.firstName, otp);
+    await emailService.sendChangeEmailOTP(user.email, user.firstName, otp);
 
     return {
       token: user.verificationToken,

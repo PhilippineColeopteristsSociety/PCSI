@@ -83,14 +83,14 @@ const getVerificationEmailTemplate = (firstName, verificationToken) => {
 };
 const getChangeEmailOTPTemplate = (firstName, otp) => {
   return {
-    subject: 'Password Reset OTP - PCSI',
+    subject: 'Change Email OTP - PCSI',
     html: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Password Reset</title>
+        <title>Change Email OTP</title>
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
