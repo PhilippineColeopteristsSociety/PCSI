@@ -68,7 +68,7 @@ function Navigation() {
         <Container className="py-1 flex items-center justify-between">
           <Link to={"/"}>
             <img
-              src={images.logo_landscape}
+              src={images.logo_w_cn}
               alt="LOGO"
               className="max-h-14 md:max-h-20"
             />
