@@ -11,7 +11,7 @@ function Footer() {
         <Container className={" "}>
           <div className="py-8 flex flex-col lg:flex-row h-fit gap-6">
             <img
-              src={images.logo_white}
+              src={images.logo_white2}
               className="md:max-h-48 md:max-w-fit lg:max-w-full"
             />
             <div className="flex flex-col md:flex-row gap-4 text-sm text-primary-foreground font-medium">
