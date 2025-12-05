@@ -77,7 +77,7 @@ export default function MobileNav() {
   return (
     <div className="relative lg:hidden ">
       <div className="fixed top-0 w-full bg-background backdrop-blur-md shadow-md z-[50]">
-        <Container className="py-5 md:py-1 flex items-center justify-between">
+        <Container className="py-2 md:py-1 flex items-center justify-between">
           <Link to={"/"}>
             <img
               src={images.logo_w_cn}
@@ -88,7 +88,7 @@ export default function MobileNav() {
           <Sheet>
             <SheetTrigger>
               <Button asChild variant={"ghost"} size={"icon"}>
-                <MenuIcon className="size-7" />
+                <MenuIcon className="h-7 w-7 md:h-8 md:w-8" />
               </Button>
             </SheetTrigger>
             <SheetContent className="max-w-[400px]">
