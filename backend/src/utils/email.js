@@ -138,7 +138,7 @@ const getChangeEmailOTPTemplate = (firstName, otp) => {
                 <li>PCSI staff will never ask for your OTP</li>
                 <li>This code expires in 10 minutes</li>
               </ul>
-              <p>If you didn't request a password reset, please ignore this email and consider changing your password immediately for security.</p>
+              <p>If you didn't request an email change, please ignore this email and consider changing your password immediately for security.</p>
             </div>
           </div>
           <div class="footer">
@@ -162,7 +162,7 @@ const getChangeEmailOTPTemplate = (firstName, otp) => {
       - PCSI staff will never ask for your OTP
       - This code expires in 10 minutes
       
-      If you didn't request a password reset, please ignore this email and consider changing your password immediately for security.
+      If you didn't request an email change, please ignore this email and consider changing your password immediately for security.
       
       Best regards,
       PCSI Team
