@@ -59,12 +59,24 @@ export default function OTPForm({ open, onOpenChange, setAllowEditEmail, ...prop
     if (props.token) {
       setCurrentToken(props.token);
       setCountdown(60); // Reset countdown when new token is received
+      setCanResend(false); // Reset canResend when new token is received
     }
   }, [props.token]);
+
+  // Reset states when modal opens
+  useEffect(() => {
+    if (open) {
+      setCountdown(60);
+      setCanResend(false);
+      setError("");
+      form.reset();
+    }
+  }, [open]);
 
   // Countdown timer
   useEffect(() => {
     if (!open) return;
+    if (countdown <= 0) return;
 
     const timer = setInterval(() => {
       setCountdown((prev) => {
@@ -77,7 +89,7 @@ export default function OTPForm({ open, onOpenChange, setAllowEditEmail, ...prop
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [open]);
+  }, [open, countdown]);
 
   // Format countdown time
   const formatTime = (seconds) => {

@@ -68,6 +68,9 @@ export default function OtpForm({ className, ...props }) {
 
   // Countdown timer
   useEffect(() => {
+    // Only start timer if component is visible and countdown > 0
+    if (countdown <= 0) return;
+
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
@@ -79,7 +82,7 @@ export default function OtpForm({ className, ...props }) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [countdown]);
 
   // Format countdown time
   const formatTime = (seconds) => {
