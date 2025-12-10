@@ -38,7 +38,6 @@ function EditorialBoard() {
               Davao Oriental State University, Mati City, Philippines
             </h3>
           </div>
-
           {/* Managing Editor */}
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
@@ -51,7 +50,6 @@ function EditorialBoard() {
               Davao Oriental State University, Mati City, Philippines
             </h3>
           </div>
-
           {/* Publishing Editors */}
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
@@ -64,7 +62,6 @@ function EditorialBoard() {
               University of Mindanao, Davao City Philippines
             </h3>
           </div>
-
           {/* Administrative and Finance Officer */}
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
@@ -77,13 +74,11 @@ function EditorialBoard() {
               Davao Oriental State University, Mati City, Philippines
             </h3>
           </div>
-
           <div className="mt-6">
             <h3 className="font-serif text-1xl md:text-1xl">
               <i>Subject reviewers and advisors</i>
             </h3>
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Robert Anderson</b>
@@ -94,9 +89,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order Coleoptera (Curculionidae)
             </h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Arvids Barsevskis</b>
@@ -107,9 +100,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order Coleoptera (Cerambycidae)
             </h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Cecilia P. Reyes</b>
@@ -121,9 +112,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order Thysanoptera
             </h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Reagan Joseph T. Villanueva</b>
@@ -132,9 +121,7 @@ function EditorialBoard() {
               Southern Philippines Medical Center, Davao City Philippines
             </h3>
             <h3 className="font-serif text-1xl md:text-1xl">Order Odonata</h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Orlando Calcetas</b>
@@ -145,9 +132,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order Coleoptera (Scarabidae, Chrysomelidae, Insect Pests)
             </h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Francesco Vitali</b>
@@ -159,9 +144,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order Coleoptera (Cerambycidae)
             </h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Eduard Vives</b>
@@ -172,9 +155,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order Coleoptera (Cerambycidae)
             </h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Alexander Anichtchenko</b>
@@ -185,9 +166,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order Coleoptera (Carabidae)
             </h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Matthew van Dam</b>
@@ -198,9 +177,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Molecular Genetics & Bioinformatics
             </h3>
-            
           </div>
-
           {/* <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Athena Lam</b>
@@ -213,7 +190,6 @@ function EditorialBoard() {
             </h3>
             
           </div> */}
-
           {/* <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Enrico Ruzzier</b>
@@ -227,7 +203,6 @@ function EditorialBoard() {
             </h3>
             
           </div> */}
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Lorenzo Pancini</b>
@@ -239,9 +214,7 @@ function EditorialBoard() {
               Order Coleoptera (Curculionidae in Indo-Australian and Malayan
               Regions)
             </h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Larry Bezark</b>
@@ -252,9 +225,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order Coleoptera (Cerambycidae)
             </h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Simpron Crispolon Elorde Jr.</b>
@@ -265,9 +236,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order Hemiptera (Cercopoidea)
             </h3>
-            
           </div>
-
           {/* <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Jade Aster T. Badon</b>
@@ -280,7 +249,6 @@ function EditorialBoard() {
             </h3>
             
           </div> */}
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Perry Archival C. Buenavente</b>
@@ -291,9 +259,7 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order Hymenoptera (Ants)
             </h3>
-            
           </div>
-
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <b>Dr. Yesenia Marquez Lopez</b>
@@ -304,9 +270,30 @@ function EditorialBoard() {
             <h3 className="font-serif text-1xl md:text-1xl">
               Order: Neuroptera (Ascalaphinae)
             </h3>
-            
           </div>
-
+          <div className="mt-4">
+            <h3 className="font-serif text-1xl md:text-1xl">
+              <b>Dr. Arvin Diesmos</b>
+            </h3>
+            <h3 className="font-serif text-1xl md:text-1xl">
+              ASEAN Centre for Biodiversity, Laguna, Philippines
+            </h3>
+            <h3 className="font-serif text-1xl md:text-1xl">
+              Insect Ecology and Biogeography
+            </h3>
+          </div>{" "}
+          <div className="mt-4">
+            <h3 className="font-serif text-1xl md:text-1xl">
+              <b>Dr. Sigvald Kristensen</b>
+            </h3>
+            <h3 className="font-serif text-1xl md:text-1xl">
+              Philippine Coleopterists Society Inc., Philippines Danish Museum
+              of Natural History, Denmark (retired)
+            </h3>
+            <h3 className="font-serif text-1xl md:text-1xl">
+              Order Coleoptera (General Beetles)
+            </h3>
+          </div>
         </div>
       </Container>
     </div>
