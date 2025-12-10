@@ -11,6 +11,140 @@ import {
 } from "@/components/ui/accordion";
 
 function EditorialBoard() {
+  // Editorial Board structure
+  const editorialBoard = {
+    editorInChief: {
+      name: "Dr. Milton Norman D. Medina",
+      affiliation: "Davao Oriental State University, Mati City, Philippines",
+    },
+    managingEditor: {
+      name: "Jhonnel P. Villegas",
+      affiliation: "Davao Oriental State University, Mati City, Philippines",
+    },
+    publishingEditors: [
+      {
+        name: "Efhrain Loidge Pajota",
+        affiliation: "University of Mindanao, Davao City Philippines",
+      },
+      {
+        name: "Mark John Pepito",
+        affiliation: "University of Mindanao, Davao City Philippines",
+      },
+    ],
+    administrativeAndFinanceOfficer: {
+      name: "Dr. Ricksterlie Verzosa",
+      affiliation: "Davao Oriental State University, Mati City, Philippines",
+    },
+    subjectReviewersAndAdvisors: [
+      {
+        name: "Dr. Robert Anderson",
+        affiliation: "Canada Museum of Nature, Ottawa, Canada",
+        specialty: "Order Coleoptera (Curculionidae)",
+      },
+      {
+        name: "Dr. Arvids Barsevskis",
+        affiliation: "Daugavpils University, Daugavpils, Latvia",
+        specialty: "Order Coleoptera (Cerambycidae)",
+      },
+      {
+        name: "Dr. Cecilia P. Reyes",
+        affiliation: "Research Associate, Philippine National Museum, Manila, Philippines",
+        specialty: "Order Thysanoptera",
+      },
+      {
+        name: "Dr. Reagan Joseph T. Villanueva",
+        affiliation: "Southern Philippines Medical Center, Davao City Philippines",
+        specialty: "Order Odonata",
+      },
+      {
+        name: "Dr. Orlando Calcetas",
+        affiliation: "Department of Agriculture, Philippines",
+        specialty: "Order Coleoptera (Scarabidae, Chrysomelidae, Insect Pests)",
+      },
+      {
+        name: "Dr. Francesco Vitali",
+        affiliation: "Musée national d'histoire naturelle de Luxembourg, Luxembourg, Luxembourg",
+        specialty: "Order Coleoptera (Cerambycidae)",
+      },
+      {
+        name: "Dr. Eduard Vives",
+        affiliation: "Natural Science Museum of Barcelona, Spain",
+        specialty: "Order Coleoptera (Cerambycidae)",
+      },
+      {
+        name: "Dr. Alexander Anichtchenko",
+        affiliation: "Daugavpils University, Daugavpils, Latvia",
+        specialty: "Order Coleoptera (Carabidae)",
+      },
+      {
+        name: "Dr. Matthew van Dam",
+        affiliation: "California Academy of Sciences, San Francisco, California, USA",
+        specialty: "Molecular Genetics & Bioinformatics",
+      },
+      {
+        name: "Dr. Lorenzo Pancini",
+        affiliation: "World Biodiversity Association, Italy",
+        specialty: "Order Coleoptera (Curculionidae in Indo-Australian and Malayan Regions)",
+      },
+      {
+        name: "Dr. Larry Bezark",
+        affiliation: "California Department of Food and Agriculture (retired), USA",
+        specialty: "Order Coleoptera (Cerambycidae)",
+      },
+      {
+        name: "Dr. Simpron Crispolon Elorde Jr.",
+        affiliation: "University of Southern Mindanao, Kabacan, Philippines",
+        specialty: "Order Hemiptera (Cercopoidea)",
+      },
+      {
+        name: "Perry Archival C. Buenavente",
+        affiliation: "Philippine National Museum, Manila, Philippines",
+        specialty: "Order Hymenoptera (Ants)",
+      },
+      {
+        name: "Dr. Yesenia Marquez Lopez",
+        affiliation: "Universidad Autónoma Metropolitana, Ciudad de México, Mexico",
+        specialty: "Order: Neuroptera (Ascalaphinae)",
+      },
+      {
+        name: "Dr. Arvin Diesmos",
+        affiliation: "ASEAN Centre for Biodiversity, Laguna, Philippines",
+        specialty: "Insect Ecology and Biogeography",
+      },
+      {
+        name: "Dr. Sigvald Kristensen",
+        affiliation: "Philippine Coleopterists Society Inc., Philippines Danish Museum of Natural History, Denmark (retired)",
+        specialty: "Order Coleoptera (General Beetles)",
+      },
+    ],
+  };
+
+  // Sort publishing editors alphabetically by first name
+  const sortedPublishingEditors = [...editorialBoard.publishingEditors].sort((a, b) => {
+    const getFirstName = (fullName) => {
+      const parts = fullName.split(' ');
+      return parts[0].startsWith('Dr.') ? parts[1] : parts[0];
+    };
+    
+    const firstNameA = getFirstName(a.name).toLowerCase();
+    const firstNameB = getFirstName(b.name).toLowerCase();
+    
+    return firstNameA.localeCompare(firstNameB);
+  });
+
+  // Sort subject reviewers and advisors alphabetically by first name
+  const sortedReviewers = [...editorialBoard.subjectReviewersAndAdvisors].sort((a, b) => {
+    const getFirstName = (fullName) => {
+      const parts = fullName.split(' ');
+      return parts[0].startsWith('Dr.') ? parts[1] : parts[0];
+    };
+    
+    const firstNameA = getFirstName(a.name).toLowerCase();
+    const firstNameB = getFirstName(b.name).toLowerCase();
+    
+    return firstNameA.localeCompare(firstNameB);
+  });
+
   return (
     <div className="min-h-screen bg-white">
       <SubPageHero />
@@ -32,281 +166,71 @@ function EditorialBoard() {
               <i>Editor-In-Chief</i>
             </h3>
             <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Milton Norman D. Medina</b>
+              <b>{editorialBoard.editorInChief.name}</b>
             </h3>
             <h3 className="font-serif text-1xl md:text-1xl">
-              Davao Oriental State University, Mati City, Philippines
+              {editorialBoard.editorInChief.affiliation}
             </h3>
           </div>
-
           {/* Managing Editor */}
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <i>Managing Editor</i>
             </h3>
             <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Jhonnel P. Villegas</b>
+              <b>{editorialBoard.managingEditor.name}</b>
             </h3>
             <h3 className="font-serif text-1xl md:text-1xl">
-              Davao Oriental State University, Mati City, Philippines
+              {editorialBoard.managingEditor.affiliation}
             </h3>
           </div>
-
           {/* Publishing Editors */}
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <i>Publishing Editors</i>
             </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Efhrain Loidge Pajota & Mark John Pepito</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              University of Mindanao, Davao City Philippines
-            </h3>
+            {sortedPublishingEditors.map((editor, index) => (
+              <div key={index}>
+                <h3 className="font-serif text-1xl md:text-1xl">
+                  <b>{editor.name}</b>
+                </h3>
+                <h3 className="font-serif text-1xl md:text-1xl">
+                  {editor.affiliation}
+                </h3>
+              </div>
+            ))}
           </div>
-
           {/* Administrative and Finance Officer */}
           <div className="mt-4">
             <h3 className="font-serif text-1xl md:text-1xl">
               <i>Administrative and Finance Officer</i>
             </h3>
             <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Ricksterlie Verzosa</b>
+              <b>{editorialBoard.administrativeAndFinanceOfficer.name}</b>
             </h3>
             <h3 className="font-serif text-1xl md:text-1xl">
-              Davao Oriental State University, Mati City, Philippines
+              {editorialBoard.administrativeAndFinanceOfficer.affiliation}
             </h3>
           </div>
-
+          {/* Subject reviewers and advisors */}
           <div className="mt-6">
             <h3 className="font-serif text-1xl md:text-1xl">
               <i>Subject reviewers and advisors</i>
             </h3>
           </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Robert Anderson</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Canada Museum of Nature, Ottawa, Canada
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Coleoptera (Curculionidae)
-            </h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Arvids Barsevskis</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Daugavpils University, Daugavpils, Latvia
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Coleoptera (Cerambycidae)
-            </h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Cecilia P. Reyes</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Research Associate, Philippine National Museum, Manila,
-              Philippines
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Thysanoptera
-            </h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Reagan Joseph T. Villanueva</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Southern Philippines Medical Center, Davao City Philippines
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">Order Odonata</h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Orlando Calcetas</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Department of Agriculture, Philippines
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Coleoptera (Scarabidae, Chrysomelidae, Insect Pests)
-            </h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Francesco Vitali</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Musée national d'histoire naturelle de Luxembourg, Luxembourg,
-              Luxembourg
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Coleoptera (Cerambycidae)
-            </h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Eduard Vives</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Natural Science Museum of Barcelona, Spain
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Coleoptera (Cerambycidae)
-            </h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Alexander Anichtchenko</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Daugavpils University, Daugavpils, Latvia
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Coleoptera (Carabidae)
-            </h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Matthew van Dam</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              California Academy of Sciences, San Francisco, California, USA
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Molecular Genetics & Bioinformatics
-            </h3>
-            
-          </div>
-
-          {/* <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Athena Lam</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              California Academy of Sciences, San Francisco, California, USA
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Molecular genetics, bioinformatics
-            </h3>
-            
-          </div> */}
-
-          {/* <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Enrico Ruzzier</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Insect Biodiversity, Coleoptera: Tenebrionidae, Invasive Species,
-              Applied Entomology
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Roma Tre University, Rome, Italy
-            </h3>
-            
-          </div> */}
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Lorenzo Pancini</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              World Biodiversity Association, Italy
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Coleoptera (Curculionidae in Indo-Australian and Malayan
-              Regions)
-            </h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Larry Bezark</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              California Department of Food and Agriculture (retired), USA
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Coleoptera (Cerambycidae)
-            </h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Simpron Crispolon Elorde Jr.</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              University of Southern Mindanao, Kabacan, Philippines
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Hemiptera (Cercopoidea)
-            </h3>
-            
-          </div>
-
-          {/* <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Jade Aster T. Badon</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              University of the Philippines Los Baños, Philippines
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Lepidoptera
-            </h3>
-            
-          </div> */}
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Perry Archival C. Buenavente</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Philippine National Museum, Manila, Philippines
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order Hymenoptera (Ants)
-            </h3>
-            
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-serif text-1xl md:text-1xl">
-              <b>Dr. Yesenia Marquez Lopez</b>
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Universidad Autónoma Metropolitana, Ciudad de México, Mexico
-            </h3>
-            <h3 className="font-serif text-1xl md:text-1xl">
-              Order: Neuroptera (Ascalaphinae)
-            </h3>
-            
-          </div>
-
+          {sortedReviewers.map((reviewer, index) => (
+            <div key={index} className="mt-4">
+              <h3 className="font-serif text-1xl md:text-1xl">
+                <b>{reviewer.name}</b>
+              </h3>
+              <h3 className="font-serif text-1xl md:text-1xl">
+                {reviewer.affiliation}
+              </h3>
+              <h3 className="font-serif text-1xl md:text-1xl">
+                {reviewer.specialty}
+              </h3>
+            </div>
+          ))}
         </div>
       </Container>
     </div>
