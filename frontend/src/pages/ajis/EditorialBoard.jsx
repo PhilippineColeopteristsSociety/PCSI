@@ -111,6 +111,11 @@ function EditorialBoard() {
         affiliation: "Philippine Coleopterists Society Inc., Philippines Danish Museum of Natural History, Denmark (retired)",
         specialty: "Order Coleoptera (General Beetles)",
       },
+        {
+        name: "Jürgen Wiesner",
+        affiliation: "Am Zellberg 6, D-38527 Meine, Germany",
+        specialty: "Coleoptera (Oriental Cicindelidae)",
+      },
     ],
   };
 
