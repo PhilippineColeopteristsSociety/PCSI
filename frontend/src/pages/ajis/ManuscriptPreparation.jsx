@@ -158,8 +158,7 @@ function ManuscriptPreparation() {
             <p className="text-lg leading-relaxed pl-4">
               Single author: Cabras AA. (Year). Title of the article. Name of
               the journal, volume (issue number), page numbers. DOI:
-              <u>http://xxxxxxxxxxxxx</u>. Take note that the name of the
-              journal must be abbreviated.
+              <u>http://xxxxxxxxxxxxx</u>. Take note that the name of the journal must not be abbreviated.
             </p>
             <p className="text-lg leading-relaxed pl-4">
               Two or more authors: Cabras AA, Medina MND. (Year). Title of the
