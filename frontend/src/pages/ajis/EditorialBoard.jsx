@@ -72,11 +72,6 @@ function EditorialBoard() {
         specialty: "Order Coleoptera (Cerambycidae)",
       },
       {
-        name: "Dr. Alexander Anichtchenko",
-        affiliation: "Daugavpils University, Daugavpils, Latvia",
-        specialty: "Order Coleoptera (Carabidae)",
-      },
-      {
         name: "Dr. Matthew van Dam",
         affiliation: "California Academy of Sciences, San Francisco, California, USA",
         specialty: "Molecular Genetics & Bioinformatics",
