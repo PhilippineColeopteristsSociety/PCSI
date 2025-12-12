@@ -23,10 +23,6 @@ const PublicationList = () => {
         createdAt: formatDate(publication.createdAt),
       }));
       
-      if(data.length === 0){
-        setPublications([]);
-        return;
-      }
       
       const filteredData = data.filter(
         (publication) => publication.status === "1"
