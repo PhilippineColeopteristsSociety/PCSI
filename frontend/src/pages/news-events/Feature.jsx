@@ -15,7 +15,7 @@ const Feature = () => {
     try {
       const result = await featureService.getFeatures(DATA_LIMIT.FEATURES, { status: STATUS.ACTIVE });
       const data = result?.data?.data || [];
-      if(data === 0){
+      if(data.length === 0){
         setFeature(null);
         return;
       }
