@@ -77,11 +77,6 @@ function EditorialBoard() {
         specialty: "Molecular Genetics & Bioinformatics",
       },
       {
-        name: "Dr. Lorenzo Pancini",
-        affiliation: "World Biodiversity Association, Italy",
-        specialty: "Order Coleoptera (Curculionidae in Indo-Australian and Malayan Regions)",
-      },
-      {
         name: "Dr. Larry Bezark",
         affiliation: "California Department of Food and Agriculture (retired), USA",
         specialty: "Order Coleoptera (Cerambycidae)",
