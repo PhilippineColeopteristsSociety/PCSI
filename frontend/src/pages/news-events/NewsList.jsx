@@ -27,6 +27,11 @@ const navigate = useNavigate();
         createdAt: formatDate(newsItem.createdAt),
       }));
 
+      if(data.length === 0){
+        setNews([]);
+        return;
+      }
+
       const filteredData = data.filter(
         (newsItem) => newsItem.status === "1"
       );

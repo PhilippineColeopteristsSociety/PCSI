@@ -28,6 +28,11 @@ const Announcements = () => {
         createdAt: formatDate(announcement.createdAt),
       }));
 
+      if(data.length === 0){
+        setAnnouncements([]);
+        return;
+      }
+
       setAnnouncements(data || []);
     } catch (error) {
       console.error("Error fetching announcements:", error);

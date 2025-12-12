@@ -23,6 +23,11 @@ const AnnouncementList = () => {
         createdAt: formatDate(announcement.createdAt),
       }));
 
+      if(data.length === 0){
+        setAnnouncements([]);
+        return;
+      }
+
       const filteredData = data.filter(
         (announcement) => announcement.status === "1"
       );

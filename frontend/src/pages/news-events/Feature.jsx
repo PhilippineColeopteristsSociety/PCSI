@@ -14,8 +14,12 @@ const Feature = () => {
     setLoading(true);
     try {
       const result = await featureService.getFeatures(DATA_LIMIT.FEATURES, { status: STATUS.ACTIVE });
-      
-      setFeature(result.data.data[0] || null);
+      const data = result?.data?.data || [];
+      if(data === 0){
+        setFeature(null);
+        return;
+      }
+      setFeature(data[0] || null);
     } catch (error) {
       console.error("Error fetching feature:", error);
       toast.error("Failed to fetch feature");
