@@ -114,7 +114,8 @@ function EditorialBoard() {
       {
         name: "Dr. Viktorija Ergović",
         affiliation:"Department of Biology, Josip Juraj Strossmayer University of Osijek, Croatia",
-        specialty:"Freshwater ecology, Diptera with emphasis on the family Chironomidae"
+        specialty:"Freshwater ecology, Diptera with emphasis on the family Chironomidae",
+      },
     ],
   };
 
