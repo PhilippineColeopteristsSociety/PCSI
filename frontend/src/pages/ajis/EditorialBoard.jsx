@@ -111,6 +111,10 @@ function EditorialBoard() {
         affiliation: "Am Zellberg 6, D-38527 Meine, Germany",
         specialty: "Coleoptera (Oriental Cicindelidae)",
       },
+      {
+        name: "Dr. Viktorija Ergović",
+        affiliation:"Department of Biology, Josip Juraj Strossmayer University of Osijek, Croatia",
+        specialty:"Freshwater ecology, Diptera with emphasis on the family Chironomidae"
     ],
   };
 
